@@ -19,6 +19,19 @@ export const schema = buildSchema(`
         series: Series!
       }
 
+      type User {
+        _id: ID!
+        username: String!
+        email: String!
+        password: String!
+      }
+
+      type AuthData {
+        userId: ID!
+        token: String!
+        tokenExpiration: Int!
+      }
+
       input SeriesInput {
         title: String!
         description: String!
@@ -33,14 +46,23 @@ export const schema = buildSchema(`
         type: String!
       }
 
+      input UserInput {
+        username: String!
+        email: String!
+        password: String!
+      }
+
       type RootQuery {
         series: [Series!]
         images: [Image!] 
+        users: [User!]
+        login(email: String, password: String): AuthData! 
       }
 
       type RootMutation {
         createSeries(seriesInput: SeriesInput): Series
         createImage(imageInput: ImageInput): Image
+        createUser(userInput: UserInput): User
       }
 
       schema {

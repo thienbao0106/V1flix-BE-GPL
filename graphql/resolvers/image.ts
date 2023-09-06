@@ -2,16 +2,20 @@ import Image from "../../models/image";
 import Series from "../../models/series";
 import { findSeries } from "../../utils/series";
 
+const transformImage = (image: any) => {
+  return {
+    ...image._doc,
+    _id: image.id,
+    series: findSeries.bind(this, image.series),
+  };
+};
+
 export const imageResolvers = {
   images: async () => {
     try {
       const result = await Image.find();
       return result.map((image: any) => {
-        return {
-          ...image._doc,
-          _id: image.id,
-          series: findSeries.bind(this, image.series),
-        };
+        transformImage(image);
       });
     } catch (error) {
       throw error;
@@ -31,11 +35,7 @@ export const imageResolvers = {
       const result: any = await image.save();
       series.images.push(result._id);
       await series.save();
-      return {
-        ...result._doc,
-        _id: result.id,
-        series: findSeries.bind(this, result.series),
-      };
+      transformImage(image);
     } catch (error) {
       throw error;
     }
