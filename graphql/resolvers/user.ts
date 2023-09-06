@@ -8,8 +8,10 @@ type LoginData = {
 };
 
 export const userResolvers = {
-  users: async () => {
+  //GraphQL also gets request
+  users: async (args: any, req: any) => {
     try {
+      if (!req.isAuth) throw new Error("Unauthenticated");
       const result = await User.find();
       return result.map((user: any) => {
         return {

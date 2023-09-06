@@ -1,3 +1,4 @@
+import { auth } from "./middlewares/isAuth";
 import express, { Express, Request, Response } from "express";
 import bodyParser from "body-parser";
 import { graphqlHTTP } from "express-graphql";
@@ -6,10 +7,12 @@ import { resolvers } from "./graphql/resolvers/index";
 import { schema } from "./graphql/schema";
 require("dotenv").config();
 
-const app: Express = express();
+const app: any = express();
 const port = 3000;
 
+//every route will be checked
 app.use(bodyParser.json());
+app.use(auth);
 app.use(
   "/graphql",
   graphqlHTTP({
