@@ -8,6 +8,8 @@ const seriesType: String = `
         season: String!
         status: String!
         images: [Image!]!
+        genres: [Genres!]!
+
     }
 `;
 

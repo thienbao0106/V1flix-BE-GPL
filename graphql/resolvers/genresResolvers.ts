@@ -1,4 +1,5 @@
 import Genres from "../../models/genres";
+import Series from "../../models/series";
 import { findMultipleSeries, findSeries } from "../../utils/series";
 
 export const genresResolvers = {
@@ -37,16 +38,27 @@ export const genresResolvers = {
   addSeriesToGenres: async (args: any) => {
     try {
       const { seriesArr, idGenres } = args;
-      console.log(idGenres);
-
-      const result: any = await Genres.findByIdAndUpdate(
-        idGenres,
-        { series: seriesArr },
-        { returnDocument: "after" }
+      const currentGenres: any = await Genres.findById(idGenres);
+      const result: any = await Genres.updateOne(
+        { _id: idGenres },
+        { series: [...currentGenres.series, seriesArr] }
       );
+
+      const listSeries = await findMultipleSeries([
+        ...currentGenres.series,
+        seriesArr,
+      ]);
+      listSeries.map(async (series: any) => {
+        const listGenres = await series.genres();
+        listGenres.push(idGenres);
+        await Series.findByIdAndUpdate(series._id, {
+          genres: listGenres,
+        });
+      });
+
       return {
         ...result._doc,
-        series: await findMultipleSeries(result._doc.series),
+        series: listSeries,
       };
     } catch (error) {
       throw error;

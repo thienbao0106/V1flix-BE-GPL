@@ -3,7 +3,7 @@ const genresType: String = `
         _id: ID!
         name: String!
         description: String
-        series: [Series!]!
+        series: [Series]
       }
 `;
 

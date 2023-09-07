@@ -11,7 +11,8 @@ const imageInput: String = `
     input ImageInput {
         name: String!
         type: String!
-      }
+        seriesId: String!
+    }
 `;
 
 export default `${imageType}${imageInput}`;
