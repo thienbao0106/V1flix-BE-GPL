@@ -22,7 +22,8 @@ export const auth = (
     return next();
   }
   try {
-    const decodedToken: any = jwt.verify(token, "v1sion");
+    const jwtKey: any = process.env.HASH_KEYWORD;
+    const decodedToken: any = jwt.verify(token, jwtKey);
     console.log("token: " + decodedToken);
     if (!decodedToken) {
       req.isAuth = false;

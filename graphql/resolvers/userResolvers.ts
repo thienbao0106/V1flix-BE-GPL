@@ -32,13 +32,13 @@ export const userResolvers = {
       if (isExisted.length > 0)
         throw new Error("This account is already existed");
 
-      const hashedPassword = await bcrypt.hash(password, 4);
+      const salt: any = process.env.SALT_GEN;
+      const hashedPassword = await bcrypt.hash(password, salt);
       const user = new User({
         email,
         username,
         password: hashedPassword,
       });
-
       const result: any = await user.save();
       return {
         ...result._doc,
@@ -54,7 +54,8 @@ export const userResolvers = {
       if (!user) throw new Error("Can't find this user");
       const isEqual = await bcrypt.compare(password, user.password);
       if (!isEqual) throw new Error("Password is not correct");
-      const token = jwt.sign({ userId: user.id, email: user.email }, "v1sion", {
+      const jwtKey: any = process.env.HASH_KEYWORD;
+      const token = jwt.sign({ userId: user.id, email: user.email }, jwtKey, {
         expiresIn: "1h",
       });
       return {

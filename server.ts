@@ -1,10 +1,11 @@
-import { auth } from "./middlewares/isAuth";
-import express, { Express, Request, Response } from "express";
+import { auth } from "./middleware/isAuth";
+import express from "express";
 import bodyParser from "body-parser";
 import { graphqlHTTP } from "express-graphql";
 import mongoose from "mongoose";
 import { resolvers } from "./graphql/resolvers/index";
 import { schema } from "./graphql/schema";
+import cors from "cors";
 require("dotenv").config();
 
 const app: any = express();
@@ -12,6 +13,7 @@ const port = 3000;
 
 //every route will be checked
 app.use(bodyParser.json());
+app.use(cors());
 app.use(auth);
 app.use(
   "/graphql",

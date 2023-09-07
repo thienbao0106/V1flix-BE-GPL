@@ -31,6 +31,12 @@ const seriesSchema = new Schema({
       ref: "Image",
     },
   ],
+  genres: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Genres",
+    },
+  ],
 });
 
 export default mongoose.model("Series", seriesSchema);
