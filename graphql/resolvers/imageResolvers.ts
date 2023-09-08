@@ -32,4 +32,31 @@ export const imageResolvers = {
       throw error;
     }
   },
+
+  deleteImage: async ({ imageId }: any) => {
+    try {
+      console.log(imageId);
+      const result: any = await Image.findByIdAndDelete(imageId);
+      console.log(result);
+      console.log(result._doc.series);
+      const series: any = await Series.findById(result._doc.series);
+      series.images = [...series.images].filter(
+        (image: String) => image === imageId
+      );
+      await series.save();
+      console.log(result);
+      return true;
+    } catch (error) {
+      throw error;
+    }
+  },
+  updateImage: async ({ imageInput, imageId }: any) => {
+    try {
+      const result: any = await Image.findByIdAndUpdate(imageId, imageInput, {
+        returnDocument: "after",
+      });
+      console.log(result);
+      return result;
+    } catch (error) {}
+  },
 };

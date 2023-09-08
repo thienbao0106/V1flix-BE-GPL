@@ -21,7 +21,8 @@ export const genresResolvers = {
       const { name, description } = args.genresInput;
       const isExisted = await Genres.find({ name: name.toLowerCase() });
       console.log(isExisted);
-      if (isExisted) throw new Error("This genres is already existed");
+      if (isExisted.length > 0)
+        throw new Error("This genres is already existed");
       const genres = new Genres({
         name: name.toLowerCase(),
         description,
@@ -60,6 +61,39 @@ export const genresResolvers = {
         ...result._doc,
         series: listSeries,
       };
+    } catch (error) {
+      throw error;
+    }
+  },
+  deleteGenres: async ({ genresId }: any) => {
+    try {
+      const result: any = await Genres.findByIdAndDelete(genresId);
+      const listSeries = await findMultipleSeries(result._doc.series);
+      listSeries.map(async (series: any) => {
+        const listGenres: [] = (await series.genres()).filter(
+          (genres: String) => genres === genresId
+        );
+        await Series.findByIdAndUpdate(series._id, {
+          genres: listGenres,
+        });
+      });
+      console.log(result);
+      return true;
+    } catch (error) {
+      throw error;
+    }
+  },
+  updateGenres: async ({ idGenres, genresInput }: any) => {
+    try {
+      const result: any = await Genres.findByIdAndUpdate(
+        idGenres,
+        genresInput,
+        {
+          returnDocument: "after",
+        }
+      );
+      console.log(result);
+      return result;
     } catch (error) {
       throw error;
     }
