@@ -1,4 +1,4 @@
-import Image from "../models/image";
+import Image from "../../models/image";
 import { findSeries } from "./series";
 
 export const findImages = async (imagesId: []): Promise<any> => {

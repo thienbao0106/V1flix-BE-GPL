@@ -4,6 +4,7 @@ import AuthData from "./authDataTypes";
 import Series from "./seríesTypes";
 import Genres from "./genresTypes";
 import Root from "./rootTypes";
+import Episode from "./episodeTypes";
 
 export const types = `
     ${User}
@@ -11,5 +12,6 @@ export const types = `
     ${AuthData}
     ${Series}
     ${Genres}
+    ${Episode}
     ${Root}
 `;

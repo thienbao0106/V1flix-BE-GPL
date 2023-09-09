@@ -1,13 +1,22 @@
 import Image from "../../models/image";
 import Series from "../../models/series";
-import { findSeries } from "../../utils/series";
+import { checkObject } from "../utils";
+import { findSeries } from "../utils/series";
+
+const transformImage = (image: any) => {
+  return {
+    ...image._doc,
+    _id: image.id,
+    series: findSeries(image._doc.series),
+  };
+};
 
 export const imageResolvers = {
   images: async () => {
     try {
       const result = await Image.find();
       return result.map((image: any) => {
-        return image;
+        return transformImage(image);
       });
     } catch (error) {
       throw error;
@@ -27,7 +36,7 @@ export const imageResolvers = {
       const result: any = await image.save();
       series.images.push(result._id);
       await series.save();
-      return image;
+      return transformImage(result);
     } catch (error) {
       throw error;
     }
@@ -50,6 +59,7 @@ export const imageResolvers = {
   },
   updateImage: async ({ imageInput, imageId }: any) => {
     try {
+      checkObject(imageInput, "image");
       const result: any = await Image.findByIdAndUpdate(imageId, imageInput, {
         returnDocument: "after",
       });

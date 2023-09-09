@@ -1,4 +1,4 @@
-import Series from "../models/series";
+import Series from "../../models/series";
 import { findGenres } from "./genres";
 import { findImages } from "./images";
 

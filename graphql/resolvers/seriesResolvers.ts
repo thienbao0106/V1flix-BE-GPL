@@ -1,6 +1,7 @@
 import Series from "../../models/series";
-import { findGenres } from "../../utils/genres";
-import { findImages } from "../../utils/images";
+import { checkObject } from "../utils";
+import { findGenres } from "../utils/genres";
+import { findImages } from "../utils/images";
 
 export const seriesResolvers = {
   series: async ({ pageNumber, limitPerPage }: any) => {
@@ -51,8 +52,8 @@ export const seriesResolvers = {
       throw error;
     }
   },
-  updateSeries: async (args: any) => {
-    const { seriesInput, seriesId } = args;
+  updateSeries: async ({ seriesInput, seriesId }: any) => {
+    checkObject(seriesInput, "series");
     try {
       const result = await Series.findByIdAndUpdate(seriesId, seriesInput, {
         returnDocument: "after",
@@ -64,7 +65,7 @@ export const seriesResolvers = {
   },
   deleteSeries: async ({ seriesId }: any) => {
     try {
-      const result = await Series.findByIdAndDelete(seriesId);
+      await Series.findByIdAndDelete(seriesId);
       return true;
     } catch (error) {
       throw error;

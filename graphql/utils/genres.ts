@@ -1,4 +1,4 @@
-import Genres from "../models/genres";
+import Genres from "../../models/genres";
 import { findSeries } from "./series";
 
 export const findGenres = async (genresId: []): Promise<any> => {

@@ -1,6 +1,7 @@
 import Genres from "../../models/genres";
 import Series from "../../models/series";
-import { findMultipleSeries, findSeries } from "../../utils/series";
+import { checkObject } from "../utils";
+import { findMultipleSeries, findSeries } from "../utils/series";
 
 export const genresResolvers = {
   genres: async () => {
@@ -85,6 +86,7 @@ export const genresResolvers = {
   },
   updateGenres: async ({ genresId, genresInput }: any) => {
     try {
+      checkObject(genresInput, "genres");
       const result: any = await Genres.findByIdAndUpdate(
         genresId,
         genresInput,
