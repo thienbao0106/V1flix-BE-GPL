@@ -83,10 +83,10 @@ export const genresResolvers = {
       throw error;
     }
   },
-  updateGenres: async ({ idGenres, genresInput }: any) => {
+  updateGenres: async ({ genresId, genresInput }: any) => {
     try {
       const result: any = await Genres.findByIdAndUpdate(
-        idGenres,
+        genresId,
         genresInput,
         {
           returnDocument: "after",

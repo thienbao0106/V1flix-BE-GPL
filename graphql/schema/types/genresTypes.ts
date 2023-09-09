@@ -14,4 +14,11 @@ const genresInput: String = `
     }
 `;
 
-export default `${genresType}${genresInput}`;
+const genresUpdateInput: String = `
+    input GenresUpdateInput {
+        name: String
+        description: String
+    }
+`;
+
+export default `${genresType}${genresInput}${genresUpdateInput}`;

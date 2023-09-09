@@ -11,7 +11,7 @@ export const seriesResolvers = {
         .limit(limitPerPage)
         .skip(limitPerPage * pageNumber);
       const totalPage = Math.ceil((await Series.count()) / limitPerPage);
-      console.log(totalPage);
+
       return {
         currentPage: pageNumber + 1,
         totalPage,
@@ -47,6 +47,25 @@ export const seriesResolvers = {
         _id: series.id,
         images: findImages.bind(this, result.images),
       };
+    } catch (error) {
+      throw error;
+    }
+  },
+  updateSeries: async (args: any) => {
+    const { seriesInput, seriesId } = args;
+    try {
+      const result = await Series.findByIdAndUpdate(seriesId, seriesInput, {
+        returnDocument: "after",
+      });
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  },
+  deleteSeries: async ({ seriesId }: any) => {
+    try {
+      const result = await Series.findByIdAndDelete(seriesId);
+      return true;
     } catch (error) {
       throw error;
     }

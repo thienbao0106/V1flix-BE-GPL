@@ -17,17 +17,19 @@ const rootQueryType: String = `
 const rootMutationType: String = `
     type RootMutation {
         createSeries(seriesInput: SeriesInput): Series
+        deleteSeries(seriesId: String): Boolean
+        updateSeries(seriesInput: SeriesUpdateInput, seriesId: String): Series
 
         createImage(imageInput: ImageInput): Image
         deleteImage(imageId: String): Boolean
-        updateImage(imageInput: GenresInput, imageId: String!): Image
+        updateImage(imageInput: ImageUpdateInput, imageId: String!): Image
 
         createUser(userInput: UserInput): User
 
         createGenres(genresInput: GenresInput): Genres
-        addSeriesToGenres(seriesArr: [String], idGenres: String!): Genres
+        addSeriesToGenres(seriesArr: [String], genresId: String!): Genres
         deleteGenres(genresId: String): Boolean
-        updateGenres(genresInput: GenresInput, idGenres: String!): Genres
+        updateGenres(genresInput: GenresUpdateInput, genresId: String!): Genres
     }
 `;
 

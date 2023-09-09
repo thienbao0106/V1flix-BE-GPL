@@ -24,4 +24,15 @@ const seriesInput: String = `
     }
 `;
 
-export default `${seriesType}${seriesInput}`;
+const seriesUpdateInput: String = ` 
+    input SeriesUpdateInput {
+        title: String
+        description: String
+        total_episodes: Int
+        type: String
+        season: String
+        status: String
+    }
+`;
+
+export default `${seriesType}${seriesInput}${seriesUpdateInput}`;

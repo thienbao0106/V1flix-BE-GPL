@@ -15,4 +15,12 @@ const imageInput: String = `
     }
 `;
 
-export default `${imageType}${imageInput}`;
+const imageUpdateInput: String = `
+    input ImageUpdateInput {
+        name: String
+        type: String
+        seriesId: String
+    }
+`;
+
+export default `${imageType}${imageInput}${imageUpdateInput}`;
