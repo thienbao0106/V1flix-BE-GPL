@@ -1,4 +1,4 @@
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import User from "../../models/user";
 import jwt from "jsonwebtoken";
 
@@ -28,7 +28,6 @@ export const userResolvers = {
     try {
       const { username, password, email } = args.userInput;
       const isExisted = await User.find({ $or: [{ username }, { email }] });
-
       if (isExisted.length > 0)
         throw new Error("This account is already existed");
 

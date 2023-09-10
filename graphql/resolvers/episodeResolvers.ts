@@ -1,5 +1,6 @@
 import Episode from "../../models/episode";
 import Series from "../../models/series";
+import { checkObject } from "../utils";
 import { findSeries } from "../utils/series";
 
 const transformEpisode = (episode: any) => {
@@ -45,6 +46,35 @@ export const episodeResolvers = {
       series.episodes.push(result._id);
       series.save();
       return transformEpisode(episode);
+    } catch (error) {
+      throw error;
+    }
+  },
+  updateEpisode: async ({ episodeInput, episodeId }: any) => {
+    try {
+      checkObject(episodeInput, "episode");
+      const result: any = await Episode.findByIdAndUpdate(
+        episodeId,
+        episodeInput,
+        {
+          returnDocument: "after",
+        }
+      );
+      console.log(result);
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  },
+  deleteEpisode: async ({ episodeId }: any) => {
+    try {
+      const result: any = await Episode.findByIdAndRemove(episodeId);
+      const series: any = await Series.findById(result.series);
+      series.episodes = [...series.episodes].filter(
+        (episode: String) => episode === episodeId
+      );
+      series.save();
+      return true;
     } catch (error) {
       throw error;
     }

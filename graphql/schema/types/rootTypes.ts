@@ -32,7 +32,9 @@ const rootMutationType: String = `
         deleteGenres(genresId: String!): Boolean
         updateGenres(genresInput: GenresUpdateInput!, genresId: String!): Genres 
 
-        createEpisode(episodeInput: EpisodeInput): Episode
+        createEpisode(episodeInput: EpisodeInput!): Episode
+        updateEpisode(episodeInput: EpisodeUpdateInput!, episodeId: String!): Episode
+        deleteEpisode(episodeId: String!): Boolean
     }
 `;
 
