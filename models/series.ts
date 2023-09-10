@@ -37,6 +37,12 @@ const seriesSchema = new Schema({
       ref: "Genres",
     },
   ],
+  episodes: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Episode",
+    },
+  ],
 });
 
 export default mongoose.model("Series", seriesSchema);

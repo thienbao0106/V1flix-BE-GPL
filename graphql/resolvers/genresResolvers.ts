@@ -39,10 +39,10 @@ export const genresResolvers = {
   },
   addSeriesToGenres: async (args: any) => {
     try {
-      const { seriesArr, idGenres } = args;
-      const currentGenres: any = await Genres.findById(idGenres);
+      const { seriesArr, genresId } = args;
+      const currentGenres: any = await Genres.findById(genresId);
       const result: any = await Genres.updateOne(
-        { _id: idGenres },
+        { _id: genresId },
         { series: [...currentGenres.series, seriesArr] }
       );
 
@@ -52,7 +52,7 @@ export const genresResolvers = {
       ]);
       listSeries.map(async (series: any) => {
         const listGenres = await series.genres();
-        listGenres.push(idGenres);
+        listGenres.push(genresId);
         await Series.findByIdAndUpdate(series._id, {
           genres: listGenres,
         });

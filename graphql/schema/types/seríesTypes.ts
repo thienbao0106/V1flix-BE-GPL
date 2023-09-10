@@ -9,7 +9,7 @@ const seriesType: String = `
         status: String!
         images: [Image!]!
         genres: [Genres!]!
-
+        episodes: [Episode!]!
     }
 `;
 

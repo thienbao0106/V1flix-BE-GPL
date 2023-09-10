@@ -25,8 +25,15 @@ export const episodeResolvers = {
   createEpisode: async (arg: any) => {
     try {
       const { title, epNum, source, seriesId } = arg.episodeInput;
-      const series = await Series.findById(seriesId);
+      const series: any = await Series.findById(seriesId);
       if (!series) throw new Error("Can't find the series");
+
+      const isDuplicated = await Episode.findOne({
+        epNum,
+        series: seriesId,
+      });
+      if (isDuplicated) throw new Error("This episode is already existed");
+
       const episode = new Episode({
         title,
         epNum,
@@ -35,7 +42,8 @@ export const episodeResolvers = {
         series: seriesId,
       });
       const result: any = await episode.save();
-      console.log(result);
+      series.episodes.push(result._id);
+      series.save();
       return transformEpisode(episode);
     } catch (error) {
       throw error;

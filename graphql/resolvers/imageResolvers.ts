@@ -35,7 +35,7 @@ export const imageResolvers = {
       });
       const result: any = await image.save();
       series.images.push(result._id);
-      await series.save();
+      series.save();
       return transformImage(result);
     } catch (error) {
       throw error;
@@ -51,7 +51,7 @@ export const imageResolvers = {
       series._doc.images = [...series._doc.images].filter(
         (image: String) => image === imageId
       );
-      await series.save();
+      series.save();
       return true;
     } catch (error) {
       throw error;
@@ -60,10 +60,22 @@ export const imageResolvers = {
   updateImage: async ({ imageInput, imageId }: any) => {
     try {
       checkObject(imageInput, "image");
-      const result: any = await Image.findByIdAndUpdate(imageId, imageInput, {
-        returnDocument: "after",
-      });
-      return result;
+      const result: any = await Image.findByIdAndUpdate(
+        imageId,
+        { ...imageInput, series: imageInput.seriesId || "" },
+        {
+          returnDocument: "after",
+        }
+      );
+      if (imageInput.seriesId) {
+        const series: any = await Series.findById(imageInput.seriesId);
+        if (series._doc.images.indexOf(imageId) <= 0) {
+          series._doc.images = [...series._doc.images, result.id];
+          series.markModified("images");
+          series.save();
+        }
+      }
+      return transformImage(result);
     } catch (error) {
       throw error;
     }

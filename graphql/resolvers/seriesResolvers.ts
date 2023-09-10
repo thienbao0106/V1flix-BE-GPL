@@ -1,7 +1,19 @@
+import Image from "../../models/image";
 import Series from "../../models/series";
 import { checkObject } from "../utils";
+import { findEpisodes } from "../utils/episode";
 import { findGenres } from "../utils/genres";
-import { findImages } from "../utils/images";
+import { findImages } from "../utils/image";
+
+const transformSeries = (series: any) => {
+  return {
+    ...series._doc,
+    _id: series.id,
+    images: findImages.bind(this, series.images),
+    genres: findGenres.bind(this, series.genres),
+    episodes: findEpisodes.bind(this, series.episodes),
+  };
+};
 
 export const seriesResolvers = {
   series: async ({ pageNumber, limitPerPage }: any) => {
@@ -17,12 +29,7 @@ export const seriesResolvers = {
         currentPage: pageNumber + 1,
         totalPage,
         series: result.map((series: any) => {
-          return {
-            ...series._doc,
-            _id: series.id,
-            images: findImages.bind(this, series.images),
-            genres: findGenres.bind(this, series.genres),
-          };
+          return transformSeries(series);
         }),
       };
     } catch (error) {
@@ -43,11 +50,7 @@ export const seriesResolvers = {
         status,
       });
       const result: any = await series.save();
-      return {
-        ...result._doc,
-        _id: series.id,
-        images: findImages.bind(this, result.images),
-      };
+      return transformSeries(result);
     } catch (error) {
       throw error;
     }
@@ -58,14 +61,18 @@ export const seriesResolvers = {
       const result = await Series.findByIdAndUpdate(seriesId, seriesInput, {
         returnDocument: "after",
       });
-      return result;
+      return transformSeries(result);
     } catch (error) {
       throw error;
     }
   },
   deleteSeries: async ({ seriesId }: any) => {
     try {
-      await Series.findByIdAndDelete(seriesId);
+      const result: any = await Series.findByIdAndDelete(seriesId);
+      result.images.map(async (imageId: String) => {
+        await Image.findByIdAndDelete(imageId);
+        return;
+      });
       return true;
     } catch (error) {
       throw error;
