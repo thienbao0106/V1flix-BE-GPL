@@ -26,6 +26,7 @@ const rootMutationType: String = `
         updateImage(imageInput: ImageUpdateInput!, imageId: String!): Image
 
         createUser(userInput: UserInput!): User
+        addSeriesToList(userListInput: UserListInput!, userId: String!): User
 
         createGenres(genresInput: GenresInput!): Genres
         addSeriesToGenres(seriesArr: [String]!, genresId: String!): Genres

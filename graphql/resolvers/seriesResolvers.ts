@@ -1,6 +1,6 @@
 import Image from "../../models/image";
 import Series from "../../models/series";
-import { checkObject } from "../utils";
+import { checkObject, paginateResult } from "../utils";
 import { findEpisodes } from "../utils/episode";
 import { findGenres } from "../utils/genres";
 import { findImages } from "../utils/image";
@@ -18,12 +18,11 @@ const transformSeries = (series: any) => {
 export const seriesResolvers = {
   series: async ({ pageNumber, limitPerPage }: any) => {
     try {
-      let result;
-      if (!pageNumber || !limitPerPage) result = await Series.find();
-      result = await Series.find()
-        .limit(limitPerPage)
-        .skip(limitPerPage * pageNumber);
-      const totalPage = Math.ceil((await Series.count()) / limitPerPage);
+      const { result, totalPage } = await paginateResult(
+        Series,
+        pageNumber,
+        limitPerPage
+      );
 
       return {
         currentPage: pageNumber + 1,

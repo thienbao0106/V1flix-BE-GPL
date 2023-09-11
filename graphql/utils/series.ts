@@ -5,6 +5,8 @@ import { findImages } from "./image";
 
 export const findSeries = async (seriesId: string): Promise<any> => {
   try {
+    console.log("-------");
+    console.log(seriesId);
     const result: any = await Series.findById(seriesId);
     return {
       ...result._doc,

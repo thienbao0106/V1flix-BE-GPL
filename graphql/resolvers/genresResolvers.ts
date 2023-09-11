@@ -1,17 +1,23 @@
+import { getDefaultResultOrder } from "dns";
 import Genres from "../../models/genres";
 import Series from "../../models/series";
 import { checkObject } from "../utils";
 import { findMultipleSeries, findSeries } from "../utils/series";
+
+const transformGenres = (genres) => {
+  return {
+    ...genres._doc,
+    _id: genres.id,
+    series: findSeries(genres._doc.series),
+  };
+};
 
 export const genresResolvers = {
   genres: async () => {
     try {
       const result = await Genres.find();
       return result.map((genres: any) => {
-        return {
-          ...genres._doc,
-          _id: genres.id,
-        };
+        return transformGenres(genres);
       });
     } catch (error) {
       throw error;
@@ -29,10 +35,7 @@ export const genresResolvers = {
         description,
       });
       const result: any = await genres.save();
-      return {
-        ...result._doc,
-        _id: result.id,
-      };
+      return transformGenres(result);
     } catch (error) {
       throw error;
     }
@@ -58,10 +61,7 @@ export const genresResolvers = {
         });
       });
 
-      return {
-        ...result._doc,
-        series: listSeries,
-      };
+      return transformGenres(result);
     } catch (error) {
       throw error;
     }
@@ -95,7 +95,7 @@ export const genresResolvers = {
         }
       );
       console.log(result);
-      return result;
+      return transformGenres(result);
     } catch (error) {
       throw error;
     }

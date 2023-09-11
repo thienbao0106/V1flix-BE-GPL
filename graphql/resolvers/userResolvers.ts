@@ -1,3 +1,4 @@
+import { findSeries } from "./../utils/series";
 import bcrypt from "bcryptjs";
 import User from "../../models/user";
 import jwt from "jsonwebtoken";
@@ -11,7 +12,7 @@ export const userResolvers = {
   //GraphQL also gets request
   users: async (args: any, req: any) => {
     try {
-      if (!req.isAuth) throw new Error("Unauthenticated");
+      // if (!req.isAuth) throw new Error("Unauthenticated");
       const result = await User.find();
       return result.map((user: any) => {
         return {
@@ -32,11 +33,13 @@ export const userResolvers = {
         throw new Error("This account is already existed");
 
       const salt: any = process.env.SALT_GEN;
-      const hashedPassword = await bcrypt.hash(password, salt);
+      console.log(salt);
+      const hashedPassword = await bcrypt.hash(password, 10);
       const user = new User({
         email,
         username,
         password: hashedPassword,
+        list: [],
       });
       const result: any = await user.save();
       return {
@@ -58,9 +61,34 @@ export const userResolvers = {
         expiresIn: "1h",
       });
       return {
+        ...user._doc,
+        password: null,
         userId: user.id,
         token,
         tokenExpiration: 1,
+      };
+    } catch (error) {
+      throw error;
+    }
+  },
+  addSeriesToList: async ({ userListInput, userId }: any) => {
+    try {
+      const user: any = await User.findById(userId);
+      console.log(userListInput);
+      user.list.push({ ...userListInput, series: userListInput.seriesId });
+      user.save();
+      return {
+        ...user._doc,
+        _id: user.id,
+        password: null,
+        list: user.list.map((item: any) => {
+          console.log(item.id);
+          return {
+            ...item,
+
+            series: findSeries(item.series),
+          };
+        }),
       };
     } catch (error) {
       throw error;

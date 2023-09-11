@@ -13,6 +13,26 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
+  list: [
+    {
+      series: {
+        type: Schema.Types.ObjectId,
+        ref: "Series",
+      },
+      status: {
+        type: String,
+        required: true,
+      },
+      currentEp: {
+        type: Number,
+        required: true,
+      },
+      note: {
+        type: String,
+        required: false,
+      },
+    },
+  ],
 });
 
 export default mongoose.model("User", userSchema);
