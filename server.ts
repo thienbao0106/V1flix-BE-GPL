@@ -9,7 +9,6 @@ import cors from "cors";
 require("dotenv").config();
 
 const app: any = express();
-const port = 3000;
 
 //every route will be checked
 app.use(bodyParser.json());
@@ -33,8 +32,8 @@ mongoose
   )
   .then(() => {
     console.log("connected");
-    app.listen(port, () => {
-      console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
+    app.listen(process.env.PORT, () => {
+      console.log(`⚡️[server]: Server is running at: ${process.env.PORT}`);
     });
   })
   .catch((error: any) => {
