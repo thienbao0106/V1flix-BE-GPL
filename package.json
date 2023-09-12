@@ -7,7 +7,7 @@
   "license": "MIT",
   "scripts": {
     "build": "npx tsc",
-    "start": "bun --smol --hot server.ts"
+    "start": "nodemon server.ts"
   },
   "devDependencies": {
     "@types/express": "^4.17.17",
