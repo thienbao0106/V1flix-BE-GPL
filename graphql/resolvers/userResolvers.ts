@@ -94,4 +94,14 @@ export const userResolvers = {
       throw error;
     }
   },
+  removeSeriesFromList: async ({ seriesId, userId }: any) => {
+    try {
+      const user: any = await User.findById(userId);
+      user.list = [...user.list].filter((item) => item.series._id === seriesId);
+      user.save();
+      return true;
+    } catch (error) {
+      throw error;
+    }
+  },
 };

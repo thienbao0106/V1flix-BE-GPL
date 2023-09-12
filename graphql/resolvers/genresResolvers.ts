@@ -4,7 +4,7 @@ import Series from "../../models/series";
 import { checkObject } from "../utils";
 import { findMultipleSeries, findSeries } from "../utils/series";
 
-const transformGenres = (genres) => {
+const transformGenres = (genres: any) => {
   return {
     ...genres._doc,
     _id: genres.id,
