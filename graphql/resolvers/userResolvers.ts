@@ -104,4 +104,12 @@ export const userResolvers = {
       throw error;
     }
   },
+  removeUser: async ({ userId }: any) => {
+    try {
+      await User.findByIdAndDelete(userId);
+      return true;
+    } catch (error) {
+      throw error;
+    }
+  },
 };

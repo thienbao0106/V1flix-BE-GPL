@@ -1,5 +1,7 @@
+import Genres from "../../models/genres";
 import Image from "../../models/image";
 import Series from "../../models/series";
+import User from "../../models/user";
 import { checkObject, paginateResult } from "../utils";
 import { findEpisodes } from "../utils/episode";
 import { findGenres } from "../utils/genres";
@@ -72,6 +74,27 @@ export const seriesResolvers = {
         await Image.findByIdAndDelete(imageId);
         return;
       });
+
+      //To-do: Upgrade this block of code
+      const genres: any = await Genres.find({ series: seriesId });
+      console.log(genres);
+      if (genres.length > 0) {
+        genres.map((gen: any) => {
+          console.log("test");
+          gen.series = [...gen.series].filter((id: String) => id === seriesId);
+          gen.save();
+        });
+      }
+      const listUser: any = await User.find({ series: seriesId });
+      if (listUser.length > 0) {
+        listUser.map((list: any) => {
+          list.series = [...list.series].filter(
+            (id: String) => id === seriesId
+          );
+          list.save();
+        });
+      }
+
       return true;
     } catch (error) {
       throw error;

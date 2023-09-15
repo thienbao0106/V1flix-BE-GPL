@@ -8,7 +8,7 @@ const transformGenres = (genres: any) => {
   return {
     ...genres._doc,
     _id: genres.id,
-    series: findSeries(genres._doc.series),
+    series: findMultipleSeries(genres._doc.series),
   };
 };
 
@@ -16,6 +16,7 @@ export const genresResolvers = {
   genres: async () => {
     try {
       const result = await Genres.find();
+      console.log(result);
       return result.map((genres: any) => {
         return transformGenres(genres);
       });
@@ -44,9 +45,10 @@ export const genresResolvers = {
     try {
       const { seriesArr, genresId } = args;
       const currentGenres: any = await Genres.findById(genresId);
-      const result: any = await Genres.updateOne(
-        { _id: genresId },
-        { series: [...currentGenres.series, seriesArr] }
+      const result: any = await Genres.findByIdAndUpdate(
+        genresId,
+        { series: [...currentGenres.series, seriesArr] },
+        { returnDocument: "after" }
       );
 
       const listSeries = await findMultipleSeries([
