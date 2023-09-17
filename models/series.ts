@@ -25,6 +25,10 @@ const seriesSchema = new Schema({
     type: String,
     required: true,
   },
+  view: {
+    type: Number,
+    required: true,
+  },
   images: [
     {
       type: Schema.Types.ObjectId,

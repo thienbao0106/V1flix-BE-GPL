@@ -49,6 +49,7 @@ export const seriesResolvers = {
         type,
         season,
         status,
+        view: 0,
       });
       const result: any = await series.save();
       return transformSeries(result);
@@ -96,6 +97,17 @@ export const seriesResolvers = {
       }
 
       return true;
+    } catch (error) {
+      throw error;
+    }
+  },
+  addView: async ({ seriesId }: any) => {
+    try {
+      const series: any = await Series.findById(seriesId);
+      console.log(series.view);
+      series.view += 1;
+      series.save();
+      return series._doc.view;
     } catch (error) {
       throw error;
     }

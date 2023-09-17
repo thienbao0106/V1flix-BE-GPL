@@ -7,6 +7,7 @@ const seriesType: String = `
         type: String!
         season: String!
         status: String!
+        view: Int!
         images: [Image!]!
         genres: [Genres!]!
         episodes: [Episode!]!
