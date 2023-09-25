@@ -37,6 +37,24 @@ export const seriesResolvers = {
       throw error;
     }
   },
+  findSeries: async ({ title }: any) => {
+    try {
+      const result = await Series.find({
+        title: {
+          $regex: title,
+          $options: "i",
+        },
+      });
+      console.log(result);
+      if (result.length > 0)
+        return result.map((series: any) => {
+          return transformSeries(series);
+        });
+      return [];
+    } catch (error) {
+      throw error;
+    }
+  },
   createSeries: async (args: any, req: any) => {
     try {
       // if (!req.isAuth) throw new Error("Unauthenticated");

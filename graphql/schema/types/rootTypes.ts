@@ -12,6 +12,7 @@ const rootQueryType: String = `
         genres: [Genres!]
         episodes: [Episode!]
         login(email: String!, password: String!): AuthData! 
+        findSeries(title: String!): [Series!]
     }
 `;
 
@@ -21,7 +22,6 @@ const rootMutationType: String = `
         deleteSeries(seriesId: String!): Boolean
         updateSeries(seriesInput: SeriesUpdateInput!, seriesId: String!): Series
         addView(seriesId: String!): Int
-
 
         createImage(imageInput: ImageInput!): Image
         deleteImage(imageId: String!): Boolean
