@@ -39,13 +39,14 @@ export const seriesResolvers = {
   },
   findSeries: async ({ title }: any) => {
     try {
+      console.log(title);
       const result = await Series.find({
         title: {
           $regex: title,
           $options: "i",
         },
-      });
-      console.log(result);
+      }).limit(3);
+
       if (result.length > 0)
         return result.map((series: any) => {
           return transformSeries(series);
