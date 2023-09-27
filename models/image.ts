@@ -9,6 +9,10 @@ const imageSchema = new Schema({
     type: String,
     required: true,
   },
+  source: {
+    type: String,
+    required: true,
+  },
   series: {
     type: Schema.Types.ObjectId,
     ref: "Series",

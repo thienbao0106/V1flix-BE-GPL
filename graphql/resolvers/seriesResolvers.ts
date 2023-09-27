@@ -18,12 +18,13 @@ const transformSeries = (series: any) => {
 };
 
 export const seriesResolvers = {
-  series: async ({ pageNumber, limitPerPage }: any) => {
+  series: async ({ pageNumber, limitPerPage, amount }: any) => {
     try {
       const { result, totalPage } = await paginateResult(
         Series,
         pageNumber,
-        limitPerPage
+        limitPerPage,
+        amount
       );
 
       return {

@@ -25,13 +25,14 @@ export const imageResolvers = {
 
   createImage: async (args: any) => {
     try {
-      const { type, name, seriesId } = args.imageInput;
+      const { type, name, seriesId, source } = args.imageInput;
       const series = await Series.findById(seriesId);
       if (!series) throw new Error("Can't find the series");
       const image = new Image({
         name,
         type,
         series: seriesId,
+        source,
       });
       const result: any = await image.save();
       series.images.push(result._id);

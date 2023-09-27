@@ -7,12 +7,18 @@ export const checkObject = (input: Object, data: String) => {
 export const paginateResult = async (
   model: any,
   pageNumber: number,
-  limitPerPage: number
+  limitPerPage: number,
+  amount: number
 ) => {
   let result: any;
-  if (!pageNumber || !limitPerPage) result = await model.find();
+  if (!pageNumber || !limitPerPage)
+    result = amount
+      ? await model.find().sort({ _id: -1 }).limit(amount)
+      : await model.find().sort({ _id: -1 });
+
   result = await model
     .find()
+    .sort({ _id: -1 })
     .limit(limitPerPage)
     .skip(limitPerPage * pageNumber);
   const totalPage = Math.ceil((await model.count()) / limitPerPage);

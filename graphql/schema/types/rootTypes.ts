@@ -6,7 +6,7 @@ const rootQueryType: String = `
     }
 
     type RootQuery {
-        series(pageNumber: Int, limitPerPage: Int): SeriesPagination
+        series(pageNumber: Int, limitPerPage: Int, amount: Int): SeriesPagination
         images: [Image!] 
         users: [User!]
         genres: [Genres!]
