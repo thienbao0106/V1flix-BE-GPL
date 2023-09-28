@@ -2,7 +2,14 @@ import Image from "../../models/image";
 import Series from "../../models/series";
 import { checkObject } from "../utils";
 import { findSeries } from "../utils/series";
+const cloudinary = require("cloudinary");
+require("dotenv").config();
 
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 const transformImage = (image: any) => {
   return {
     ...image._doc,
@@ -15,6 +22,7 @@ export const imageResolvers = {
   images: async () => {
     try {
       const result = await Image.find();
+
       return result.map((image: any) => {
         return transformImage(image);
       });
@@ -25,14 +33,15 @@ export const imageResolvers = {
 
   createImage: async (args: any) => {
     try {
-      const { type, name, seriesId, source } = args.imageInput;
+      const { type, name, seriesId } = args.imageInput;
+
       const series = await Series.findById(seriesId);
       if (!series) throw new Error("Can't find the series");
       const image = new Image({
         name,
         type,
         series: seriesId,
-        source,
+        source: cloudinary.url(`anime-v2/${type}/${name}`),
       });
       const result: any = await image.save();
       series.images.push(result._id);

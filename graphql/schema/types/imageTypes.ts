@@ -12,7 +12,6 @@ const imageInput: String = `
     input ImageInput {
         name: String!
         type: String!
-        source: String!
         seriesId: String
     }
 `;
