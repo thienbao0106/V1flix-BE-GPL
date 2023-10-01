@@ -29,6 +29,14 @@ const seriesSchema = new Schema({
     type: Number,
     required: true,
   },
+  created_at: {
+    type: Number,
+    require: false,
+  },
+  updated_at: {
+    type: Number,
+    require: true,
+  },
   images: [
     {
       type: Schema.Types.ObjectId,

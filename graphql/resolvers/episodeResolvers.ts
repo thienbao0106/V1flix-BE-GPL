@@ -26,6 +26,7 @@ export const episodeResolvers = {
   createEpisode: async (arg: any) => {
     try {
       const { title, epNum, source, seriesId } = arg.episodeInput;
+      const date = Date.parse(new Date().toLocaleString());
       const series: any = await Series.findById(seriesId);
       if (!series) throw new Error("Can't find the series");
 
@@ -41,6 +42,8 @@ export const episodeResolvers = {
         source,
         view: 0,
         series: seriesId,
+        created_at: date,
+        updated_at: date,
       });
       const result: any = await episode.save();
       series.episodes.push(result._id);
@@ -53,9 +56,11 @@ export const episodeResolvers = {
   updateEpisode: async ({ episodeInput, episodeId }: any) => {
     try {
       checkObject(episodeInput, "episode");
+      const updatedDate = Date.parse(new Date().toLocaleString());
+
       const result: any = await Episode.findByIdAndUpdate(
         episodeId,
-        episodeInput,
+        { ...episodeInput, updated_at: updatedDate },
         {
           returnDocument: "after",
         }

@@ -60,6 +60,7 @@ export const seriesResolvers = {
   createSeries: async (args: any, req: any) => {
     try {
       // if (!req.isAuth) throw new Error("Unauthenticated");
+      const date = Date.parse(new Date().toLocaleString());
       const { title, description, total_episodes, type, season, status } =
         args.seriesInput;
       const series = new Series({
@@ -70,6 +71,8 @@ export const seriesResolvers = {
         season,
         status,
         view: 0,
+        created_at: date,
+        updated_at: date,
       });
       const result: any = await series.save();
       return transformSeries(result);
@@ -79,10 +82,16 @@ export const seriesResolvers = {
   },
   updateSeries: async ({ seriesInput, seriesId }: any) => {
     checkObject(seriesInput, "series");
+    const updatedDate = Date.parse(new Date().toLocaleString());
+
     try {
-      const result = await Series.findByIdAndUpdate(seriesId, seriesInput, {
-        returnDocument: "after",
-      });
+      const result = await Series.findByIdAndUpdate(
+        seriesId,
+        { ...seriesInput, updated_at: updatedDate },
+        {
+          returnDocument: "after",
+        }
+      );
       return transformSeries(result);
     } catch (error) {
       throw error;

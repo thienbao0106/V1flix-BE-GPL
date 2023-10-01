@@ -11,6 +11,8 @@ const seriesType: String = `
         images: [Image!]!
         genres: [Genres!]!
         episodes: [Episode!]!
+        updated_at: Float!
+        created_at: Float!
     }
 `;
 

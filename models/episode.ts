@@ -21,6 +21,14 @@ const episodeSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "Series",
   },
+  created_at: {
+    type: Number,
+    require: false,
+  },
+  updated_at: {
+    type: Number,
+    require: true,
+  },
 });
 
 export default mongoose.model("Episode", episodeSchema);
