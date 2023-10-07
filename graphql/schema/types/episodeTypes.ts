@@ -6,6 +6,8 @@ const episodeType: String = `
         source: String!
         view: Int!
         series: Series
+        updated_at: Float!
+        created_at: Float!
       }
 `;
 
