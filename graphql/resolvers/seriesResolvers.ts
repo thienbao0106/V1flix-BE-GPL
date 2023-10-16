@@ -38,20 +38,28 @@ export const seriesResolvers = {
       throw error;
     }
   },
-  findSeries: async ({ title }: any) => {
+  findSeries: async ({ title, numOfLimit, genresId, status }: any) => {
     try {
-      console.log(title);
+      console.log("Status: " + status);
       const result = await Series.find({
         title: {
           $regex: title,
           $options: "i",
         },
-      }).limit(3);
 
-      if (result.length > 0)
+        status: {
+          $regex: status,
+        },
+      }).limit(numOfLimit);
+
+      if (result.length > 0) {
+        console.log("test");
+        console.log(result);
         return result.map((series: any) => {
           return transformSeries(series);
         });
+      }
+
       return [];
     } catch (error) {
       throw error;

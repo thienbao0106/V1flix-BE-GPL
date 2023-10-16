@@ -5,6 +5,8 @@ const rootQueryType: String = `
         totalPage: Int!
     }
 
+   
+
     type RootQuery {
         series(pageNumber: Int, limitPerPage: Int, amount: Int): SeriesPagination
         images: [Image!] 
@@ -12,7 +14,7 @@ const rootQueryType: String = `
         genres: [Genres!]
         episodes: [Episode!]
         login(email: String!, password: String!): AuthData! 
-        findSeries(title: String!): [Series!]
+        findSeries(title: String!, numOfLimit: Int!, genresId: String, status: String ): [Series!]
     }
 `;
 
