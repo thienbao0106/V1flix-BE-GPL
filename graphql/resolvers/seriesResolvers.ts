@@ -9,12 +9,14 @@ import { findGenres } from "../utils/genres";
 import { findImages } from "../utils/image";
 
 const transformSeries = (series: any) => {
+  const seriesInfo = series._doc || series;
+  console.log(seriesInfo);
   return {
-    ...series._doc,
-    _id: series.id,
-    images: findImages.bind(this, series.images),
-    genres: findGenres.bind(this, series.genres),
-    episodes: findEpisodes.bind(this, series.episodes),
+    ...seriesInfo,
+    _id: seriesInfo.id || seriesInfo._id,
+    images: findImages.bind(this, seriesInfo.images),
+    genres: findGenres.bind(this, seriesInfo.genres),
+    episodes: findEpisodes.bind(this, seriesInfo.episodes),
   };
 };
 
@@ -41,22 +43,28 @@ export const seriesResolvers = {
   },
   findSeries: async ({ title, numOfLimit, genresId, status }: any) => {
     try {
-      const isGenres = genresId !== "" && {
-        genres: {
-          $elemMatch: {
-            $eq: genresId,
+      const isGenres = genresId === "" &&
+        genresId && {
+          genres: {
+            $elemMatch: {
+              $eq: genresId,
+            },
           },
-        },
-      };
+        };
+
+      const isStatus = status !== "" &&
+        status && {
+          status: {
+            $regex: status,
+          },
+        };
       const result = await Series.find({
         title: {
           $regex: title,
           $options: "i",
         },
         ...isGenres,
-        status: {
-          $regex: status,
-        },
+        ...isStatus,
       }).limit(numOfLimit);
 
       if (result.length > 0) {
@@ -153,6 +161,21 @@ export const seriesResolvers = {
       series.save();
       episode.save();
       return series._doc.view;
+    } catch (error) {
+      throw error;
+    }
+  },
+  randomSeries: async () => {
+    try {
+      const series: any = await Series.aggregate([
+        {
+          $sample: {
+            size: 1,
+          },
+        },
+      ]);
+
+      return transformSeries(series[0]);
     } catch (error) {
       throw error;
     }
