@@ -23,7 +23,7 @@ const rootMutationType: String = `
         createSeries(seriesInput: SeriesInput!): Series
         deleteSeries(seriesId: String!): Boolean
         updateSeries(seriesInput: SeriesUpdateInput!, seriesId: String!): Series
-        addView(seriesId: String!): Int
+        addView(seriesId: String!, episodeId: String!): Int
 
         createImage(imageInput: ImageInput!): Image
         deleteImage(imageId: String!): Boolean

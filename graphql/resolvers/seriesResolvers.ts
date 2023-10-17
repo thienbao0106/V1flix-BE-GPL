@@ -2,6 +2,7 @@ import Genres from "../../models/genres";
 import Image from "../../models/image";
 import Series from "../../models/series";
 import User from "../../models/user";
+import Episode from "../../models/episode";
 import { checkObject, paginateResult } from "../utils";
 import { findEpisodes } from "../utils/episode";
 import { findGenres } from "../utils/genres";
@@ -40,21 +41,25 @@ export const seriesResolvers = {
   },
   findSeries: async ({ title, numOfLimit, genresId, status }: any) => {
     try {
-      console.log("Status: " + status);
+      const isGenres = genresId !== "" && {
+        genres: {
+          $elemMatch: {
+            $eq: genresId,
+          },
+        },
+      };
       const result = await Series.find({
         title: {
           $regex: title,
           $options: "i",
         },
-
+        ...isGenres,
         status: {
           $regex: status,
         },
       }).limit(numOfLimit);
 
       if (result.length > 0) {
-        console.log("test");
-        console.log(result);
         return result.map((series: any) => {
           return transformSeries(series);
         });
@@ -138,12 +143,15 @@ export const seriesResolvers = {
       throw error;
     }
   },
-  addView: async ({ seriesId }: any) => {
+  addView: async ({ seriesId, episodeId }: any) => {
     try {
       const series: any = await Series.findById(seriesId);
       console.log(series.view);
+      const episode: any = await Episode.findById(episodeId);
       series.view += 1;
+      episode.view += 1;
       series.save();
+      episode.save();
       return series._doc.view;
     } catch (error) {
       throw error;
