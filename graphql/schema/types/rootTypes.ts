@@ -16,6 +16,7 @@ const rootQueryType: String = `
         login(email: String!, password: String!): AuthData! 
         findSeries(title: String!, numOfLimit: Int!, genresId: String, status: String ): [Series!]
         randomSeries: Series
+        searchEpisode(seriesId: String!, epNum: Int!): Episode
     }
 `;
 

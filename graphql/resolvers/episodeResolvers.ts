@@ -84,4 +84,13 @@ export const episodeResolvers = {
       throw error;
     }
   },
+  searchEpisode: async ({ seriesId, epNum }: any) => {
+    try {
+      const episode: any = await Episode.findOne({ series: seriesId, epNum });
+      if (episode === null) return;
+      return transformEpisode(episode);
+    } catch (error) {
+      throw error;
+    }
+  },
 };
