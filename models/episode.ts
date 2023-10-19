@@ -29,6 +29,18 @@ const episodeSchema = new Schema({
     type: Number,
     require: true,
   },
+  subtitles: [
+    {
+      lang: {
+        type: String,
+        required: true,
+      },
+      source: {
+        type: String,
+        required: true,
+      },
+    },
+  ],
 });
 
 export default mongoose.model("Episode", episodeSchema);

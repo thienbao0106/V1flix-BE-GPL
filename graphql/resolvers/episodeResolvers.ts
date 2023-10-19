@@ -57,10 +57,15 @@ export const episodeResolvers = {
     try {
       checkObject(episodeInput, "episode");
       const updatedDate = Date.parse(new Date().toLocaleString());
+      const episode: any = await Episode.findById(episodeId);
+      if (!episode) return;
 
+      const subtitles = episodeInput.subtitles
+        ? [...episode?.subtitles, ...episodeInput.subtitles]
+        : episode?.subtitles;
       const result: any = await Episode.findByIdAndUpdate(
         episodeId,
-        { ...episodeInput, updated_at: updatedDate },
+        { ...episodeInput, updated_at: updatedDate, subtitles },
         {
           returnDocument: "after",
         }

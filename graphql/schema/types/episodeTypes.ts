@@ -1,4 +1,14 @@
 const episodeType: String = `
+
+    type Subtitle {
+        lang: String!
+        source: String!
+    }
+    input SubtitleInput {
+        lang: String!
+        source: String!
+    }
+
     type Episode {
         _id: ID!
         title: String!
@@ -8,6 +18,7 @@ const episodeType: String = `
         series: Series
         updated_at: Float!
         created_at: Float!
+        subtitles: [Subtitle]
       }
 `;
 
@@ -25,6 +36,8 @@ const episodeUpdateInput: String = `
         title: String
         epNum: Int
         source: String
+        lang: String
+        subtitles: [SubtitleInput]
     }
 `;
 
