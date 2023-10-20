@@ -57,15 +57,10 @@ export const episodeResolvers = {
     try {
       checkObject(episodeInput, "episode");
       const updatedDate = Date.parse(new Date().toLocaleString());
-      const episode: any = await Episode.findById(episodeId);
-      if (!episode) return;
 
-      const subtitles = episodeInput.subtitles
-        ? [...episode?.subtitles, ...episodeInput.subtitles]
-        : episode?.subtitles;
       const result: any = await Episode.findByIdAndUpdate(
         episodeId,
-        { ...episodeInput, updated_at: updatedDate, subtitles },
+        { ...episodeInput, updated_at: updatedDate },
         {
           returnDocument: "after",
         }
@@ -94,6 +89,50 @@ export const episodeResolvers = {
       const episode: any = await Episode.findOne({ series: seriesId, epNum });
       if (episode === null) return;
       return transformEpisode(episode);
+    } catch (error) {
+      throw error;
+    }
+  },
+  addSubtitle: async ({ subtitleInput, episodeId }: any) => {
+    try {
+      const episode: any = await Episode.findById(episodeId);
+      if (!episode) return;
+      const isExisted = episode.subtitles.find(
+        (sub: any) => sub.lang === subtitleInput.lang
+      );
+      if (isExisted) return false;
+      episode.subtitles.push(subtitleInput);
+      episode.save();
+      return true;
+    } catch (error) {
+      throw error;
+    }
+  },
+  deleteSubtitle: async ({ lang, episodeId }: any) => {
+    try {
+      const episode: any = await Episode.findById(episodeId);
+      if (!episode) return false;
+
+      episode.subtitles = [...episode.subtitles].filter(
+        (sub: any) => sub.lang !== lang
+      );
+      console.log(episode.subtitles);
+      episode.save();
+      return true;
+    } catch (error) {
+      throw error;
+    }
+  },
+  updateSubtitle: async ({ subtitleInput, episodeId }: any) => {
+    try {
+      const episode: any = await Episode.findById(episodeId);
+      if (!episode) return;
+      episode.subtitles = [...episode.subtitles].filter(
+        (sub: any) => sub.lang !== subtitleInput.lang
+      );
+      episode.subtitles.push(subtitleInput);
+      episode.save();
+      return episode;
     } catch (error) {
       throw error;
     }

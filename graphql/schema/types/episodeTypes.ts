@@ -3,11 +3,10 @@ const episodeType: String = `
     type Subtitle {
         lang: String!
         source: String!
+        label: String!
+
     }
-    input SubtitleInput {
-        lang: String!
-        source: String!
-    }
+  
 
     type Episode {
         _id: ID!
@@ -36,9 +35,15 @@ const episodeUpdateInput: String = `
         title: String
         epNum: Int
         source: String
-        lang: String
-        subtitles: [SubtitleInput]
     }
 `;
 
-export default `${episodeType}${episodeInput}${episodeUpdateInput}`;
+const subtitleInput: String = `
+    input SubtitleInput {
+        lang: String!
+        source: String!
+        label: String!
+    }
+`;
+
+export default `${episodeType}${episodeInput}${episodeUpdateInput}${subtitleInput}`;

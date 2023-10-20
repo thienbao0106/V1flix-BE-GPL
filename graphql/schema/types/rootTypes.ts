@@ -44,6 +44,10 @@ const rootMutationType: String = `
         createEpisode(episodeInput: EpisodeInput!): Episode
         updateEpisode(episodeInput: EpisodeUpdateInput!, episodeId: String!): Episode
         deleteEpisode(episodeId: String!): Boolean
+        addSubtitle(subtitleInput: SubtitleInput!, episodeId: String!): Boolean
+        deleteSubtitle(lang: String!, episodeId: String!): Boolean
+        updateSubtitle(subtitleInput: SubtitleInput!, episodeId: String!): Episode
+
     }
 `;
 
