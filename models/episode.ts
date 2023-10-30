@@ -29,6 +29,10 @@ const episodeSchema = new Schema({
     type: Number,
     require: true,
   },
+  keyframe: {
+    type: String,
+    require: false,
+  },
   subtitles: [
     {
       lang: {

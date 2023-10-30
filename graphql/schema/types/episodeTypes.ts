@@ -18,6 +18,7 @@ const episodeType: String = `
         updated_at: Float!
         created_at: Float!
         subtitles: [Subtitle]
+        keyframe: String
       }
 `;
 

@@ -25,7 +25,7 @@ export const episodeResolvers = {
   },
   createEpisode: async (arg: any) => {
     try {
-      const { title, epNum, source, seriesId } = arg.episodeInput;
+      const { title, epNum, source, seriesId, keyframe } = arg.episodeInput;
       const date = Date.parse(new Date().toLocaleString());
       const series: any = await Series.findById(seriesId);
       if (!series) throw new Error("Can't find the series");
@@ -44,6 +44,7 @@ export const episodeResolvers = {
         series: seriesId,
         created_at: date,
         updated_at: date,
+        keyframe: keyframe || "",
       });
       const result: any = await episode.save();
       series.episodes.push(result._id);
