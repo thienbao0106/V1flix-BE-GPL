@@ -3,14 +3,7 @@ import Genres from "../../models/genres";
 import Series from "../../models/series";
 import { checkObject } from "../utils";
 import { findMultipleSeries, findSeries } from "../utils/series";
-
-const transformGenres = (genres: any) => {
-  return {
-    ...genres._doc,
-    _id: genres.id,
-    series: findMultipleSeries(genres._doc.series),
-  };
-};
+import { transformGenres } from "../utils/genres";
 
 export const genresResolvers = {
   genres: async () => {

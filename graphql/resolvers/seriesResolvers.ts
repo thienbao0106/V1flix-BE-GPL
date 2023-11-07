@@ -4,21 +4,7 @@ import Series from "../../models/series";
 import User from "../../models/user";
 import Episode from "../../models/episode";
 import { checkObject, paginateResult } from "../utils";
-import { findEpisodes } from "../utils/episode";
-import { findGenres } from "../utils/genres";
-import { findImages } from "../utils/image";
-
-const transformSeries = (series: any) => {
-  const seriesInfo = series._doc || series;
-  console.log(seriesInfo);
-  return {
-    ...seriesInfo,
-    _id: seriesInfo.id || seriesInfo._id,
-    images: findImages.bind(this, seriesInfo.images),
-    genres: findGenres.bind(this, seriesInfo.genres),
-    episodes: findEpisodes.bind(this, seriesInfo.episodes),
-  };
-};
+import { transformSeries } from "../utils/series";
 
 export const seriesResolvers = {
   series: async ({ pageNumber, limitPerPage, amount }: any) => {

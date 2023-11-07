@@ -1,5 +1,13 @@
 import Genres from "../../models/genres";
-import { findSeries } from "./series";
+import { findMultipleSeries, findSeries } from "./series";
+
+export const transformGenres = (genres: any) => {
+  return {
+    ...genres._doc,
+    _id: genres.id,
+    series: findMultipleSeries(genres._doc.series),
+  };
+};
 
 export const findGenres = async (genresId: []): Promise<any> => {
   try {

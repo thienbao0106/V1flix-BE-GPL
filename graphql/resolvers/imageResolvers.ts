@@ -1,7 +1,8 @@
 import Image from "../../models/image";
 import Series from "../../models/series";
 import { checkObject } from "../utils";
-import { findSeries } from "../utils/series";
+import { transformImage } from "../utils/image";
+
 const cloudinary = require("cloudinary");
 require("dotenv").config();
 
@@ -10,13 +11,6 @@ cloudinary.config({
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
-const transformImage = (image: any) => {
-  return {
-    ...image._doc,
-    _id: image.id,
-    series: findSeries(image._doc.series),
-  };
-};
 
 export const imageResolvers = {
   images: async () => {

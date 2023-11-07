@@ -1,8 +1,6 @@
 export const fetchSource = async (id: string, accessToken: string) => {
-  console.log("Token: ", accessToken);
   const headers: any = {
     method: "GET",
-
     headers: {
       Authorization: "Bearer " + accessToken,
     },

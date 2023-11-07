@@ -1,16 +1,7 @@
 import Episode from "../../models/episode";
 import Series from "../../models/series";
 import { checkObject } from "../utils";
-import { fetchSource } from "../utils/onedrive";
-import { findSeries } from "../utils/series";
-
-const transformEpisode = (episode: any) => {
-  return {
-    ...episode._doc,
-    _id: episode.id,
-    series: findSeries(episode._doc.series),
-  };
-};
+import { transformEpisode } from "../utils/episode";
 
 export const episodeResolvers = {
   episodes: async () => {
@@ -37,23 +28,15 @@ export const episodeResolvers = {
       });
       if (isDuplicated) throw new Error("This episode is already existed");
 
-      const sourceUrl = await fetchSource(
-        source,
-        process.env.ACCESS_TOKEN || ""
-      );
-      const keyframeUrl = await fetchSource(
-        keyframe,
-        process.env.ACCESS_TOKEN || ""
-      );
       const episode = new Episode({
         title,
         epNum,
-        source: sourceUrl,
+        source,
         view: 0,
         series: seriesId,
         created_at: date,
         updated_at: date,
-        keyframe: keyframeUrl || "",
+        keyframe: keyframe || "",
       });
       const result: any = await episode.save();
       series.episodes.push(result._id);
@@ -66,23 +49,12 @@ export const episodeResolvers = {
   updateEpisode: async ({ episodeInput, episodeId }: any) => {
     try {
       checkObject(episodeInput, "episode");
-      const newEpisode = Object.assign(episodeInput);
+
       const updatedDate = Date.parse(new Date().toLocaleString());
-      if (newEpisode.source) {
-        newEpisode.source = await fetchSource(
-          newEpisode.source,
-          process.env.ACCESS_TOKEN || ""
-        );
-      }
-      if (newEpisode.keyframe) {
-        newEpisode.keyframe = await fetchSource(
-          newEpisode.keyframe,
-          process.env.ACCESS_TOKEN || ""
-        );
-      }
+
       const result: any = await Episode.findByIdAndUpdate(
         episodeId,
-        { ...newEpisode, updated_at: updatedDate },
+        { ...episodeInput, updated_at: updatedDate },
         {
           returnDocument: "after",
         }
@@ -123,12 +95,8 @@ export const episodeResolvers = {
         (sub: any) => sub.lang === subtitleInput.lang
       );
       if (isExisted) return false;
-      const subtitle = Object.assign({}, subtitleInput);
-      subtitle.source = await fetchSource(
-        subtitle.source,
-        process.env.ACCESS_TOKEN || ""
-      );
-      episode.subtitles.push(subtitle);
+
+      episode.subtitles.push(subtitleInput);
       episode.save();
       return true;
     } catch (error) {
@@ -157,12 +125,8 @@ export const episodeResolvers = {
       episode.subtitles = [...episode.subtitles].filter(
         (sub: any) => sub.lang !== subtitleInput.lang
       );
-      const subtitle = Object.assign({}, subtitleInput);
-      subtitle.source = await fetchSource(
-        subtitle.source,
-        process.env.ACCESS_TOKEN || ""
-      );
-      episode.subtitles.push(subtitle);
+
+      episode.subtitles.push(subtitleInput);
       episode.save();
       return episode;
     } catch (error) {
