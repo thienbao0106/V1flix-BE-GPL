@@ -36,6 +36,7 @@ const episodeUpdateInput: String = `
         title: String
         epNum: Int
         source: String
+        keyframe: String
     }
 `;
 
