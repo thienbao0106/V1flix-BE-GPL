@@ -9,10 +9,12 @@ const episodeSchema = new Schema({
     type: Number,
     required: true,
   },
-  source: {
-    type: String,
-    required: true,
-  },
+  source: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Sources",
+    },
+  ],
   view: {
     type: Number,
     required: true,
@@ -29,20 +31,25 @@ const episodeSchema = new Schema({
     type: Number,
     require: true,
   },
-  keyframe: {
-    type: String,
-    require: false,
-  },
+  keyframe: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Sources",
+    },
+  ],
   subtitles: [
     {
       lang: {
         type: String,
         required: true,
       },
-      source: {
-        type: String,
-        required: true,
-      },
+      source: [
+        {
+          type: Schema.Types.ObjectId,
+          ref: "Sources",
+        },
+      ],
+
       label: {
         type: String,
         required: true,

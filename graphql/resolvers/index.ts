@@ -3,6 +3,7 @@ import { imageResolvers } from "./imageResolvers";
 import { userResolvers } from "./userResolvers";
 import { genresResolvers } from "./genresResolvers";
 import { episodeResolvers } from "./episodeResolvers";
+import { sourceResolvers } from "./sourceResolvers";
 
 export const resolvers = {
   ...seriesResolvers,
@@ -10,4 +11,5 @@ export const resolvers = {
   ...userResolvers,
   ...genresResolvers,
   ...episodeResolvers,
+  ...sourceResolvers,
 };

@@ -2,7 +2,7 @@ const episodeType: String = `
 
     type Subtitle {
         lang: String!
-        source: String!
+        source: [Sources!]
         label: String!
 
     }
@@ -12,13 +12,13 @@ const episodeType: String = `
         _id: ID!
         title: String!
         epNum: Int!
-        source: String!
+        source: [Sources!]
         view: Int!
         series: Series
         updated_at: Float!
         created_at: Float!
         subtitles: [Subtitle]
-        keyframe: String
+        keyframe: [Sources!]
       }
 `;
 
@@ -26,7 +26,6 @@ const episodeInput: String = `
     input EpisodeInput {
         title: String!
         epNum: Int!
-        source: String!
         seriesId: String
     }
 `;
@@ -35,7 +34,6 @@ const episodeUpdateInput: String = `
     input EpisodeUpdateInput {
         title: String
         epNum: Int
-        source: String
         keyframe: String
     }
 `;
@@ -43,7 +41,6 @@ const episodeUpdateInput: String = `
 const subtitleInput: String = `
     input SubtitleInput {
         lang: String!
-        source: String!
         label: String!
     }
 `;

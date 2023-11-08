@@ -5,6 +5,7 @@ import Series from "./seríesTypes";
 import Genres from "./genresTypes";
 import Root from "./rootTypes";
 import Episode from "./episodeTypes";
+import Source from "./sourceTypes";
 
 export const types = `
     ${User}
@@ -13,5 +14,6 @@ export const types = `
     ${Series}
     ${Genres}
     ${Episode}
+    ${Source}
     ${Root}
 `;

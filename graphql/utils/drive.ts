@@ -1,4 +1,4 @@
-export const fetchSource = async (id: string, accessToken: string) => {
+export const fetchOneDriveSource = async (id: string, accessToken: string) => {
   const headers: any = {
     method: "GET",
     headers: {
@@ -14,6 +14,11 @@ export const fetchSource = async (id: string, accessToken: string) => {
     if (!result.ok) throw new Error("Error while handling fetching");
     return result.url;
   } catch (error: any) {
-    throw new Error(error);
+    console.error(error);
+    return id;
   }
+};
+
+export const fetchGGDriveSource = (id: string) => {
+  return `https://www.googleapis.com/drive/v3/files/${id}?key=${process.env.GGDRIVE_KEY}&alt=media`;
 };

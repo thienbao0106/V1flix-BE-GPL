@@ -1,31 +1,27 @@
 import Episode from "../../models/episode";
-import { fetchSource } from "./onedrive";
+
 import { findSeries } from "./series";
+import { transferMultipleSource } from "./source";
+
+const handleSubtitles = (subtitles: any[]) => {
+  const listSubtitles = subtitles.map((sub) => {
+    return {
+      ...sub,
+      source: transferMultipleSource(sub.source),
+    };
+  });
+  return listSubtitles;
+};
 
 export const transformEpisode = (episode: any) => {
-  const sourceUrl = fetchSource(
-    episode._doc.source,
-    process.env.ACCESS_TOKEN || ""
-  );
-  const keyframeUrl =
-    episode._doc.keyframe !== ""
-      ? fetchSource(episode._doc.keyframe, process.env.ACCESS_TOKEN || "")
-      : episode._doc.keyframe;
-  const subtitlesUrl = episode._doc.subtitles.map((sub: any) => {
-    const subClone = Object.assign({}, sub._doc);
-    subClone.source = fetchSource(
-      subClone.source,
-      process.env.ACCESS_TOKEN || ""
-    );
-    return subClone;
-  });
   return {
     ...episode._doc,
     _id: episode.id,
     series: findSeries(episode._doc.series),
-    source: sourceUrl,
-    keyframe: keyframeUrl,
-    subtitles: subtitlesUrl,
+    source: transferMultipleSource(episode._doc.source),
+
+    // subtitles: handleSubtitles(episode._doc.subtitles),
+    keyframe: transferMultipleSource(episode._doc.keyframe),
   };
 };
 

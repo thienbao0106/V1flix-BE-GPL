@@ -17,6 +17,7 @@ const rootQueryType: String = `
         findSeries(title: String!, numOfLimit: Int!, genresId: String, status: String ): [Series!]
         randomSeries: Series
         searchEpisode(seriesId: String!, epNum: Int!): Episode
+        sources: [Sources!]
     }
 `;
 
@@ -47,6 +48,11 @@ const rootMutationType: String = `
         addSubtitle(subtitleInput: SubtitleInput!, episodeId: String!): Boolean
         deleteSubtitle(lang: String!, episodeId: String!): Boolean
         updateSubtitle(subtitleInput: SubtitleInput!, episodeId: String!): Episode
+        
+        createSource(sourceInput: SourceInput!): Sources
+        addSourceToEpisode(sourceId: String!, episodeId: String!, type: String!, lang: String): Boolean
+        deleteSource(sourceId: String!, episodeId: String!, type: String!): Boolean
+        editSource(sourceInput: SourceInput!, sourceId: String!): Sources
 
     }
 `;

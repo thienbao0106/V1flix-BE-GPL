@@ -17,8 +17,6 @@ export const transformSeries = (series: any) => {
 
 export const findSeries = async (seriesId: string): Promise<any> => {
   try {
-    console.log("-------");
-    console.log(seriesId);
     const result: any = await Series.findById(seriesId);
     return transformSeries(result._doc);
   } catch (err: any) {
