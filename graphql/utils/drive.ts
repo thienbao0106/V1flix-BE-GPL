@@ -1,6 +1,7 @@
 export const fetchOneDriveSource = async (id: string, accessToken: string) => {
   const headers: any = {
     method: "GET",
+    signal: AbortSignal.timeout(5000),
     headers: {
       Authorization: "Bearer " + accessToken,
     },

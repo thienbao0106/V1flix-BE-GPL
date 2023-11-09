@@ -4,13 +4,13 @@ import { findSeries } from "./series";
 import { transferMultipleSource } from "./source";
 
 const handleSubtitles = (subtitles: any[]) => {
-  const listSubtitles = subtitles.map((sub) => {
+  return subtitles.map((sub) => {
     return {
-      ...sub,
+      lang: sub.lang,
+      label: sub.label,
       source: transferMultipleSource(sub.source),
     };
   });
-  return listSubtitles;
 };
 
 export const transformEpisode = (episode: any) => {
@@ -20,7 +20,7 @@ export const transformEpisode = (episode: any) => {
     series: findSeries(episode._doc.series),
     source: transferMultipleSource(episode._doc.source),
 
-    // subtitles: handleSubtitles(episode._doc.subtitles),
+    subtitles: handleSubtitles.bind(this, episode._doc.subtitles),
     keyframe: transferMultipleSource(episode._doc.keyframe),
   };
 };
