@@ -5,8 +5,6 @@ const rootQueryType: String = `
         totalPage: Int!
     }
 
-   
-
     type RootQuery {
         series(pageNumber: Int, limitPerPage: Int, amount: Int): SeriesPagination
         images: [Image!] 
@@ -18,6 +16,8 @@ const rootQueryType: String = `
         randomSeries: Series
         searchEpisode(seriesId: String!, epNum: Int!): Episode
         sources: [Sources!]
+        token: [Token!]
+        findToken(kind: String!): Token
     }
 `;
 
@@ -54,6 +54,9 @@ const rootMutationType: String = `
         deleteSource(sourceId: String!, episodeId: String!, type: String!): Boolean
         editSource(sourceInput: SourceInput!, sourceId: String!): Sources
 
+        createToken(tokenInput: TokenInput!): Token
+        editToken(value: String!, expiresAt: Float!, tokenId: String!): Token
+        deleteToken(tokenId: String!): Boolean
     }
 `;
 

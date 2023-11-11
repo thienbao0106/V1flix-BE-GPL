@@ -1,3 +1,4 @@
+import { tokenResolvers } from "./tokenResolvers";
 import { seriesResolvers } from "./seriesResolvers";
 import { imageResolvers } from "./imageResolvers";
 import { userResolvers } from "./userResolvers";
@@ -12,4 +13,5 @@ export const resolvers = {
   ...genresResolvers,
   ...episodeResolvers,
   ...sourceResolvers,
+  ...tokenResolvers,
 };

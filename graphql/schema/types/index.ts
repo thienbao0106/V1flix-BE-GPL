@@ -6,6 +6,7 @@ import Genres from "./genresTypes";
 import Root from "./rootTypes";
 import Episode from "./episodeTypes";
 import Source from "./sourceTypes";
+import Token from "./tokenTypes";
 
 export const types = `
     ${User}
@@ -16,4 +17,5 @@ export const types = `
     ${Episode}
     ${Source}
     ${Root}
+    ${Token}
 `;

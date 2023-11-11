@@ -1,4 +1,35 @@
-export const fetchOneDriveSource = async (id: string, accessToken: string) => {
+import axios from "axios";
+
+const getAccessToken = async () => {
+  const headers = {
+    "Content-Type": "application/json",
+  };
+  const endpoint = process.env.V1FLIX_URL || "";
+  const query = `query findToken($kind: String!) {
+    findToken(kind: $kind) { 
+        _id
+        value 
+    } 
+  }`;
+  const variables = {
+    kind: "onedrive",
+  };
+  const response = await axios.post(
+    endpoint,
+    {
+      query,
+      variables,
+    },
+    {
+      headers,
+    }
+  );
+  console.log(response.data.data);
+  return response.data.data.findToken.value;
+};
+
+export const fetchOneDriveSource = async (id: string) => {
+  const accessToken = await getAccessToken();
   const headers: any = {
     method: "GET",
     signal: AbortSignal.timeout(5000),

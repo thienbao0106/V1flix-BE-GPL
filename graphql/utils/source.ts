@@ -7,7 +7,7 @@ export const transferSource = (source: any) => {
     _id: source.id,
     value:
       source.kind === "onedrive"
-        ? fetchOneDriveSource(source._doc.value, process.env.ACCESS_TOKEN || "")
+        ? fetchOneDriveSource(source._doc.value)
         : fetchGGDriveSource(source._doc.value),
   };
 };
