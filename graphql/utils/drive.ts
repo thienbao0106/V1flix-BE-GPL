@@ -1,40 +1,17 @@
-import axios from "axios";
-
-const getAccessToken = async () => {
-  const headers = {
-    "Content-Type": "application/json",
-  };
-  const endpoint = process.env.V1FLIX_URL || "";
-  const query = `query findToken($kind: String!) {
-    findToken(kind: $kind) { 
-        _id
-        value 
-    } 
-  }`;
-  const variables = {
-    kind: "onedrive",
-  };
-  const response = await axios.post(
-    endpoint,
-    {
-      query,
-      variables,
-    },
-    {
-      headers,
-    }
-  );
-  console.log(response.data.data);
-  return response.data.data.findToken.value;
-};
+import Token from "../../models/token";
+import { transferToken } from "./token";
 
 export const fetchOneDriveSource = async (id: string) => {
-  const accessToken = await getAccessToken();
+  const result: any = await Token.findOne({
+    kind: "onedrive",
+  });
+  const accessToken = transferToken(result);
+  console.log(accessToken.value);
   const headers: any = {
     method: "GET",
     signal: AbortSignal.timeout(5000),
     headers: {
-      Authorization: "Bearer " + accessToken,
+      Authorization: "Bearer " + accessToken.value,
     },
   };
   try {
@@ -42,7 +19,6 @@ export const fetchOneDriveSource = async (id: string) => {
       `https://graph.microsoft.com/v1.0/me/drive/items/${id}/content`,
       headers
     );
-    console.log(result);
     if (!result.ok) throw new Error("Error while handling fetching");
     return result.url;
   } catch (error: any) {
