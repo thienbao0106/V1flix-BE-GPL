@@ -81,11 +81,16 @@ export const episodeResolvers = {
   searchEpisode: async ({ seriesId, epNum }: any) => {
     try {
       const episode: any = await Episode.findOne({ series: seriesId, epNum });
-      if (episode === null) return;
+      if (!episode) return;
       return transformEpisode(episode);
     } catch (error) {
       throw error;
     }
+  },
+  findEpisode: async ({ episodeId }: any) => {
+    const episode: any = await Episode.findById(episodeId);
+    if (!episode) return;
+    return transformEpisode(episode);
   },
   addSubtitle: async ({ subtitleInput, episodeId }: any) => {
     try {

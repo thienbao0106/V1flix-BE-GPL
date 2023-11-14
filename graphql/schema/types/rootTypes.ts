@@ -18,6 +18,7 @@ const rootQueryType: String = `
         sources: [Sources!]
         token: [Token!]
         findToken(kind: String!): Token
+        findEpisode(episodeId: String!): Episode
     }
 `;
 
