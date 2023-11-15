@@ -28,7 +28,7 @@ export const findMultipleSeries = async (seriesIds: any): Promise<any> => {
   try {
     const result: any = await Series.find({ _id: { $in: seriesIds } });
     return result.map((series: any) => {
-      return transformSeries(result._doc);
+      return transformSeries(series);
     });
   } catch (err: any) {
     throw err;

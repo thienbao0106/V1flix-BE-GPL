@@ -29,7 +29,7 @@ export const seriesResolvers = {
   },
   findSeries: async ({ title, numOfLimit, genresId, status }: any) => {
     try {
-      const isGenres = genresId === "" &&
+      const isGenres = genresId !== "" &&
         genresId && {
           genres: {
             $elemMatch: {
@@ -40,9 +40,7 @@ export const seriesResolvers = {
 
       const isStatus = status !== "" &&
         status && {
-          status: {
-            $regex: status,
-          },
+          status,
         };
       const result = await Series.find({
         title: {
