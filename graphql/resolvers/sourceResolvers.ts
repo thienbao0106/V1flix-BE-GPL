@@ -13,7 +13,7 @@ export const sourceResolvers = {
       throw new Error(error);
     }
   },
-  createSource: async ({ sourceInput }: any) => {
+  createSource: async ({ sourceInput, episodeId, type, lang }: any) => {
     try {
       const date = Date.parse(new Date().toLocaleString());
       const isExisted = await Source.findOne(sourceInput);
@@ -27,8 +27,30 @@ export const sourceResolvers = {
         created_at: date,
         updated_at: date,
       });
+
       await source.save();
-      return transferSource(source);
+      const sourceId = source._id;
+      const epSource: any = await Episode.findById(episodeId);
+      let updatedProperty: any = {};
+      if (type === "subtitles") {
+        if (!lang) throw new Error("Can't add this subtitle's source");
+        const langSource = epSource[type].find((sub: any) => sub.lang === lang);
+        if (!langSource) throw new Error("Can't find this lang");
+        langSource.source.push(sourceId);
+        epSource[type] = [...epSource[type]]
+          .filter((sub: any) => sub.lang === lang)
+          .push(langSource);
+      } else {
+        epSource[type].push(sourceId);
+      }
+
+      updatedProperty[type] = epSource[type];
+      const isUpdated = await Episode.findByIdAndUpdate(
+        episodeId,
+        updatedProperty
+      );
+      if (isUpdated) return transferSource(source);
+      throw new Error("Can't update source!");
     } catch (error: any) {
       throw new Error(error);
     }

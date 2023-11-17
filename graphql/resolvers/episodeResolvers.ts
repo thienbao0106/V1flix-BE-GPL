@@ -31,12 +31,12 @@ export const episodeResolvers = {
       const episode = new Episode({
         title,
         epNum,
-        source,
+        source: source || [],
         view: 0,
         series: seriesId,
         created_at: date,
         updated_at: date,
-        keyframe: keyframe || "",
+        keyframe: keyframe || [],
       });
       const result: any = await episode.save();
       series.episodes.push(result._id);

@@ -50,7 +50,7 @@ const rootMutationType: String = `
         deleteSubtitle(lang: String!, episodeId: String!): Boolean
         updateSubtitle(subtitleInput: SubtitleInput!, episodeId: String!): Episode
         
-        createSource(sourceInput: SourceInput!): Sources
+        createSource(sourceInput: SourceInput!,  episodeId: String!, type: String!, lang: String): Sources
         addSourceToEpisode(sourceId: String!, episodeId: String!, type: String!, lang: String): Boolean
         deleteSource(sourceId: String!, episodeId: String!, type: String!): Boolean
         editSource(sourceInput: SourceInput!, sourceId: String!): Sources
