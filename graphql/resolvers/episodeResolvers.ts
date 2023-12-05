@@ -1,16 +1,26 @@
 import Episode from "../../models/episode";
 import Series from "../../models/series";
-import { checkObject } from "../utils";
+import { checkObject, paginateResult } from "../utils";
 import { transformEpisode } from "../utils/episode";
 
 export const episodeResolvers = {
-  episodes: async () => {
+  episodes: async ({ pageNumber, limitPerPage, amount }: any) => {
     try {
-      const result: any = await Episode.find();
-      return result.map((episode: any) => {
-        console.log(episode);
-        return transformEpisode(episode);
-      });
+      const { result, totalPage } = await paginateResult(
+        Episode,
+        pageNumber,
+        limitPerPage,
+        amount
+      );
+
+      return {
+        currentPage: pageNumber + 1,
+        totalPage,
+        episodes: result.map((episode: any) => {
+          console.log(episode);
+          return transformEpisode(episode);
+        }),
+      };
     } catch (error) {
       throw error;
     }
