@@ -112,4 +112,19 @@ export const userResolvers = {
       throw error;
     }
   },
+  findUserByName: async ({ username }: any) => {
+    try {
+      const user: any = await User.findOne({
+        username,
+      });
+      console.log(user);
+      return {
+        ...user._doc,
+        _id: user.id,
+        password: null,
+      };
+    } catch (error) {
+      throw error;
+    }
+  },
 };

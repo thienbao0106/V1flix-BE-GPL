@@ -3,6 +3,7 @@ const authDataType: String = `
         userId: ID!
         token: String!
         tokenExpiration: Int!
+        username: String!
     }
 `;
 
