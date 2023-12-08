@@ -13,6 +13,7 @@ const userType: String = `
         email: String!
         password: String!
         list: [UserList]!
+        avatar: String
     }
 `;
 

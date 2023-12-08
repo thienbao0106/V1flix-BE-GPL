@@ -12,7 +12,7 @@ export const userResolvers = {
   //GraphQL also gets request
   users: async (args: any, req: any) => {
     try {
-      // if (!req.isAuth) throw new Error("Unauthenticated");
+      if (!req.isAuth) throw new Error("Unauthenticated");
       const result = await User.find();
       return result.map((user: any) => {
         return {
@@ -33,13 +33,13 @@ export const userResolvers = {
         throw new Error("This account is already existed");
 
       const salt: any = process.env.SALT_GEN;
-      console.log(salt);
       const hashedPassword = await bcrypt.hash(password, 10);
       const user = new User({
         email,
         username,
         password: hashedPassword,
         list: [],
+        avatar: "",
       });
       const result: any = await user.save();
       return {
@@ -62,10 +62,8 @@ export const userResolvers = {
       });
       return {
         ...user._doc,
-        password: null,
         userId: user.id,
         token,
-        tokenExpiration: 1,
       };
     } catch (error) {
       throw error;

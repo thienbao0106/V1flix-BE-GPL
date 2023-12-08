@@ -25,7 +25,7 @@ const rootQueryType: String = `
         token: [Token!]
         findToken(kind: String!): Token
         findEpisode(episodeId: String!): Episode
-        findUserById(username: String!): User
+        findUserByName(username: String!): User
     }
 `;
 
