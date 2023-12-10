@@ -69,9 +69,23 @@ export const userResolvers = {
       throw error;
     }
   },
-  addSeriesToList: async ({ userListInput, userId }: any) => {
+  addSeriesToList: async ({
+    seriesId,
+    note,
+    currentEp,
+    status,
+    userId,
+  }: any) => {
     try {
       const user: any = await User.findById(userId);
+      const userListInput = {
+        seriesId,
+        note,
+        currentEp,
+        status,
+      };
+      console.log("call in backend");
+
       console.log(userListInput);
       user.list.push({ ...userListInput, series: userListInput.seriesId });
       user.save();
@@ -83,7 +97,6 @@ export const userResolvers = {
           console.log(item.id);
           return {
             ...item,
-
             series: findSeries(item.series),
           };
         }),

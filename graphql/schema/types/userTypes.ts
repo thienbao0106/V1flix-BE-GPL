@@ -23,12 +23,6 @@ const userInput: String = `
         email: String!
         password: String!
     }
-    input UserListInput {
-        seriesId: String!
-        status: String!
-        currentEp: Int!
-        note: String!
-    }
 `;
 
 export default `${userType}${userInput}`;
