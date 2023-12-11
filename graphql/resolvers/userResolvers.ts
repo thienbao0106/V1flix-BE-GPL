@@ -84,9 +84,6 @@ export const userResolvers = {
         currentEp,
         status,
       };
-      console.log("call in backend");
-
-      console.log(userListInput);
       user.list.push({ ...userListInput, series: userListInput.seriesId });
       user.save();
       return {
@@ -107,13 +104,39 @@ export const userResolvers = {
   },
   removeSeriesFromList: async ({ seriesId, userId }: any) => {
     try {
+      console.log("run from backend");
       const user: any = await User.findById(userId);
-      user.list = [...user.list].filter((item) => item.series._id === seriesId);
+      user.list = [...user.list].filter((item) => {
+        return item.series != seriesId;
+      });
+
       user.save();
       return true;
     } catch (error) {
       throw error;
     }
+  },
+  updateSeriesInList: async ({
+    seriesId,
+    note,
+    currentEp,
+    status,
+    userId,
+  }: any) => {
+    const user: any = await User.findById(userId);
+    const userListInput = {
+      seriesId,
+      note,
+      currentEp,
+      status,
+    };
+    user.list = [...user.list].filter((item) => {
+      return item.series != seriesId;
+    });
+    user.list.push({ ...userListInput, series: userListInput.seriesId });
+    user.save();
+
+    return true;
   },
   removeUser: async ({ userId }: any) => {
     try {

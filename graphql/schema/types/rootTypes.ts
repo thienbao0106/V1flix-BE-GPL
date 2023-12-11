@@ -43,6 +43,7 @@ const rootMutationType: String = `
         createUser(userInput: UserInput!): User
         addSeriesToList(seriesId: String!, note: String!, currentEp: Int!, status: String!, userId: String!): User
         removeSeriesFromList(seriesId: String!, userId: String!): Boolean
+        updateSeriesInList(seriesId: String!, note: String!, currentEp: Int!, status: String!, userId: String!): Boolean
         removeUser(userId: String!): Boolean
 
         createGenres(genresInput: GenresInput!): Genres
