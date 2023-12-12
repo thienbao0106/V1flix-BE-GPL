@@ -1,4 +1,4 @@
-import { findSeries } from "./../utils/series";
+import { findMultipleSeries, findSeries } from "./../utils/series";
 import bcrypt from "bcryptjs";
 import User from "../../models/user";
 import jwt from "jsonwebtoken";
@@ -151,10 +151,19 @@ export const userResolvers = {
       const user: any = await User.findOne({
         username,
       });
-      console.log(user);
+      console.log(user.list);
+      const modifiedList = await Promise.all(
+        user.list.map(async (item: any) => {
+          const series = await findSeries(item.series);
+
+          return { ...item._doc, series };
+        })
+      );
+
       return {
         ...user._doc,
         _id: user.id,
+        list: modifiedList,
         password: null,
       };
     } catch (error) {
