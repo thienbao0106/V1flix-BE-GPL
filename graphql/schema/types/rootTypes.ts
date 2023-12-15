@@ -26,6 +26,8 @@ const rootQueryType: String = `
         findToken(kind: String!): Token
         findEpisode(episodeId: String!): Episode
         findUserByName(username: String!): User
+        findListByType(status: String!, username: String!, title: String): [UserList]
+
     }
 `;
 

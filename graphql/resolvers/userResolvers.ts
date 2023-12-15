@@ -170,4 +170,26 @@ export const userResolvers = {
       throw error;
     }
   },
+  findListByType: async ({ status, username, title }: any) => {
+    try {
+      const user: any = await User.findOne({
+        username,
+      });
+      const result = user.list.filter(
+        (series: any) => series.status === status
+      );
+      const modifiedList = await Promise.all(
+        result.map(async (item: any) => {
+          const series = await findSeries(item.series);
+
+          return { ...item._doc, series };
+        })
+      );
+      return modifiedList.filter(({ series }) =>
+        series.title.includes(title || "")
+      );
+    } catch (error) {
+      throw error;
+    }
+  },
 };
