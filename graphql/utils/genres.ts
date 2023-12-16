@@ -2,7 +2,6 @@ import Genres from "../../models/genres";
 import { findMultipleSeries, findSeries } from "./series";
 
 export const transformGenres = (genres: any) => {
-  console.log(genres.series);
   return {
     ...genres._doc,
     _id: genres.id,

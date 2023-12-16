@@ -2,6 +2,12 @@ import { findMultipleSeries, findSeries } from "./../utils/series";
 import bcrypt from "bcryptjs";
 import User from "../../models/user";
 import jwt from "jsonwebtoken";
+import {
+  calculateDaysWatched,
+  modifyList,
+  sumTotalEpisodes,
+  transformUsers,
+} from "../utils/user";
 
 type LoginData = {
   email: String;
@@ -9,17 +15,12 @@ type LoginData = {
 };
 
 export const userResolvers = {
-  //GraphQL also gets request
   users: async (args: any, req: any) => {
     try {
       if (!req.isAuth) throw new Error("Unauthenticated");
       const result = await User.find();
       return result.map((user: any) => {
-        return {
-          ...user._doc,
-          _id: user.id,
-          password: null,
-        };
+        return transformUsers(user);
       });
     } catch (error: any) {
       throw error;
@@ -42,10 +43,7 @@ export const userResolvers = {
         avatar: "",
       });
       const result: any = await user.save();
-      return {
-        ...result._doc,
-        _id: result.id,
-      };
+      return transformUsers(user);
     } catch (error: any) {
       throw error;
     }
@@ -85,18 +83,13 @@ export const userResolvers = {
         status,
       };
       user.list.push({ ...userListInput, series: userListInput.seriesId });
+      const modifiedList = await modifyList(user.list);
+      user.stats.total_episodes = sumTotalEpisodes(user.list);
+      user.stats.days_watched = calculateDaysWatched(modifiedList);
       user.save();
       return {
-        ...user._doc,
-        _id: user.id,
-        password: null,
-        list: user.list.map((item: any) => {
-          console.log(item.id);
-          return {
-            ...item,
-            series: findSeries(item.series),
-          };
-        }),
+        ...transformUsers(user),
+        list: modifiedList,
       };
     } catch (error) {
       throw error;
@@ -104,12 +97,13 @@ export const userResolvers = {
   },
   removeSeriesFromList: async ({ seriesId, userId }: any) => {
     try {
-      console.log("run from backend");
       const user: any = await User.findById(userId);
       user.list = [...user.list].filter((item) => {
         return item.series != seriesId;
       });
-
+      const modifiedList = await modifyList(user.list);
+      user.stats.total_episodes = sumTotalEpisodes(user.list);
+      user.stats.days_watched = calculateDaysWatched(modifiedList);
       user.save();
       return true;
     } catch (error) {
@@ -134,8 +128,10 @@ export const userResolvers = {
       return item.series != seriesId;
     });
     user.list.push({ ...userListInput, series: userListInput.seriesId });
+    const modifiedList = await modifyList(user.list);
+    user.stats.total_episodes = sumTotalEpisodes(user.list);
+    user.stats.days_watched = calculateDaysWatched(modifiedList);
     user.save();
-
     return true;
   },
   removeUser: async ({ userId }: any) => {
@@ -152,44 +148,36 @@ export const userResolvers = {
         username,
       });
       console.log(user.list);
-      const modifiedList = await Promise.all(
-        user.list.map(async (item: any) => {
-          const series = await findSeries(item.series);
-
-          return { ...item._doc, series };
-        })
-      );
+      const modifiedList = await modifyList(user.list);
 
       return {
-        ...user._doc,
-        _id: user.id,
+        ...transformUsers(user),
         list: modifiedList,
-        password: null,
       };
     } catch (error) {
       throw error;
     }
   },
-  findListByType: async ({ status, username, title }: any) => {
-    try {
-      const user: any = await User.findOne({
-        username,
-      });
-      const result = user.list.filter(
-        (series: any) => series.status === status
-      );
-      const modifiedList = await Promise.all(
-        result.map(async (item: any) => {
-          const series = await findSeries(item.series);
+  // findListByType: async ({ status, username, title }: any) => {
+  //   try {
+  //     const user: any = await User.findOne({
+  //       username,
+  //     });
+  //     const result = user.list.filter(
+  //       (series: any) => series.status === status
+  //     );
+  //     const modifiedList = await Promise.all(
+  //       result.map(async (item: any) => {
+  //         const series = await findSeries(item.series);
 
-          return { ...item._doc, series };
-        })
-      );
-      return modifiedList.filter(({ series }) =>
-        series.title.includes(title || "")
-      );
-    } catch (error) {
-      throw error;
-    }
-  },
+  //         return { ...item._doc, series };
+  //       })
+  //     );
+  //     return modifiedList.filter(({ series }) =>
+  //       series.title.includes(title || "")
+  //     );
+  //   } catch (error) {
+  //     throw error;
+  //   }
+  // },
 };

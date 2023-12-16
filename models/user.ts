@@ -37,6 +37,16 @@ const userSchema = new Schema({
       },
     },
   ],
+  stats: {
+    total_episodes: {
+      type: Number,
+      required: false,
+    },
+    days_watched: {
+      type: Number,
+      required: false,
+    },
+  },
 });
 
 export default mongoose.model("User", userSchema);

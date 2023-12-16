@@ -4,7 +4,11 @@ import Series from "../../models/series";
 import User from "../../models/user";
 import Episode from "../../models/episode";
 import { checkObject, paginateResult } from "../utils";
-import { transformSeries } from "../utils/series";
+import {
+  findMultipleSeries,
+  findSeries,
+  transformSeries,
+} from "../utils/series";
 
 export const seriesResolvers = {
   series: async ({ pageNumber, limitPerPage, amount }: any) => {
@@ -160,6 +164,15 @@ export const seriesResolvers = {
       ]);
 
       return transformSeries(series[0]);
+    } catch (error) {
+      throw error;
+    }
+  },
+  findSeriesByIds: async ({ listSeries }: any) => {
+    try {
+      return listSeries.map((seriesId: string) => {
+        return findSeries(seriesId);
+      });
     } catch (error) {
       throw error;
     }

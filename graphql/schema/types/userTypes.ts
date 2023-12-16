@@ -7,6 +7,11 @@ const userType: String = `
         note: String
     }
 
+    type UserStats {
+        days_watched: Float
+        total_episodes: Int
+    }
+
     type User {
         _id: ID!
         username: String!
@@ -14,6 +19,7 @@ const userType: String = `
         password: String!
         list: [UserList]!
         avatar: String
+        stats: UserStats
     }
 `;
 
