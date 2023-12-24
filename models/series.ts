@@ -37,6 +37,10 @@ const seriesSchema = new Schema({
     type: Number,
     require: true,
   },
+  duration: {
+    type: Number,
+    require: true,
+  },
   images: [
     {
       type: Schema.Types.ObjectId,

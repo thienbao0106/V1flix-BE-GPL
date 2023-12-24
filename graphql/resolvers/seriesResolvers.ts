@@ -70,8 +70,15 @@ export const seriesResolvers = {
     try {
       // if (!req.isAuth) throw new Error("Unauthenticated");
       const date = Date.parse(new Date().toLocaleString());
-      const { title, description, total_episodes, type, season, status } =
-        args.seriesInput;
+      const {
+        title,
+        description,
+        total_episodes,
+        type,
+        season,
+        status,
+        duration,
+      } = args.seriesInput;
       const series = new Series({
         title,
         description,
@@ -80,6 +87,7 @@ export const seriesResolvers = {
         season,
         status,
         view: 0,
+        duration,
         created_at: date,
         updated_at: date,
       });

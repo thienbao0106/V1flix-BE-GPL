@@ -13,6 +13,7 @@ const seriesType: String = `
         episodes: [Episode!]!
         updated_at: Float!
         created_at: Float!
+        duration: Int!
     }
 `;
 
@@ -24,6 +25,7 @@ const seriesInput: String = `
         type: String!
         season: String!
         status: String!
+        duration: Int!
     }
 `;
 
@@ -35,6 +37,7 @@ const seriesUpdateInput: String = `
         type: String
         season: String
         status: String
+        duration: Int!
     }
 `;
 
