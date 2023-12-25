@@ -17,7 +17,7 @@ type LoginData = {
 export const userResolvers = {
   users: async (args: any, req: any) => {
     try {
-      if (!req.isAuth) throw new Error("Unauthenticated");
+      // if (!req.isAuth) throw new Error("Unauthenticated");
       const result = await User.find();
       return result.map((user: any) => {
         return transformUsers(user);
@@ -41,8 +41,9 @@ export const userResolvers = {
         password: hashedPassword,
         list: [],
         avatar: "",
+        favors: 0,
       });
-      const result: any = await user.save();
+      await user.save();
       return transformUsers(user);
     } catch (error: any) {
       throw error;
@@ -149,15 +150,18 @@ export const userResolvers = {
       });
       console.log(user.list);
       const modifiedList = await modifyList(user.list);
+      const modifiedFavoriteList = await findMultipleSeries(user.favoriteList);
 
       return {
         ...transformUsers(user),
         list: modifiedList,
+        favoriteList: modifiedFavoriteList,
       };
     } catch (error) {
       throw error;
     }
   },
+
   // findListByType: async ({ status, username, title }: any) => {
   //   try {
   //     const user: any = await User.findOne({

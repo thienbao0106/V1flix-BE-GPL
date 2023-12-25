@@ -14,6 +14,7 @@ const seriesType: String = `
         updated_at: Float!
         created_at: Float!
         duration: Int!
+        favors: Int!
     }
 `;
 

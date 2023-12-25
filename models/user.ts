@@ -37,6 +37,12 @@ const userSchema = new Schema({
       },
     },
   ],
+  favoriteList: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Series",
+    },
+  ],
   stats: {
     total_episodes: {
       type: Number,

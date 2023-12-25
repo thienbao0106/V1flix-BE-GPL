@@ -18,6 +18,7 @@ const userType: String = `
         email: String!
         password: String!
         list: [UserList]!
+        favoriteList: [Series]
         avatar: String
         stats: UserStats
     }

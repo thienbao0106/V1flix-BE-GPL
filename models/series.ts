@@ -31,15 +31,19 @@ const seriesSchema = new Schema({
   },
   created_at: {
     type: Number,
-    require: false,
+    required: false,
   },
   updated_at: {
     type: Number,
-    require: true,
+    required: true,
   },
   duration: {
     type: Number,
-    require: true,
+    required: true,
+  },
+  favors: {
+    type: Number,
+    required: false,
   },
   images: [
     {

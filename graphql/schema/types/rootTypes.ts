@@ -36,6 +36,9 @@ const rootMutationType: String = `
         deleteSeries(seriesId: String!): Boolean
         updateSeries(seriesInput: SeriesUpdateInput!, seriesId: String!): Series
         addView(seriesId: String!, episodeId: String!): Int
+        addFavoriteSeries(seriesId: String!, userId: String!): Boolean
+        deleteFavoriteSeries(seriesId: String!, userId: String!): Boolean
+
 
         createImage(imageInput: ImageInput!): Image
         deleteImage(imageId: String!): Boolean
