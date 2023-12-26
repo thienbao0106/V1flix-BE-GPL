@@ -44,7 +44,7 @@ const rootMutationType: String = `
         deleteImage(imageId: String!): Boolean
         updateImage(imageInput: ImageUpdateInput!, imageId: String!): Image
 
-        createUser(userInput: UserInput!): User
+        createUser(username: String!, password: String!, email: String!): User
         addSeriesToList(seriesId: String!, note: String!, currentEp: Int!, status: String!, userId: String!): User
         removeSeriesFromList(seriesId: String!, userId: String!): Boolean
         updateSeriesInList(seriesId: String!, note: String!, currentEp: Int!, status: String!, userId: String!): Boolean

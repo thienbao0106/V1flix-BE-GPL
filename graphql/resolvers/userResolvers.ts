@@ -26,9 +26,8 @@ export const userResolvers = {
       throw error;
     }
   },
-  createUser: async (args: any) => {
+  createUser: async ({ username, password, email }: any) => {
     try {
-      const { username, password, email } = args.userInput;
       const isExisted = await User.find({ $or: [{ username }, { email }] });
       if (isExisted.length > 0)
         throw new Error("This account is already existed");
