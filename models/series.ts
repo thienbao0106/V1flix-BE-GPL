@@ -2,8 +2,14 @@ import mongoose, { Schema } from "mongoose";
 
 const seriesSchema = new Schema({
   title: {
-    type: String,
-    required: true,
+    main_title: {
+      type: String,
+      required: true,
+    },
+    alt_title: {
+      type: String,
+      required: true,
+    },
   },
   description: {
     type: String,

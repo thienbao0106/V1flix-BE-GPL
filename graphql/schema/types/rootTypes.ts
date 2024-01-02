@@ -38,6 +38,7 @@ const rootMutationType: String = `
         addView(seriesId: String!, episodeId: String!): Int
         addFavoriteSeries(seriesId: String!, userId: String!): Boolean
         deleteFavoriteSeries(seriesId: String!, userId: String!): Boolean
+        addSeriesByAnilist(id: Int!): Series
 
 
         createImage(imageInput: ImageInput!): Image

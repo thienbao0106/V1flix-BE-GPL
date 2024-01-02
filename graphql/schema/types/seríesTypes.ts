@@ -1,7 +1,13 @@
 const seriesType: String = ` 
+
+    type Title {
+        main_title: String!
+        alt_title: String!
+    }
+
     type Series {
         _id: ID!
-        title: String!
+        title: Title
         description: String!
         total_episodes: Int!
         type: String!
@@ -20,7 +26,8 @@ const seriesType: String = `
 
 const seriesInput: String = ` 
     input SeriesInput {
-        title: String!
+        main_title: String!
+        alt_title: String!
         description: String!
         total_episodes: Int!
         type: String!
@@ -32,13 +39,14 @@ const seriesInput: String = `
 
 const seriesUpdateInput: String = ` 
     input SeriesUpdateInput {
-        title: String
+        main_title: String
+        alt_title: String
         description: String
         total_episodes: Int
         type: String
         season: String
         status: String
-        duration: Int!
+        duration: Int
     }
 `;
 

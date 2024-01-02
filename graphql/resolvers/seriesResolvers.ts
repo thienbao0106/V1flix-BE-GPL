@@ -9,6 +9,8 @@ import {
   findSeries,
   transformSeries,
 } from "../utils/series";
+import { getALShow } from "../utils/anilist";
+import { formatString } from "../utils/string";
 
 export const seriesResolvers = {
   series: async ({ pageNumber, limitPerPage, amount }: any) => {
@@ -47,7 +49,7 @@ export const seriesResolvers = {
           status,
         };
       const result = await Series.find({
-        title: {
+        "title.main_title": {
           $regex: title,
           $options: "i",
         },
@@ -71,7 +73,8 @@ export const seriesResolvers = {
       // if (!req.isAuth) throw new Error("Unauthenticated");
       const date = Date.parse(new Date().toLocaleString());
       const {
-        title,
+        main_title,
+        alt_title,
         description,
         total_episodes,
         type,
@@ -80,7 +83,10 @@ export const seriesResolvers = {
         duration,
       } = args.seriesInput;
       const series = new Series({
-        title,
+        title: {
+          main_title,
+          alt_title,
+        },
         description,
         total_episodes,
         type,
@@ -216,6 +222,42 @@ export const seriesResolvers = {
       return listSeries.map((seriesId: string) => {
         return findSeries(seriesId);
       });
+    } catch (error) {
+      throw error;
+    }
+  },
+  addSeriesByAnilist: async ({ id }: any) => {
+    try {
+      const date = Date.parse(new Date().toLocaleString());
+      const alSeries: any = await getALShow(id);
+      const {
+        title,
+        description,
+        episodes,
+        format,
+        seasonYear,
+        season,
+        status,
+        duration,
+      } = alSeries.Media;
+      const series = new Series({
+        title: {
+          main_title: title.romaji,
+          alt_title: title.english,
+        },
+        description,
+        total_episodes: episodes,
+        type: format,
+        season: `${formatString(season)} ${seasonYear}`,
+        status: formatString(status === "FINISHED" ? "completed" : status),
+        view: 0,
+        duration,
+        created_at: date,
+        updated_at: date,
+        favors: 0,
+      });
+      const result: any = await series.save();
+      return transformSeries(result);
     } catch (error) {
       throw error;
     }
