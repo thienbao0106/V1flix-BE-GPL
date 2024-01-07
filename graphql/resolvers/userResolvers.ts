@@ -160,6 +160,23 @@ export const userResolvers = {
       throw error;
     }
   },
+  findUsers: async ({ username }: any) => {
+    const users: any = await User.find({
+      username: {
+        $regex: username,
+        $options: "i",
+      },
+    });
+    return users.map(async (user: any) => {
+      const modifiedList = await modifyList(user.list);
+      const modifiedFavoriteList = await findMultipleSeries(user.favoriteList);
+      return {
+        ...transformUsers(user),
+        list: modifiedList,
+        favoriteList: modifiedFavoriteList,
+      };
+    });
+  },
 
   // findListByType: async ({ status, username, title }: any) => {
   //   try {
