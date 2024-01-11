@@ -67,6 +67,35 @@ export const userResolvers = {
       throw error;
     }
   },
+  updateProfile: async ({ email, username, password, avatar, userId }: any) => {
+    try {
+      const isExisted = await User.find({
+        $or: [
+          {
+            username,
+          },
+          {
+            email,
+          },
+        ],
+      });
+
+      if (isExisted.length !== 0)
+        throw new Error("This username or email already claimed");
+
+      const result: any = await User.findByIdAndUpdate(userId, {
+        email,
+        username,
+        password,
+        avatar,
+      });
+      if (!result) return false;
+      console.log(result);
+      return true;
+    } catch (error) {
+      throw error;
+    }
+  },
   addSeriesToList: async ({
     seriesId,
     note,
