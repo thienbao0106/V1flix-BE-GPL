@@ -40,6 +40,7 @@ const rootMutationType: String = `
         addFavoriteSeries(seriesId: String!, userId: String!): Boolean
         deleteFavoriteSeries(seriesId: String!, userId: String!): Boolean
         addSeriesByAnilist(id: Int!): Series
+        addTrailer(idSeries: String!, idTrailer: String!, site: String!, thumbnail: String!): Boolean 
 
 
         createImage(imageInput: ImageInput!): Image

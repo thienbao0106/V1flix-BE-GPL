@@ -226,6 +226,21 @@ export const seriesResolvers = {
       throw error;
     }
   },
+  addTrailer: async ({ idSeries, idTrailer, thumbnail, site }: any) => {
+    try {
+      const result = await Series.findByIdAndUpdate(idSeries, {
+        trailer: {
+          id: idTrailer,
+          thumbnail,
+          site,
+        },
+      });
+      if (result) return true;
+      return false;
+    } catch (error) {
+      throw error;
+    }
+  },
   addSeriesByAnilist: async ({ id }: any) => {
     try {
       const date = Date.parse(new Date().toLocaleString());
@@ -239,6 +254,7 @@ export const seriesResolvers = {
         season,
         status,
         duration,
+        trailer,
       } = alSeries.Media;
       const series = new Series({
         title: {
@@ -255,6 +271,7 @@ export const seriesResolvers = {
         created_at: date,
         updated_at: date,
         favors: 0,
+        trailer,
       });
       const result: any = await series.save();
       return transformSeries(result);

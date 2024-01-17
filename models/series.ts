@@ -69,6 +69,20 @@ const seriesSchema = new Schema({
       ref: "Episode",
     },
   ],
+  trailer: {
+    id: {
+      type: String,
+      required: true,
+    },
+    site: {
+      type: String,
+      required: true,
+    },
+    thumbnail: {
+      type: String,
+      required: true,
+    },
+  },
 });
 
 export default mongoose.model("Series", seriesSchema);

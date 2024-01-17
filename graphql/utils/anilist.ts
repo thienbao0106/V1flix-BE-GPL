@@ -20,6 +20,11 @@ export const getALShow = async (id: number) => {
                 episodes
                 status
                 duration
+                trailer {
+                  id
+                  site
+                  thumbnail
+                }
             }
         }
     `;

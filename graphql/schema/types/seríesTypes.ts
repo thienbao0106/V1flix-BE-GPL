@@ -5,6 +5,12 @@ const seriesType: String = `
         alt_title: String!
     }
 
+    type Trailer {
+        id: String!
+        site: String!
+        thumbnail: String!
+    }
+
     type Series {
         _id: ID!
         title: Title
@@ -21,6 +27,7 @@ const seriesType: String = `
         created_at: Float!
         duration: Int!
         favors: Int!
+        trailer: Trailer
     }
 `;
 
