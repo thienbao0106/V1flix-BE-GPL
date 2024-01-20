@@ -28,6 +28,8 @@ const rootQueryType: String = `
         findUserByName(username: String!): User
         findUsers(username: String!): [User!]
         findSeriesByIds(listSeries: [String!]): [Series!]
+        findGenresById(genreId: String!): Genres
+
     }
 `;
 

@@ -18,6 +18,15 @@ export const genresResolvers = {
       throw error;
     }
   },
+  findGenresById: async ({ genreId }: any) => {
+    try {
+      const result = await Genres.findById(genreId);
+      if (!result) throw new Error("Can't find this genre");
+      return transformGenres(result);
+    } catch (error) {
+      throw error;
+    }
+  },
   createGenres: async (args: any) => {
     try {
       const { name, description } = args.genresInput;
@@ -100,14 +109,14 @@ export const genresResolvers = {
     try {
       const list = await getALGenres();
       console.log(list);
-      if(!list) return false;
+      if (!list) return false;
       const result = await Genres.insertMany(list, {
-        ordered: true
-      })
-      if(!result) return false
+        ordered: true,
+      });
+      if (!result) return false;
       return true;
     } catch (error) {
       throw error;
     }
-  }
+  },
 };
