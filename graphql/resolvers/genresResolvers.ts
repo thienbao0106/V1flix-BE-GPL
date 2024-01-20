@@ -4,6 +4,7 @@ import Series from "../../models/series";
 import { checkObject } from "../utils";
 import { findMultipleSeries, findSeries } from "../utils/series";
 import { transformGenres } from "../utils/genres";
+import { getALGenres } from "../utils/anilist";
 
 export const genresResolvers = {
   genres: async () => {
@@ -95,4 +96,18 @@ export const genresResolvers = {
       throw error;
     }
   },
+  addGenresByAnilist: async () => {
+    try {
+      const list = await getALGenres();
+      console.log(list);
+      if(!list) return false;
+      const result = await Genres.insertMany(list, {
+        ordered: true
+      })
+      if(!result) return false
+      return true;
+    } catch (error) {
+      throw error;
+    }
+  }
 };

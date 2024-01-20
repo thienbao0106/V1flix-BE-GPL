@@ -43,3 +43,32 @@ export const getALShow = async (id: number) => {
     throw error;
   }
 };
+
+export const getALGenres = async () => {
+  try {
+     const headers = {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    };
+    const query = `
+        query getGenres {
+           MediaTagCollection {
+            name
+            description
+            isAdult
+          }
+        }
+    `;
+    const result = await axios.post("https://graphql.anilist.co", {
+      query,
+      headers,
+    });
+    console.log(result.data.data)
+    if (!result.data.data) throw new Error("Can't handle tag");
+    const genres = result.data.data.MediaTagCollection.filter((genre: any) => !genre.isAdult);
+    return genres;
+  } catch (error) {
+    throw error;
+    
+  }
+}

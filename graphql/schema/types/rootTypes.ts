@@ -58,6 +58,7 @@ const rootMutationType: String = `
         addSeriesToGenres(seriesArr: [String]!, genresId: String!): Genres
         deleteGenres(genresId: String!): Boolean
         updateGenres(genresInput: GenresUpdateInput!, genresId: String!): Genres 
+        addGenresByAnilist: Boolean
 
         createEpisode(episodeInput: EpisodeInput!): Episode
         updateEpisode(episodeInput: EpisodeUpdateInput!, episodeId: String!): Episode
