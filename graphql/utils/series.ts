@@ -2,6 +2,7 @@ import Series from "../../models/series";
 import { findEpisodes } from "./episode";
 import { findGenres } from "./genres";
 import { findImages } from "./image";
+import { findTags } from "./tags";
 
 export const transformSeries = (series: any) => {
   const seriesInfo = series._doc || series;
@@ -11,6 +12,7 @@ export const transformSeries = (series: any) => {
     _id: seriesInfo.id || seriesInfo._id,
     images: findImages.bind(this, seriesInfo.images),
     genres: findGenres.bind(this, seriesInfo.genres),
+    tags: findTags.bind(this, seriesInfo.tags),
     episodes: findEpisodes.bind(this, seriesInfo.episodes),
   };
 };

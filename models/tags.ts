@@ -1,9 +1,13 @@
 import mongoose, { Schema } from "mongoose";
 
-const genresSchema = new Schema({
+const tagsSchema = new Schema({
   name: {
     type: String,
     required: true,
+  },
+  description: {
+    type: String,
+    required: false,
   },
   series: [
     {
@@ -13,4 +17,4 @@ const genresSchema = new Schema({
   ],
 });
 
-export default mongoose.model("Genres", genresSchema);
+export default mongoose.model("Tags", tagsSchema);

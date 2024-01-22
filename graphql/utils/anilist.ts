@@ -20,6 +20,10 @@ export const getALShow = async (id: number) => {
                 episodes
                 status
                 duration
+                tags {
+                  name
+                }
+                genres
                 trailer {
                   id
                   site
@@ -46,12 +50,42 @@ export const getALShow = async (id: number) => {
 
 export const getALGenres = async () => {
   try {
-     const headers = {
+    const headers = {
       "Content-Type": "application/json",
       Accept: "application/json",
     };
     const query = `
-        query getGenres {
+      query getGenres {
+        GenreCollection
+      }
+    `;
+    const result = await axios.post("https://graphql.anilist.co", {
+      query,
+      headers,
+    });
+    console.log(result.data.data);
+    if (!result.data.data) throw new Error("Can't handle tag");
+    const genres = result.data.data.GenreCollection.filter(
+      (genre: any) => genre !== "Hentai"
+    ).map((name: string) => {
+      return {
+        name,
+      };
+    });
+    return genres;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getALTags = async () => {
+  try {
+    const headers = {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    };
+    const query = `
+        query getTags {
            MediaTagCollection {
             name
             description
@@ -59,16 +93,18 @@ export const getALGenres = async () => {
           }
         }
     `;
+    console.log("called");
     const result = await axios.post("https://graphql.anilist.co", {
       query,
       headers,
     });
-    console.log(result.data.data)
+    console.log(result.data.data);
     if (!result.data.data) throw new Error("Can't handle tag");
-    const genres = result.data.data.MediaTagCollection.filter((genre: any) => !genre.isAdult);
-    return genres;
+    const tags = result.data.data.MediaTagCollection.filter(
+      (tag: any) => !tag.isAdult
+    );
+    return tags;
   } catch (error) {
     throw error;
-    
   }
-}
+};

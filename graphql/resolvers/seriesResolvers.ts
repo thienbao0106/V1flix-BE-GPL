@@ -11,6 +11,8 @@ import {
 } from "../utils/series";
 import { getALShow } from "../utils/anilist";
 import { formatString } from "../utils/string";
+import { addSeriesToTag, getTagsId } from "../utils/tags";
+import { addSeriesToGenres, getGenresId } from "../utils/genres";
 
 export const seriesResolvers = {
   series: async ({ pageNumber, limitPerPage, amount }: any) => {
@@ -255,7 +257,11 @@ export const seriesResolvers = {
         status,
         duration,
         trailer,
+        tags,
+        genres,
       } = alSeries.Media;
+      const tagsArr = await getTagsId(tags);
+      const genresArr = await getGenresId(genres);
       const series = new Series({
         title: {
           main_title: title.romaji,
@@ -272,8 +278,13 @@ export const seriesResolvers = {
         updated_at: date,
         favors: 0,
         trailer,
+        genres: genresArr,
+        tags: tagsArr,
       });
       const result: any = await series.save();
+      console.log("Result Id: " + result._id);
+      addSeriesToTag(tagsArr, result._id);
+      addSeriesToGenres(genresArr, result._id);
       return transformSeries(result);
     } catch (error) {
       throw error;

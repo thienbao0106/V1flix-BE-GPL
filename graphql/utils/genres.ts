@@ -23,3 +23,25 @@ export const findGenres = async (genresId: []): Promise<any> => {
     throw error;
   }
 };
+
+export const getGenresId = async (genresArr: any) => {
+  if (!genresArr || genresArr.length === 0) return [];
+  const result = await Genres.find({ name: { $in: genresArr } });
+  return result.map((item) => item._id);
+};
+
+export const addSeriesToGenres = (genresArr: any, seriesId: string) => {
+  try {
+    genresArr.map(async (genresId: any) => {
+      const genre = await Genres.findByIdAndUpdate(
+        genresId,
+        { $addToSet: { series: seriesId } },
+        { new: true }
+      );
+      if (!genre) throw Error("Can't add this tag" + genresId);
+      return;
+    });
+  } catch (error) {
+    throw error;
+  }
+};

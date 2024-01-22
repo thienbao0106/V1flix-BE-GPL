@@ -5,6 +5,7 @@ import { userResolvers } from "./userResolvers";
 import { genresResolvers } from "./genresResolvers";
 import { episodeResolvers } from "./episodeResolvers";
 import { sourceResolvers } from "./sourceResolvers";
+import { tagsResolvers } from "./tagsResolvers";
 
 export const resolvers = {
   ...seriesResolvers,
@@ -14,4 +15,5 @@ export const resolvers = {
   ...episodeResolvers,
   ...sourceResolvers,
   ...tokenResolvers,
+  ...tagsResolvers,
 };

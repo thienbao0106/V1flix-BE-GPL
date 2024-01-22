@@ -63,6 +63,12 @@ const seriesSchema = new Schema({
       ref: "Genres",
     },
   ],
+  tags: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Tags",
+    },
+  ],
   episodes: [
     {
       type: Schema.Types.ObjectId,

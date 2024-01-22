@@ -1,8 +1,7 @@
-import { getDefaultResultOrder } from "dns";
 import Genres from "../../models/genres";
 import Series from "../../models/series";
 import { checkObject } from "../utils";
-import { findMultipleSeries, findSeries } from "../utils/series";
+import { findMultipleSeries } from "../utils/series";
 import { transformGenres } from "../utils/genres";
 import { getALGenres } from "../utils/anilist";
 
@@ -119,4 +118,13 @@ export const genresResolvers = {
       throw error;
     }
   },
+  deleteAllGenres: async () => {
+    try {
+      const result = await Genres.deleteMany();
+      if(!result) return false;
+      return true;
+    } catch (error) {
+      throw error;
+    }
+  }
 };

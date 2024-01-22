@@ -16,6 +16,7 @@ const rootQueryType: String = `
         images: [Image!] 
         users: [User!]
         genres: [Genres!]
+        tags: [Tags!]
         episodes(pageNumber: Int, limitPerPage: Int, amount: Int): EpisodesPagination
         login(email: String!, password: String!): AuthData! 
         findSeries(title: String!, numOfLimit: Int!, genresId: String, status: String ): [Series!]
@@ -29,7 +30,7 @@ const rootQueryType: String = `
         findUsers(username: String!): [User!]
         findSeriesByIds(listSeries: [String!]): [Series!]
         findGenresById(genreId: String!): Genres
-
+        findTagsById(tagId: String!): Tags
     }
 `;
 
@@ -61,6 +62,7 @@ const rootMutationType: String = `
         deleteGenres(genresId: String!): Boolean
         updateGenres(genresInput: GenresUpdateInput!, genresId: String!): Genres 
         addGenresByAnilist: Boolean
+        deleteAllGenres: Boolean
 
         createEpisode(episodeInput: EpisodeInput!): Episode
         updateEpisode(episodeInput: EpisodeUpdateInput!, episodeId: String!): Episode
@@ -77,6 +79,8 @@ const rootMutationType: String = `
         createToken(tokenInput: TokenInput!): Token
         editToken(value: String!, expiresAt: Float!, tokenId: String!): Token
         deleteToken(tokenId: String!): Boolean
+
+        addTagsByAnilist: Boolean
     }
 `;
 

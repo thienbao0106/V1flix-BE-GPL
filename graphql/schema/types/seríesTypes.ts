@@ -22,6 +22,7 @@ const seriesType: String = `
         view: Int!
         images: [Image!]!
         genres: [Genres!]!
+        tags: [Tags!]!
         episodes: [Episode!]!
         updated_at: Float!
         created_at: Float!

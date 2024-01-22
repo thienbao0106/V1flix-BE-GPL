@@ -7,6 +7,7 @@ import Root from "./rootTypes";
 import Episode from "./episodeTypes";
 import Source from "./sourceTypes";
 import Token from "./tokenTypes";
+import Tag from "./tagTypes";
 
 export const types = `
     ${User}
@@ -18,4 +19,5 @@ export const types = `
     ${Source}
     ${Root}
     ${Token}
+    ${Tag}
 `;
