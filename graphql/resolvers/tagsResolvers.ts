@@ -21,6 +21,15 @@ export const tagsResolvers = {
       throw error;
     }
   },
+  deleteAllTags: async () => {
+    try {
+      const result = await Tags.deleteMany();
+      if (!result) return false;
+      return true;
+    } catch (error) {
+      throw error;
+    }
+  },
   addTagsByAnilist: async () => {
     try {
       const list = await getALTags();

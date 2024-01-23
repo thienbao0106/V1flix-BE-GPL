@@ -81,6 +81,7 @@ const rootMutationType: String = `
         deleteToken(tokenId: String!): Boolean
 
         addTagsByAnilist: Boolean
+        deleteAllTags: Boolean
     }
 `;
 

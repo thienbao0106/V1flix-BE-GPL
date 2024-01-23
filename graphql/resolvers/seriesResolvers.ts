@@ -4,15 +4,13 @@ import Series from "../../models/series";
 import User from "../../models/user";
 import Episode from "../../models/episode";
 import { checkObject, paginateResult } from "../utils";
-import {
-  findMultipleSeries,
-  findSeries,
-  transformSeries,
-} from "../utils/series";
+import { findSeries, transformSeries } from "../utils/series";
 import { getALShow } from "../utils/anilist";
 import { formatString } from "../utils/string";
 import { addSeriesToTag, getTagsId } from "../utils/tags";
 import { addSeriesToGenres, getGenresId } from "../utils/genres";
+import Tags from "../../models/tags";
+import series from "../../models/series";
 
 export const seriesResolvers = {
   series: async ({ pageNumber, limitPerPage, amount }: any) => {
@@ -132,15 +130,20 @@ export const seriesResolvers = {
       });
 
       //To-do: Upgrade this block of code
-      const genres: any = await Genres.find({ series: seriesId });
-      console.log(genres);
-      if (genres.length > 0) {
-        genres.map((gen: any) => {
-          console.log("test");
-          gen.series = [...gen.series].filter((id: String) => id === seriesId);
-          gen.save();
-        });
-      }
+      Genres.updateMany(
+        { series: seriesId },
+        {
+          $pull: { series: seriesId },
+        }
+      );
+
+      Tags.updateMany(
+        { series: seriesId },
+        {
+          $pull: { series: seriesId },
+        }
+      );
+
       const listUser: any = await User.find({ series: seriesId });
       if (listUser.length > 0) {
         listUser.map((list: any) => {
@@ -264,11 +267,11 @@ export const seriesResolvers = {
       const genresArr = await getGenresId(genres);
       const series = new Series({
         title: {
-          main_title: title.romaji,
-          alt_title: title.english,
+          main_title: title.romaji.replace(/"/g, ""),
+          alt_title: title.english.replace(/"/g, ""),
         },
         description,
-        total_episodes: episodes,
+        total_episodes: episodes || 0,
         type: format,
         season: `${formatString(season)} ${seasonYear}`,
         status: formatString(status === "FINISHED" ? "completed" : status),
