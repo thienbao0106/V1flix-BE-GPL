@@ -48,6 +48,64 @@ export const getALShow = async (id: number) => {
   }
 };
 
+export const getALGenresShow = async (id: number) => {
+  try {
+    const headers = {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    };
+    const query = `
+      query getGenresShow($id: Int) {
+        Media(id: $id) {
+           genres
+        }  
+      }  
+    `;
+    const result = await axios.post("https://graphql.anilist.co", {
+      query,
+      headers,
+      variables: {
+        id,
+      },
+    });
+    if (!result.data.data) throw new Error("Can't find this series");
+    console.log(result.data.data);
+    return result.data.data.Media.genres;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getALTagsShow = async (id: number) => {
+  try {
+    const headers = {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    };
+    const query = `
+      query getGenresShow($id: Int) {
+        Media(id: $id) {
+           tags {
+              name
+           }
+        }  
+      }  
+    `;
+    const result = await axios.post("https://graphql.anilist.co", {
+      query,
+      headers,
+      variables: {
+        id,
+      },
+    });
+    if (!result.data.data) throw new Error("Can't find this series");
+    console.log(result.data.data);
+    return result.data.data.Media.tags;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const getALGenres = async () => {
   try {
     const headers = {

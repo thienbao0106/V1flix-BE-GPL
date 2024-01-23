@@ -44,7 +44,7 @@ const rootMutationType: String = `
         deleteFavoriteSeries(seriesId: String!, userId: String!): Boolean
         addSeriesByAnilist(id: Int!): Series
         addTrailer(idSeries: String!, idTrailer: String!, site: String!, thumbnail: String!): Boolean 
-
+        fillGenres(seriesId: String!, anilistId: Int!): Boolean
 
         createImage(imageInput: ImageInput!): Image
         deleteImage(imageId: String!): Boolean
@@ -79,9 +79,12 @@ const rootMutationType: String = `
         createToken(tokenInput: TokenInput!): Token
         editToken(value: String!, expiresAt: Float!, tokenId: String!): Token
         deleteToken(tokenId: String!): Boolean
+        
 
         addTagsByAnilist: Boolean
         deleteAllTags: Boolean
+        fillTags(seriesId: String!, anilistId: Int!): Boolean
+
     }
 `;
 

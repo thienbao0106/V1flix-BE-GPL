@@ -1,6 +1,7 @@
+import Series from "../../models/series";
 import Tags from "../../models/tags";
-import { getALTags } from "../utils/anilist";
-import { transformTags } from "../utils/tags";
+import { getALTags, getALTagsShow } from "../utils/anilist";
+import { addSeriesToTag, getTagsId, transformTags } from "../utils/tags";
 
 export const tagsResolvers = {
   tags: async () => {
@@ -37,6 +38,21 @@ export const tagsResolvers = {
       if (!list) return false;
       const result = await Tags.insertMany(list, {
         ordered: true,
+      });
+      if (!result) return false;
+      return true;
+    } catch (error) {
+      throw error;
+    }
+  },
+  fillTags: async ({ seriesId, anilistId }: any) => {
+    try {
+      const tags = await getALTagsShow(anilistId);
+      const tagsIdArr = await getTagsId(tags);
+      console.log(tagsIdArr);
+      addSeriesToTag(tagsIdArr, seriesId);
+      const result = await Series.findByIdAndUpdate(seriesId, {
+        tags: tagsIdArr,
       });
       if (!result) return false;
       return true;
