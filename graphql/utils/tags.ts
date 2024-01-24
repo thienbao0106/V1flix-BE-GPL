@@ -3,7 +3,7 @@ import { findMultipleSeries, findSeries } from "./series";
 
 export const transformTags = (tag: any) => {
   return {
-    ...tag.tag,
+    ...tag._doc,
     _id: tag.id,
     series: findMultipleSeries.bind(this, tag.series),
   };

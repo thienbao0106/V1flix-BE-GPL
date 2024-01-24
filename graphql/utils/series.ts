@@ -6,7 +6,16 @@ import { findTags } from "./tags";
 
 export const transformSeries = (series: any) => {
   const seriesInfo = series._doc || series;
-  console.log(seriesInfo);
+  let relation: any = [];
+  if (series.relation.length > 0) {
+    relation = seriesInfo.relation.map((item: any) => {
+      return {
+        ...item._doc,
+        related_series: findSeries(item._doc.related_series),
+      };
+    });
+  }
+
   return {
     ...seriesInfo,
     _id: seriesInfo.id || seriesInfo._id,
@@ -14,6 +23,7 @@ export const transformSeries = (series: any) => {
     genres: findGenres.bind(this, seriesInfo.genres),
     tags: findTags.bind(this, seriesInfo.tags),
     episodes: findEpisodes.bind(this, seriesInfo.episodes),
+    relation,
   };
 };
 
