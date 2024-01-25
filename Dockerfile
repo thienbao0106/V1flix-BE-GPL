@@ -10,4 +10,6 @@ COPY . .
 
 RUN tsc
 
+EXPOSE 3306
+
 CMD ["yarn", "start"]
