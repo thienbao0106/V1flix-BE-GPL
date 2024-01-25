@@ -282,7 +282,6 @@ export const seriesResolvers = {
         trailer,
         genres: genresArr,
         tags: tagsArr,
-        relation: [],
       });
       const result: any = await series.save();
       console.log("Result Id: " + result._id);
@@ -293,32 +292,4 @@ export const seriesResolvers = {
       throw error;
     }
   },
-  addRelation: async ({
-    relationInput: { idSeries, idRelatedSeries, role },
-  }: any) => {
-    try {
-      const series = await Series.findByIdAndUpdate(idSeries, {
-        $addToSet: {
-          relation: {
-            role,
-            related_series: idRelatedSeries,
-          },
-        },
-      });
-      if (!series) return false;
-      return true;
-    } catch (error) {
-      throw error;
-    }
-  },
-  // setNewField: async () => {
-  //   try {
-  //     const result = await Series.updateMany({}, { $set: { relation: [] } });
-  //     console.log(result);
-  //     if (!result) return false;
-  //     return true;
-  //   } catch (error) {
-  //     throw error;
-  //   }
-  // },
 };

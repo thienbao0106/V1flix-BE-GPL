@@ -11,11 +11,6 @@ const seriesType: String = `
         thumbnail: String!
     }
 
-    type Relation {
-        role: String!
-        related_series: Series!
-    }
-
     type Series {
         _id: ID!
         title: Title
@@ -34,7 +29,6 @@ const seriesType: String = `
         duration: Int!
         favors: Int!
         trailer: Trailer
-        relation: [Relation]
     }
 `;
 
@@ -64,12 +58,4 @@ const seriesUpdateInput: String = `
     }
 `;
 
-const relationInput: String = `
-    input RelationUpdateInput {
-        idSeries: String!
-        idRelatedSeries: String!
-        role: String!
-    }
-`;
-
-export default `${seriesType}${seriesInput}${seriesUpdateInput}${relationInput}`;
+export default `${seriesType}${seriesInput}${seriesUpdateInput}`;

@@ -45,8 +45,6 @@ const rootMutationType: String = `
         addSeriesByAnilist(id: Int!): Series
         addTrailer(idSeries: String!, idTrailer: String!, site: String!, thumbnail: String!): Boolean 
         fillGenres(seriesId: String!, anilistId: Int!): Boolean
-        setNewField: Boolean
-        addRelation(relationInput: RelationUpdateInput): Boolean
 
         createImage(imageInput: ImageInput!): Image
         deleteImage(imageId: String!): Boolean

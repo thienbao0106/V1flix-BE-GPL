@@ -63,18 +63,6 @@ const seriesSchema = new Schema({
       ref: "Genres",
     },
   ],
-  relation: [
-    {
-      role: {
-        type: String,
-        required: true,
-      },
-      related_series: {
-        type: Schema.Types.ObjectId,
-        ref: "Series",
-      },
-    },
-  ],
   tags: [
     {
       type: Schema.Types.ObjectId,

@@ -17,8 +17,6 @@ export const tagsResolvers = {
   findTagsById: async ({ tagId }: any) => {
     try {
       const tag = await Tags.findById(tagId);
-      console.log("tag-----");
-      console.log(tag);
       return transformTags(tag);
     } catch (error) {
       throw error;
