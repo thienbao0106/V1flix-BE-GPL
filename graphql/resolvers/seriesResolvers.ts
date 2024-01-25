@@ -1,15 +1,15 @@
-import Genres from "../../models/genres.js";
-import Image from "../../models/image.js";
-import Series from "../../models/series.js";
-import User from "../../models/user.js";
-import Episode from "../../models/episode.js";
-import Tags from "../../models/tags.js";
-import { checkObject, paginateResult } from "../utils/index.js";
-import { findSeries, transformSeries } from "../utils/series.js";
-import { getALShow } from "../utils/anilist.js";
-import { formatString } from "../utils/string.js";
-import { addSeriesToTag, getTagsId } from "../utils/tags.js";
-import { addSeriesToGenres, getGenresId } from "../utils/genres.js";
+import Genres from "../../models/genres";
+import Image from "../../models/image";
+import Series from "../../models/series";
+import User from "../../models/user";
+import Episode from "../../models/episode";
+import Tags from "../../models/tags";
+import { checkObject, paginateResult } from "../utils/index";
+import { findSeries, transformSeries } from "../utils/series";
+import { getALShow } from "../utils/anilist";
+import { formatString } from "../utils/string";
+import { addSeriesToTag, getTagsId } from "../utils/tags";
+import { addSeriesToGenres, getGenresId } from "../utils/genres";
 
 export const seriesResolvers = {
   series: async ({ pageNumber, limitPerPage, amount }: any) => {

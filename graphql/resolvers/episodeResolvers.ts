@@ -1,7 +1,7 @@
-import Episode from "../../models/episode.js";
-import Series from "../../models/series.js";
-import { checkObject, paginateResult } from "../utils/index.js";
-import { transformEpisode } from "../utils/episode.js";
+import Episode from "../../models/episode";
+import Series from "../../models/series";
+import { checkObject, paginateResult } from "../utils/index";
+import { transformEpisode } from "../utils/episode";
 
 export const episodeResolvers = {
   episodes: async ({ pageNumber, limitPerPage, amount }: any) => {

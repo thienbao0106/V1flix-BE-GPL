@@ -1,6 +1,6 @@
-import { auth } from "./middleware/isAuth.js";
-import { resolvers } from "./graphql/resolvers/index.js";
-import { schema } from "./graphql/schema/index.js";
+import { auth } from "./middleware/isAuth";
+import { resolvers } from "./graphql/resolvers/index";
+import { schema } from "./graphql/schema/index";
 import mongoose from "mongoose";
 import bodyParser from "body-parser";
 import { graphqlHTTP } from "express-graphql";

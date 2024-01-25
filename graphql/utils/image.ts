@@ -1,5 +1,5 @@
-import Image from "../../models/image.js";
-import { findSeries } from "./series.js";
+import Image from "../../models/image";
+import { findSeries } from "./series";
 
 export const transformImage = (image: any) => {
   return {

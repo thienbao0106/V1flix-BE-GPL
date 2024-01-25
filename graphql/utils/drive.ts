@@ -1,5 +1,5 @@
-import Token from "../../models/token.js";
-import { transferToken } from "./token.js";
+import Token from "../../models/token";
+import { transferToken } from "./token";
 
 export const fetchOneDriveSource = async (id: string) => {
   const result: any = await Token.findOne({

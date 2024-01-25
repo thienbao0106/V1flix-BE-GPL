@@ -1,5 +1,5 @@
-import Genres from "../../models/genres.js";
-import { findMultipleSeries, findSeries } from "./series.js";
+import Genres from "../../models/genres";
+import { findMultipleSeries, findSeries } from "./series";
 
 export const transformGenres = (genres: any) => {
   return {
