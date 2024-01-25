@@ -89,6 +89,18 @@ const seriesSchema = new Schema({
       required: true,
     },
   },
+  relation: [
+    {
+      role: {
+        type: String,
+        required: true,
+      },
+      related_series: {
+        type: Schema.Types.ObjectId,
+        ref: "Series",
+      },
+    },
+  ],
 });
 
 export default mongoose.model("Series", seriesSchema);

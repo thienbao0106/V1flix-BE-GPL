@@ -230,6 +230,17 @@ export const seriesResolvers = {
       throw error;
     }
   },
+  findSeriesByName: async ({ seriesTitle }: any) => {
+    try {
+      const result = await Series.findOne({
+        "title.main_title": seriesTitle,
+      });
+      if (!result) throw new Error("Can't find this series!");
+      return transformSeries(result);
+    } catch (error) {
+      throw error;
+    }
+  },
   addTrailer: async ({ idSeries, idTrailer, thumbnail, site }: any) => {
     try {
       const result = await Series.findByIdAndUpdate(idSeries, {
@@ -288,6 +299,24 @@ export const seriesResolvers = {
       addSeriesToTag(tagsArr, result._id);
       addSeriesToGenres(genresArr, result._id);
       return transformSeries(result);
+    } catch (error) {
+      throw error;
+    }
+  },
+  addRelation: async ({
+    relationInput: { idSeries, idRelatedSeries, role },
+  }: any) => {
+    try {
+      const series = await Series.findByIdAndUpdate(idSeries, {
+        $addToSet: {
+          relation: {
+            role,
+            related_series: idRelatedSeries,
+          },
+        },
+      });
+      if (!series) return false;
+      return true;
     } catch (error) {
       throw error;
     }

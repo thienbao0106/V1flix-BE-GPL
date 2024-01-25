@@ -31,6 +31,7 @@ const rootQueryType: String = `
         findSeriesByIds(listSeries: [String!]): [Series!]
         findGenresById(genreId: String!): Genres
         findTagsById(tagId: String!): Tags
+        findSeriesByName(seriesTitle: String!): Series
     }
 `;
 
@@ -45,6 +46,7 @@ const rootMutationType: String = `
         addSeriesByAnilist(id: Int!): Series
         addTrailer(idSeries: String!, idTrailer: String!, site: String!, thumbnail: String!): Boolean 
         fillGenres(seriesId: String!, anilistId: Int!): Boolean
+        addRelation(relationInput: RelationUpdateInput): Boolean
 
         createImage(imageInput: ImageInput!): Image
         deleteImage(imageId: String!): Boolean
