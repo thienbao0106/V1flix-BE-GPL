@@ -1,12 +1,12 @@
-import { auth } from "./middleware/isAuth";
-import express from "express";
+import { auth } from "./middleware/isAuth.js";
+import { resolvers } from "./graphql/resolvers/index.js";
+import { schema } from "./graphql/schema/index.js";
+import mongoose from "mongoose";
 import bodyParser from "body-parser";
 import { graphqlHTTP } from "express-graphql";
-import mongoose from "mongoose";
-import { resolvers } from "./graphql/resolvers/index";
-import { schema } from "./graphql/schema";
+import express from "express";
 import cors from "cors";
-require("dotenv").config();
+import "dotenv/config";
 
 const app: any = express();
 

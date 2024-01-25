@@ -1,11 +1,11 @@
-import { tokenResolvers } from "./tokenResolvers";
-import { seriesResolvers } from "./seriesResolvers";
-import { imageResolvers } from "./imageResolvers";
-import { userResolvers } from "./userResolvers";
-import { genresResolvers } from "./genresResolvers";
-import { episodeResolvers } from "./episodeResolvers";
-import { sourceResolvers } from "./sourceResolvers";
-import { tagsResolvers } from "./tagsResolvers";
+import { tokenResolvers } from "./tokenResolvers.js";
+import { seriesResolvers } from "./seriesResolvers.js";
+import { imageResolvers } from "./imageResolvers.js";
+import { userResolvers } from "./userResolvers.js";
+import { genresResolvers } from "./genresResolvers.js";
+import { episodeResolvers } from "./episodeResolvers.js";
+import { sourceResolvers } from "./sourceResolvers.js";
+import { tagsResolvers } from "./tagsResolvers.js";
 
 export const resolvers = {
   ...seriesResolvers,

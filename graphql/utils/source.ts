@@ -1,5 +1,5 @@
-import Source from "../../models/source";
-import { fetchGGDriveSource, fetchOneDriveSource } from "./drive";
+import Source from "../../models/source.js";
+import { fetchGGDriveSource, fetchOneDriveSource } from "./drive.js";
 
 export const transferSource = (source: any) => {
   return {

@@ -1,6 +1,6 @@
-import Episode from "../../models/episode";
-import Source from "../../models/source";
-import { transferSource } from "../utils/source";
+import Episode from "../../models/episode.js";
+import Source from "../../models/source.js";
+import { transferSource } from "../utils/source.js";
 
 export const sourceResolvers = {
   sources: async () => {

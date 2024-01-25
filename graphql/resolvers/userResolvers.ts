@@ -1,13 +1,13 @@
-import { findMultipleSeries, findSeries } from "./../utils/series";
+import User from "../../models/user.js";
+import { findMultipleSeries, findSeries } from "./../utils/series.js";
 import bcrypt from "bcryptjs";
-import User from "../../models/user";
 import jwt from "jsonwebtoken";
 import {
   calculateDaysWatched,
   modifyList,
   sumTotalEpisodes,
   transformUsers,
-} from "../utils/user";
+} from "../utils/user.js";
 
 type LoginData = {
   email: String;

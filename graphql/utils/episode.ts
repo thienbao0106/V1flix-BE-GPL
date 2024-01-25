@@ -1,7 +1,7 @@
-import Episode from "../../models/episode";
+import Episode from "../../models/episode.js";
 
-import { findSeries } from "./series";
-import { transferMultipleSource } from "./source";
+import { findSeries } from "./series.js";
+import { transferMultipleSource } from "./source.js";
 
 const handleSubtitles = (subtitles: any[]) => {
   return subtitles

@@ -1,5 +1,5 @@
 import { buildSchema } from "graphql";
-import { types } from "./types/index";
+import { types } from "./types/index.js";
 export const schema = buildSchema(`
       ${types}
       

@@ -1,8 +1,8 @@
-import Series from "../../models/series";
-import { findEpisodes } from "./episode";
-import { findGenres } from "./genres";
-import { findImages } from "./image";
-import { findTags } from "./tags";
+import Series from "../../models/series.js";
+import { findEpisodes } from "./episode.js";
+import { findGenres } from "./genres.js";
+import { findImages } from "./image.js";
+import { findTags } from "./tags.js";
 
 export const transformSeries = (series: any) => {
   const seriesInfo = series._doc || series;

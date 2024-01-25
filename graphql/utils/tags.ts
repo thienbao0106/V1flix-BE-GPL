@@ -1,5 +1,5 @@
-import Tags from "../../models/tags";
-import { findMultipleSeries, findSeries } from "./series";
+import Tags from "../../models/tags.js";
+import { findMultipleSeries, findSeries } from "./series.js";
 
 export const transformTags = (tag: any) => {
   return {

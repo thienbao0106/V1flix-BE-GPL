@@ -1,10 +1,10 @@
-import Image from "../../models/image";
-import Series from "../../models/series";
-import { checkObject } from "../utils";
-import { transformImage } from "../utils/image";
+import Image from "../../models/image.js";
+import Series from "../../models/series.js";
+import { checkObject } from "../utils/index.js";
+import { transformImage } from "../utils/image.js";
 
-const cloudinary = require("cloudinary");
-require("dotenv").config();
+import { v2 as cloudinary } from "cloudinary";
+import "dotenv/config";
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,

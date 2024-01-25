@@ -1,7 +1,7 @@
-import Series from "../../models/series";
-import Tags from "../../models/tags";
-import { getALTags, getALTagsShow } from "../utils/anilist";
-import { addSeriesToTag, getTagsId, transformTags } from "../utils/tags";
+import Series from "../../models/series.js";
+import Tags from "../../models/tags.js";
+import { getALTags, getALTagsShow } from "../utils/anilist.js";
+import { addSeriesToTag, getTagsId, transformTags } from "../utils/tags.js";
 
 export const tagsResolvers = {
   tags: async () => {

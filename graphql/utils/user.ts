@@ -1,4 +1,4 @@
-import { findSeries } from "./series";
+import { findSeries } from "./series.js";
 
 const SERIES_TYPE: any = {
   movie: 90,
