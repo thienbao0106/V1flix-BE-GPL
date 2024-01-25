@@ -5,6 +5,7 @@
   "repository": "https://github.com/thienbao0106/V1flix-BE-GPL.git",
   "author": "Lâm Thiên Bảo <lamthienbao0106@gmail.com>",
   "license": "MIT",
+  "type": "commonjs",
   "scripts": {
     "build": "npx tsc",
     "start": "nodemon server.ts"
