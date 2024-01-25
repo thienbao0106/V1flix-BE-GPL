@@ -1,6 +1,6 @@
 FROM node:alpine as base
 
-WORKDIR /app
+WORKDIR /
 
 COPY package.json yarn.lock ./
 
