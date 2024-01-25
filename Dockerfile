@@ -8,6 +8,4 @@ RUN rm -rf node_modules && yarn install --frozen-lockfile && yarn global add typ
 
 COPY . .
 
-RUN tsc
-
 CMD ["ts-node", "--esm", "./server.ts"]
