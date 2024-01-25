@@ -1,6 +1,6 @@
 FROM node:alpine as base
 
-WORKDIR /
+WORKDIR /V1flix-BE-GQL
 
 COPY package.json yarn.lock ./
 
