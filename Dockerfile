@@ -12,4 +12,4 @@ RUN tsc
 
 EXPOSE 3306
 
-CMD ["yarn", "start"]
+CMD ["ts-node", "./server.ts"]
