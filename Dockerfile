@@ -10,4 +10,4 @@ COPY . .
 
 RUN tsc
 
-CMD ["node", "./server.ts"]
+CMD ["ts-node", "--esm", "./server.ts"]
