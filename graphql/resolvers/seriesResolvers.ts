@@ -6,7 +6,7 @@ import Episode from "../../models/episode";
 import Tags from "../../models/tags";
 import { checkObject, paginateResult } from "../utils/index";
 import { findSeries, transformSeries } from "../utils/series";
-import { getALShow } from "../utils/anilist";
+import { getALImages, getALShow } from "../utils/anilist";
 import { formatString } from "../utils/string";
 import { addSeriesToTag, getTagsId } from "../utils/tags";
 import { addSeriesToGenres, getGenresId } from "../utils/genres";
@@ -316,6 +316,24 @@ export const seriesResolvers = {
         },
       });
       if (!series) return false;
+      return true;
+    } catch (error) {
+      throw error;
+    }
+  },
+  fillImages: async ({ anilistId, seriesId }: any) => {
+    try {
+      const series: any = await Series.findById(seriesId);
+
+      const title = series.title.main_title.toLowerCase().replaceAll(" ", "_");
+      const images = await getALImages(anilistId, title, series._id);
+      const result = await Image.insertMany(images);
+      console.log("result-----");
+      console.log(result);
+      const resultIds = result.map((item: any) => item._id);
+      series.images = resultIds;
+      series.save();
+
       return true;
     } catch (error) {
       throw error;

@@ -1,4 +1,5 @@
 import axios from "axios";
+import { uploadToCloudinary } from "./image";
 
 export const getALShow = async (id: number) => {
   try {
@@ -151,7 +152,6 @@ export const getALTags = async () => {
           }
         }
     `;
-    console.log("called");
     const result = await axios.post("https://graphql.anilist.co", {
       query,
       headers,
@@ -162,6 +162,80 @@ export const getALTags = async () => {
       (tag: any) => !tag.isAdult
     );
     return tags;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getALImages = async (
+  id: any,
+  titleSeries: string,
+  seriesId: string
+) => {
+  try {
+    const headers = {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    };
+
+    const query = `
+      query getImagesShow($id: Int) {
+        Media(id: $id) {
+          coverImage {
+            extraLarge 
+            large 
+            medium
+          } 
+          bannerImage
+        }  
+      }  
+    `;
+    const result = await axios.post("https://graphql.anilist.co", {
+      query,
+      headers,
+      variables: {
+        id,
+      },
+    });
+    console.log(result.data.data);
+    //Cloudinary handle
+    if (!result.data.data) throw new Error("Can't handle images");
+    const images = result.data.data.Media;
+    const bannerUrl = await uploadToCloudinary(
+      images.bannerImage,
+      "banner",
+      titleSeries
+    );
+    const coverUrl = await uploadToCloudinary(
+      images.coverImage.large,
+      "cover",
+      titleSeries
+    );
+    const thumbnailUrl = await uploadToCloudinary(
+      images.coverImage.medium,
+      "thumbnail",
+      titleSeries
+    );
+    return [
+      {
+        name: titleSeries,
+        series: seriesId,
+        type: "banner",
+        source: bannerUrl,
+      },
+      {
+        name: titleSeries,
+        series: seriesId,
+        type: "cover",
+        source: coverUrl,
+      },
+      {
+        name: titleSeries,
+        series: seriesId,
+        type: "thumbnail",
+        source: thumbnailUrl,
+      },
+    ];
   } catch (error) {
     throw error;
   }
