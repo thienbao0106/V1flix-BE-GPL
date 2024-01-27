@@ -339,4 +339,18 @@ export const seriesResolvers = {
       throw error;
     }
   },
+  deleteSeriesImages: async ({ seriesId }: any) => {
+    try {
+      await Image.deleteMany({
+        series: seriesId,
+      });
+      const series = await Series.findByIdAndUpdate(seriesId, {
+        images: [],
+      });
+      if (!series) return false;
+      return true;
+    } catch (error) {
+      throw error;
+    }
+  },
 };

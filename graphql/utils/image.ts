@@ -8,6 +8,32 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
+export const transferImagesArr = (imagesObj: any) => {
+  console.log(imagesObj);
+  return [
+    {
+      name: `${imagesObj.titleSeries}_banner`,
+      series: imagesObj.seriesId,
+      type: "banner",
+      source: imagesObj.bannerUrl,
+    },
+    {
+      name: `${imagesObj.titleSeries}_cover`,
+      series: imagesObj.seriesId,
+      type: "cover",
+      source: imagesObj.coverUrl,
+    },
+    {
+      name: `${imagesObj.titleSeries}_thumbnail`,
+      series: imagesObj.seriesId,
+      type: "thumbnail",
+      source: imagesObj.thumbnailUrl,
+    },
+  ].filter((item) => {
+    return item.source !== "";
+  });
+};
+
 export const transformImage = (image: any) => {
   return {
     ...image._doc,
@@ -31,7 +57,8 @@ export const uploadToCloudinary = async (
   url: string,
   kind: string,
   title: string
-) => {
+): Promise<string> => {
+  if (!url || url === "") return "";
   const finalUrl = await cloudinary.uploader
     .upload(url, {
       public_id: `anime-v2/${kind}/${title}_${kind}`,

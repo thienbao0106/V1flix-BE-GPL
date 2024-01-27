@@ -1,12 +1,13 @@
 import axios from "axios";
-import { uploadToCloudinary } from "./image";
+import { transferImagesArr, uploadToCloudinary } from "./image";
+
+const headers = {
+  "Content-Type": "application/json",
+  Accept: "application/json",
+};
 
 export const getALShow = async (id: number) => {
   try {
-    const headers = {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-    };
     const query = `
         query getShow($id: Int) {
             Media(id: $id) {
@@ -51,10 +52,6 @@ export const getALShow = async (id: number) => {
 
 export const getALGenresShow = async (id: number) => {
   try {
-    const headers = {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-    };
     const query = `
       query getGenresShow($id: Int) {
         Media(id: $id) {
@@ -79,10 +76,6 @@ export const getALGenresShow = async (id: number) => {
 
 export const getALTagsShow = async (id: number) => {
   try {
-    const headers = {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-    };
     const query = `
       query getGenresShow($id: Int) {
         Media(id: $id) {
@@ -109,10 +102,6 @@ export const getALTagsShow = async (id: number) => {
 
 export const getALGenres = async () => {
   try {
-    const headers = {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-    };
     const query = `
       query getGenres {
         GenreCollection
@@ -139,10 +128,6 @@ export const getALGenres = async () => {
 
 export const getALTags = async () => {
   try {
-    const headers = {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-    };
     const query = `
         query getTags {
            MediaTagCollection {
@@ -173,11 +158,6 @@ export const getALImages = async (
   seriesId: string
 ) => {
   try {
-    const headers = {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-    };
-
     const query = `
       query getImagesShow($id: Int) {
         Media(id: $id) {
@@ -211,31 +191,30 @@ export const getALImages = async (
       "cover",
       titleSeries
     );
+
     const thumbnailUrl = await uploadToCloudinary(
       images.coverImage.medium,
       "thumbnail",
       titleSeries
     );
-    return [
-      {
-        name: titleSeries,
-        series: seriesId,
-        type: "banner",
-        source: bannerUrl,
-      },
-      {
-        name: titleSeries,
-        series: seriesId,
-        type: "cover",
-        source: coverUrl,
-      },
-      {
-        name: titleSeries,
-        series: seriesId,
-        type: "thumbnail",
-        source: thumbnailUrl,
-      },
-    ];
+    console.log("---------result images");
+    console.log(
+      transferImagesArr({
+        titleSeries,
+        seriesId,
+        bannerUrl,
+        coverUrl,
+        thumbnailUrl,
+      })
+    );
+
+    return transferImagesArr({
+      titleSeries,
+      seriesId,
+      bannerUrl,
+      coverUrl,
+      thumbnailUrl,
+    });
   } catch (error) {
     throw error;
   }
