@@ -4,10 +4,11 @@ import { findGenres } from "./genres";
 import { findImages } from "./image";
 import { findTags } from "./tags";
 
-export const transformSeries = (series: any) => {
+export const transformSeries = (series: any, isRelation?: any) => {
   const seriesInfo = series._doc || series;
-  let relation: any = [];
-  if (series.relation.length > 0) {
+  let relation = [];
+
+  if (isRelation && series.relation.length > 0) {
     relation = seriesInfo.relation.map((item: any) => {
       return {
         ...item._doc,

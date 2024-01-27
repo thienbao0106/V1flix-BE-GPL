@@ -230,13 +230,13 @@ export const seriesResolvers = {
       throw error;
     }
   },
-  findSeriesByName: async ({ seriesTitle }: any) => {
+  findSeriesByName: async ({ seriesTitle, isRelation }: any) => {
     try {
       const result = await Series.findOne({
         "title.main_title": seriesTitle,
       });
       if (!result) throw new Error("Can't find this series!");
-      return transformSeries(result);
+      return transformSeries(result, isRelation);
     } catch (error) {
       throw error;
     }

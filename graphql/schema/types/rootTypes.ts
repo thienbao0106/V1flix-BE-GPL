@@ -12,7 +12,7 @@ const rootQueryType: String = `
     }
 
     type RootQuery {
-        series(pageNumber: Int, limitPerPage: Int, amount: Int): SeriesPagination
+        series(pageNumber: Int, limitPerPage: Int, amount: Int, isRelation: Boolean): SeriesPagination
         images: [Image!] 
         users: [User!]
         genres: [Genres!]
@@ -31,7 +31,7 @@ const rootQueryType: String = `
         findSeriesByIds(listSeries: [String!]): [Series!]
         findGenresById(genreId: String!): Genres
         findTagsById(tagId: String!): Tags
-        findSeriesByName(seriesTitle: String!): Series
+        findSeriesByName(seriesTitle: String!, isRelation: Boolean): Series
     }
 `;
 
