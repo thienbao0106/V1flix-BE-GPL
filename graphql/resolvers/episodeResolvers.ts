@@ -2,6 +2,7 @@ import Episode from "../../models/episode";
 import Series from "../../models/series";
 import { checkObject, paginateResult } from "../utils/index";
 import { transformEpisode } from "../utils/episode";
+import { getDescriptions } from "../utils/kitsu";
 
 export const episodeResolvers = {
   episodes: async ({ pageNumber, limitPerPage, amount }: any) => {
@@ -144,6 +145,42 @@ export const episodeResolvers = {
       episode.subtitles.push(subtitleInput);
       episode.save();
       return episode;
+    } catch (error) {
+      throw error;
+    }
+  },
+  // fillEpisodeFields: async () => {
+  //   try {
+  //     const result: any = await Episode.updateMany({
+  //       description: "",
+  //     });
+  //     if (!result) return false;
+  //     return true;
+  //   } catch (error) {
+  //     throw error;
+  //   }
+  // },
+  fillDescription: async ({ kitsuId, seriesId }: any) => {
+    try {
+      const episodes: any = await Episode.find({
+        series: seriesId,
+      });
+      if (!episodes) throw Error("Can't find this series");
+      const descriptions = await getDescriptions(kitsuId, episodes.length);
+      descriptions.map(async (des: any) => {
+        const ep = await Episode.findOneAndUpdate(
+          {
+            epNum: des.epNum,
+          },
+          {
+            $set: {
+              description: des.description,
+            },
+          }
+        );
+        if (!ep) return true;
+        return false;
+      });
     } catch (error) {
       throw error;
     }

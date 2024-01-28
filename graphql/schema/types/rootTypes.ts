@@ -74,6 +74,7 @@ const rootMutationType: String = `
         addSubtitle(subtitleInput: SubtitleInput!, episodeId: String!): Boolean
         deleteSubtitle(lang: String!, episodeId: String!): Boolean
         updateSubtitle(subtitleInput: SubtitleInput!, episodeId: String!): Episode
+        fillDescription(kitsuId: String!, seriesId: String!): Boolean
         
         createSource(sourceInput: SourceInput!,  episodeId: String!, type: String!, lang: String): Sources
         addSourceToEpisode(sourceId: String!, episodeId: String!, type: String!, lang: String): Boolean
