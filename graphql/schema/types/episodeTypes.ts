@@ -19,8 +19,8 @@ const episodeType: String = `
         created_at: Float!
         subtitles: [Subtitle]
         keyframe: [Sources!]
-        description: String!
-        thumbnail: String!
+        description: String
+        thumbnail: String
     }
 `;
 
