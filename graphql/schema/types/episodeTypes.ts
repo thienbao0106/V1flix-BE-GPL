@@ -20,7 +20,8 @@ const episodeType: String = `
         subtitles: [Subtitle]
         keyframe: [Sources!]
         description: String!
-      }
+        thumbnail: String!
+    }
 `;
 
 const episodeInput: String = `
@@ -28,7 +29,6 @@ const episodeInput: String = `
         title: String!
         epNum: Int!
         seriesId: String
-        description: String!
     }
 `;
 
@@ -37,7 +37,8 @@ const episodeUpdateInput: String = `
         title: String
         epNum: Int
         keyframe: String
-        description: String!
+        description: String
+        thumbnail: String
     }
 `;
 

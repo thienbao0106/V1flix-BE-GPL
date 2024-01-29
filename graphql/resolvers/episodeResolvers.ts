@@ -2,7 +2,7 @@ import Episode from "../../models/episode";
 import Series from "../../models/series";
 import { checkObject, paginateResult } from "../utils/index";
 import { transformEpisode } from "../utils/episode";
-import { getDescriptions } from "../utils/kitsu";
+import { getDescriptions, getThumbnails } from "../utils/kitsu";
 
 export const episodeResolvers = {
   episodes: async ({ pageNumber, limitPerPage, amount }: any) => {
@@ -149,17 +149,17 @@ export const episodeResolvers = {
       throw error;
     }
   },
-  // fillEpisodeFields: async () => {
-  //   try {
-  //     const result: any = await Episode.updateMany({
-  //       description: "",
-  //     });
-  //     if (!result) return false;
-  //     return true;
-  //   } catch (error) {
-  //     throw error;
-  //   }
-  // },
+  fillEpisodeFields: async () => {
+    try {
+      const result: any = await Episode.updateMany({
+        thumbnail: "",
+      });
+      if (!result) return false;
+      return true;
+    } catch (error) {
+      throw error;
+    }
+  },
   fillDescription: async ({ kitsuId, seriesId }: any) => {
     try {
       const episodes: any = await Episode.find({
@@ -175,6 +175,41 @@ export const episodeResolvers = {
           {
             $set: {
               description: des.description,
+            },
+          }
+        );
+        if (!ep) return true;
+        return false;
+      });
+    } catch (error) {
+      throw error;
+    }
+  },
+  fillThumbnails: async ({ kitsuId, seriesId }: any) => {
+    try {
+      const episodes: any = await Episode.find({
+        series: seriesId,
+      });
+      const series: any = await Series.findById(seriesId);
+      const seriesTitle = series.title.main_title
+        .toLowerCase()
+        .replaceAll(" ", "_");
+      if (!episodes) throw Error("Can't find this series");
+      const thumbnails = await getThumbnails(
+        kitsuId,
+        episodes.length,
+        seriesTitle
+      );
+      console.log("thumbnails------------");
+
+      thumbnails.map(async (thumb: any) => {
+        const ep = await Episode.findOneAndUpdate(
+          {
+            epNum: thumb.epNum,
+          },
+          {
+            $set: {
+              thumbnail: thumb.thumbnail,
             },
           }
         );

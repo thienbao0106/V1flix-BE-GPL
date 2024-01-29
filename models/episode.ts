@@ -13,6 +13,10 @@ const episodeSchema = new Schema({
     type: String,
     required: true,
   },
+  thumbnail: {
+    type: String,
+    required: true,
+  },
   source: [
     {
       type: Schema.Types.ObjectId,

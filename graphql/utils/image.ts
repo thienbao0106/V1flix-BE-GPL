@@ -69,3 +69,20 @@ export const uploadToCloudinary = async (
     });
   return finalUrl;
 };
+
+export const uploadEpisodeThumbToCloudinary = async (
+  url: string,
+  title: string,
+  epNum: number
+): Promise<string> => {
+  if (!url || url === "") return "";
+  const finalUrl = await cloudinary.uploader
+    .upload(url, {
+      public_id: `anime-v2/episodes/${title}/thumb_ep_${epNum}`,
+      upload_preset: process.env.CLOUDINARY_IMAGE_UPLOAD,
+    })
+    .then((result: any) => {
+      return result.url;
+    });
+  return finalUrl;
+};
