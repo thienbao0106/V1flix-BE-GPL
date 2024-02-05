@@ -353,4 +353,21 @@ export const seriesResolvers = {
       throw error;
     }
   },
+  addRating: async ({ userId, seriesId, score }: any) => {
+    try {
+      const series = await Series.findById(seriesId);
+      if (!series) return;
+      const found = series.rating.find((rate: any) => rate.user == userId);
+      if (!found) series.rating.push({ user: userId, score });
+      else {
+        const filteredArr = series.rating.filter((rate) => rate.user != userId);
+        filteredArr.push({ user: userId, score });
+        series.rating = filteredArr;
+      }
+      await series.save();
+      return true;
+    } catch (error) {
+      throw error;
+    }
+  },
 };

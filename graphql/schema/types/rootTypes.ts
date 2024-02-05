@@ -49,6 +49,7 @@ const rootMutationType: String = `
         addRelation(relationInput: RelationUpdateInput): Boolean
         fillImages(anilistId: Int!, seriesId: String!): Boolean
         deleteSeriesImages(seriesId: String!): Boolean
+        addRating(seriesId: String!, userId: String!, score: Int!): Boolean
 
         createImage(imageInput: ImageInput!): Image
         deleteImage(imageId: String!): Boolean

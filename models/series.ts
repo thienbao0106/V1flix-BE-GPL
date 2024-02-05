@@ -93,11 +93,23 @@ const seriesSchema = new Schema({
     {
       role: {
         type: String,
-        required: true,
       },
       related_series: {
         type: Schema.Types.ObjectId,
         ref: "Series",
+      },
+    },
+  ],
+  rating: [
+    {
+      user: {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+        required: true,
+      },
+      score: {
+        type: Number,
+        required: true,
       },
     },
   ],

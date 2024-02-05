@@ -1,3 +1,4 @@
+import User from "../../models/user";
 import { findSeries } from "./series";
 
 const SERIES_TYPE: any = {
@@ -11,6 +12,15 @@ export const transformUsers = (user: any) => {
     _id: user.id,
     password: null,
   };
+};
+
+export const findUserById = async (userId: any) => {
+  try {
+    const user = await User.findById(userId);
+    return transformUsers(user);
+  } catch (error) {
+    throw error;
+  }
 };
 
 export const sumTotalEpisodes = (userList: any) => {

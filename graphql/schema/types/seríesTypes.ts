@@ -15,6 +15,11 @@ const seriesType: String = `
         thumbnail: String!
     }
 
+    type Rating {
+        user: User!
+        score: Float!
+    }
+
     type Series {
         _id: ID!
         title: Title
@@ -34,6 +39,8 @@ const seriesType: String = `
         favors: Int!
         trailer: Trailer
         relation: [Relation]
+        rating: [Rating]
+        avg_score: Float
     }
 `;
 

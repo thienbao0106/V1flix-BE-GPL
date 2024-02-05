@@ -3,6 +3,7 @@ import { findEpisodes } from "./episode";
 import { findGenres } from "./genres";
 import { findImages } from "./image";
 import { findTags } from "./tags";
+import { findUserById, transformUsers } from "./user";
 
 export const transformSeries = (series: any, isRelation?: any) => {
   const seriesInfo = series._doc || series;
@@ -25,6 +26,13 @@ export const transformSeries = (series: any, isRelation?: any) => {
     tags: findTags.bind(this, seriesInfo.tags),
     episodes: findEpisodes.bind(this, seriesInfo.episodes),
     relation,
+    rating: seriesInfo.rating.map((rate: any) => {
+      return {
+        score: rate.score,
+        user: findUserById(rate.user),
+      };
+    }),
+    avg_score: formatRating(seriesInfo.rating),
   };
 };
 
@@ -46,4 +54,15 @@ export const findMultipleSeries = async (seriesIds: any): Promise<any> => {
   } catch (err: any) {
     throw err;
   }
+};
+
+export const formatRating = (rating: any): number => {
+  if (rating.length === 0) return 0;
+  const initialValue = 0;
+  const listScore = rating.map((item: any) => item.score);
+  const totalScore: number = listScore.reduce(
+    (accumulator: any, currentValue: any) => accumulator + currentValue,
+    initialValue
+  );
+  return totalScore / rating.length;
 };
