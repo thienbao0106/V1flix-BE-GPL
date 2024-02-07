@@ -3,7 +3,8 @@ import Series from "../../models/series";
 import { checkObject, paginateResult } from "../utils/index";
 import { transformEpisode } from "../utils/episode";
 import { getDescriptions, getThumbnails } from "../utils/kitsu";
-import { wikipediaScrap } from "../utils/scrapData";
+import { crunchyrollScrap, wikipediaScrap } from "../utils/scrapData";
+import { uploadEpisodeThumbToCloudinary } from "../utils/image";
 
 export const episodeResolvers = {
   episodes: async ({ pageNumber, limitPerPage, amount }: any) => {
@@ -207,6 +208,53 @@ export const episodeResolvers = {
           {
             $set: {
               description: des.description,
+            },
+          }
+        );
+        if (!ep) return true;
+        return false;
+      });
+    } catch (error) {
+      throw error;
+    }
+  },
+  fillThumbnailsByCrunchy: async ({ url, seriesId, clickCount }: any) => {
+    try {
+      const series: any = await Series.findById(seriesId);
+      const episodes: any = await Episode.find({
+        series: seriesId,
+      });
+      if (!episodes) throw Error("Can't find this series");
+      const results: any = await crunchyrollScrap(
+        url,
+        episodes.length,
+        clickCount
+      );
+
+      const thumbnails = await Promise.all(
+        results.map(async (item: any) => {
+          console.log(item);
+          const url = await uploadEpisodeThumbToCloudinary(
+            item.thumb,
+            series.title.main_title.toLowerCase().replaceAll(" ", "_"),
+            item.epNum
+          );
+          return {
+            epNum: item.epNum,
+            thumb: url,
+          };
+        })
+      );
+
+      thumbnails.map(async (thumb: any) => {
+        const ep = await Episode.findOneAndUpdate(
+          {
+            series: seriesId,
+            epNum: thumb.epNum,
+          },
+          {
+            $set: {
+              thumbnail: thumb.thumb,
             },
           }
         );

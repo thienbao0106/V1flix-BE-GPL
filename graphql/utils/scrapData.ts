@@ -1,4 +1,5 @@
 import puppeteer from "puppeteer";
+import { uploadEpisodeThumbToCloudinary } from "./image";
 
 export const wikipediaScrap = async (
   url: string,
@@ -37,4 +38,58 @@ export const wikipediaScrap = async (
     ? descriptions.slice(skipElements, skipElements + totalEpisodes)
     : descriptions.slice(0, totalEpisodes);
   return result;
+};
+
+function delay(time: any) {
+  return new Promise(function (resolve) {
+    setTimeout(resolve, time);
+  });
+}
+
+export const crunchyrollScrap = async (
+  url: string,
+  totalEpisodes: number,
+  clickCount?: number
+) => {
+  const browser = await puppeteer.launch({
+    headless: false,
+    defaultViewport: null,
+  });
+  // Open a new page
+  const page = await browser.newPage();
+  // On this new page:
+  await page.goto(url, {
+    waitUntil: "domcontentloaded",
+  });
+  // await page.waitForSelector("[data-t='card-image']");
+  // Wait for the button to be available in the DOM
+  await page.waitForSelector('[data-t="next-season"]');
+
+  await page.click('[data-t="next-season"]', { count: clickCount });
+  await delay(5000);
+  await page.waitForSelector("[data-t='card-image']");
+  // Get page data
+  const thumbnails = await page.evaluate(() => {
+    const imgList = Array.from(
+      document.querySelectorAll("[data-t='card-image']")
+    );
+    const total = imgList.length;
+    const list =
+      total % 2 === 0
+        ? imgList.filter((item, index) => {
+            if (index % 2 === 0) return item;
+          })
+        : imgList.filter((item, index) => {
+            if (index % 2 !== 0) return item;
+          });
+    return list.map((item: any, index: number) => {
+      return {
+        epNum: index + 1,
+        thumb: item.src,
+      };
+    });
+  });
+
+  await browser.close();
+  return thumbnails.slice(0, totalEpisodes);
 };
