@@ -10,6 +10,7 @@ import { getALImages, getALShow } from "../utils/anilist";
 import { formatString } from "../utils/string";
 import { addSeriesToTag, getTagsId } from "../utils/tags";
 import { addSeriesToGenres, getGenresId } from "../utils/genres";
+import { modifyList, sumMeanScore } from "../utils/user";
 
 export const seriesResolvers = {
   series: async ({ pageNumber, limitPerPage, amount }: any) => {
@@ -364,7 +365,26 @@ export const seriesResolvers = {
         filteredArr.push({ user: userId, score });
         series.rating = filteredArr;
       }
+      //Update user's mean score
+      const user: any = await User.findById(userId);
+      console.log("test");
+      console.log(user.list);
+      if (user.list.length <= 1) user.stats.mean_score = score;
+      else {
+        const modifiedList = await modifyList(user.list);
+        console.log("modified list");
+        console.log(modifiedList);
+        const list = modifiedList.filter(
+          (item: any) => item.series._id !== seriesId
+        );
+        user.stats.mean_score =
+          (await sumMeanScore(list, userId, true)) + (score / list.length + 1);
+        console.log("mean-score");
+        console.log(user.stats.mean_score);
+      }
+
       await series.save();
+      await user.save();
       return true;
     } catch (error) {
       throw error;

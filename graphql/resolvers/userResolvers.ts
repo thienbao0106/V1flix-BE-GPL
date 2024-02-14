@@ -5,6 +5,7 @@ import jwt from "jsonwebtoken";
 import {
   calculateDaysWatched,
   modifyList,
+  sumMeanScore,
   sumTotalEpisodes,
   transformUsers,
 } from "../utils/user";
@@ -115,6 +116,8 @@ export const userResolvers = {
       const modifiedList = await modifyList(user.list);
       user.stats.total_episodes = sumTotalEpisodes(user.list);
       user.stats.days_watched = calculateDaysWatched(modifiedList);
+
+      user.stats.mean_score = await sumMeanScore(modifiedList, userId, false);
       user.save();
       return {
         ...transformUsers(user),
@@ -133,6 +136,7 @@ export const userResolvers = {
       const modifiedList = await modifyList(user.list);
       user.stats.total_episodes = sumTotalEpisodes(user.list);
       user.stats.days_watched = calculateDaysWatched(modifiedList);
+      user.stats.mean_score = await sumMeanScore(modifiedList, userId, false);
       user.save();
       return true;
     } catch (error) {
@@ -160,6 +164,8 @@ export const userResolvers = {
     const modifiedList = await modifyList(user.list);
     user.stats.total_episodes = sumTotalEpisodes(user.list);
     user.stats.days_watched = calculateDaysWatched(modifiedList);
+    user.stats.mean_score = await sumMeanScore(modifiedList, userId, false);
+
     user.save();
     return true;
   },

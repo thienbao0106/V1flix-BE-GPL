@@ -52,6 +52,10 @@ const userSchema = new Schema({
       type: Number,
       required: false,
     },
+    mean_score: {
+      type: Number,
+      required: false,
+    },
   },
 });
 

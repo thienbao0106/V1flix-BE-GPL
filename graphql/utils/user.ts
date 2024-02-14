@@ -33,6 +33,27 @@ export const sumTotalEpisodes = (userList: any) => {
   );
 };
 
+//Bad function
+export const sumMeanScore = async (
+  userList: any,
+  userId: any,
+  isAdd: boolean
+) => {
+  const episodesArr = await Promise.all(
+    userList.map(async (series: any) => {
+      const ratings = await Promise.all(series.series.rating);
+      return ratings.find((rating: any) => {
+        return rating.user._id === userId;
+      }).score;
+    })
+  );
+  const divided = isAdd ? episodesArr.length + 1 : episodesArr.length;
+  return (
+    episodesArr.reduce((total: number, current: number) => total + current) /
+    divided
+  );
+};
+
 export const calculateDaysWatched = (userList: any) => {
   const daysArr = userList.map((series: any) => {
     if (series.status === "plans to watch") return 0;
@@ -50,7 +71,6 @@ export const modifyList = async (userList: any) => {
   return await Promise.all(
     userList.map(async (item: any) => {
       const series = await findSeries(item.series);
-
       return { ...item._doc, series };
     })
   );

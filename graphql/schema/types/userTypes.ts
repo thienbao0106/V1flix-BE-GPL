@@ -8,6 +8,7 @@ const userType: String = `
     }
 
     type UserStats {
+        mean_score: Float
         days_watched: Float
         total_episodes: Int
     }
