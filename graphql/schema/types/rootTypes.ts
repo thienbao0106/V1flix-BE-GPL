@@ -80,6 +80,7 @@ const rootMutationType: String = `
         fillThumbnails(kitsuId: String!, seriesId: String!): Boolean
         fillDescriptionByWiki(url: String!, seriesId: String!, skipElements: Int): Boolean
         fillThumbnailsByCrunchy(url: String!, seriesId: String!, clickCount: Int): Boolean
+        addComments(episodeId: String!, userId: String!, content: String!): Boolean
         
         createSource(sourceInput: SourceInput!,  episodeId: String!, type: String!, lang: String): Sources
         addSourceToEpisode(sourceId: String!, episodeId: String!, type: String!, lang: String): Boolean

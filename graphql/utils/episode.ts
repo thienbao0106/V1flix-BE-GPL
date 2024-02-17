@@ -2,6 +2,7 @@ import Episode from "../../models/episode";
 
 import { findSeries } from "./series";
 import { transferMultipleSource } from "./source";
+import { findUserById } from "./user";
 
 const handleSubtitles = (subtitles: any[]) => {
   return subtitles
@@ -24,6 +25,12 @@ export const transformEpisode = (episode: any) => {
 
     subtitles: handleSubtitles.bind(this, episode._doc.subtitles),
     keyframe: transferMultipleSource(episode._doc.keyframe),
+    comments: episode._doc.comments.map((comment: any) => {
+      return {
+        ...comment._doc,
+        user: findUserById(comment.user),
+      };
+    }),
   };
 };
 

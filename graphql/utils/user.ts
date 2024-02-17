@@ -9,7 +9,7 @@ const SERIES_TYPE: any = {
 export const transformUsers = (user: any) => {
   return {
     ...user._doc,
-    _id: user.id,
+    _id: user.id || user._id,
     password: null,
   };
 };

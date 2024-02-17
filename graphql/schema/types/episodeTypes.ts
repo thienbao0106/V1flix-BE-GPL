@@ -6,6 +6,13 @@ const episodeType: String = `
         label: String!
 
     }
+
+    type Comment {
+        user: User!
+        content: String!
+        updated_at: Float!
+        created_at: Float!
+    }
   
 
     type Episode {
@@ -21,6 +28,7 @@ const episodeType: String = `
         keyframe: [Sources!]
         description: String
         thumbnail: String
+        comments: [Comment!]
     }
 `;
 

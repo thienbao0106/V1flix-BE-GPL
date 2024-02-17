@@ -33,16 +33,37 @@ const episodeSchema = new Schema({
   },
   created_at: {
     type: Number,
-    require: false,
+    required: false,
   },
   updated_at: {
     type: Number,
-    require: true,
+    required: true,
   },
   keyframe: [
     {
       type: Schema.Types.ObjectId,
       ref: "Sources",
+    },
+  ],
+  comments: [
+    {
+      user: {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+        required: true,
+      },
+      content: {
+        type: Schema.Types.String,
+        required: true,
+      },
+      created_at: {
+        type: Number,
+        required: true,
+      },
+      updated_at: {
+        type: Number,
+        required: true,
+      },
     },
   ],
   subtitles: [

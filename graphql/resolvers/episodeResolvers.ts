@@ -154,7 +154,7 @@ export const episodeResolvers = {
   fillEpisodeFields: async () => {
     try {
       const result: any = await Episode.updateMany({
-        thumbnail: "",
+        comments: [],
       });
       if (!result) return false;
       return true;
@@ -296,6 +296,26 @@ export const episodeResolvers = {
         if (!ep) return true;
         return false;
       });
+    } catch (error) {
+      throw error;
+    }
+  },
+  addComments: async ({ episodeId, userId, content }: any) => {
+    try {
+      const date = Date.parse(new Date().toLocaleString());
+      console.log(userId);
+      const episode = await Episode.findByIdAndUpdate(episodeId, {
+        $push: {
+          comments: {
+            user: userId,
+            content,
+            created_at: date,
+            updated_at: date,
+          },
+        },
+      });
+      if (!episode) return false;
+      return true;
     } catch (error) {
       throw error;
     }
