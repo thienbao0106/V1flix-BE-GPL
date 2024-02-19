@@ -5,6 +5,7 @@ import { transformEpisode } from "../utils/episode";
 import { getDescriptions, getThumbnails } from "../utils/kitsu";
 import { crunchyrollScrap, wikipediaScrap } from "../utils/scrapData";
 import { uploadEpisodeThumbToCloudinary } from "../utils/image";
+import { findUserById } from "../utils/user";
 
 export const episodeResolvers = {
   episodes: async ({ pageNumber, limitPerPage, amount }: any) => {
@@ -303,19 +304,23 @@ export const episodeResolvers = {
   addComments: async ({ episodeId, userId, content }: any) => {
     try {
       const date = Date.parse(new Date().toLocaleString());
+      const newComment = {
+        user: userId,
+        content,
+        created_at: date,
+        updated_at: date,
+      };
       console.log(userId);
       const episode = await Episode.findByIdAndUpdate(episodeId, {
         $push: {
-          comments: {
-            user: userId,
-            content,
-            created_at: date,
-            updated_at: date,
-          },
+          comments: newComment,
         },
       });
-      if (!episode) return false;
-      return true;
+      if (!episode) throw new Error("Can't add comment");
+      return {
+        ...newComment,
+        user: findUserById(userId),
+      };
     } catch (error) {
       throw error;
     }
