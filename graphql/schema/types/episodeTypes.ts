@@ -8,6 +8,7 @@ const episodeType: String = `
     }
 
     type Comment {
+        _id: ID!
         user: User!
         content: String!
         updated_at: Float!

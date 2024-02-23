@@ -81,6 +81,8 @@ const rootMutationType: String = `
         fillDescriptionByWiki(url: String!, seriesId: String!, skipElements: Int): Boolean
         fillThumbnailsByCrunchy(url: String!, seriesId: String!, clickCount: Int): Boolean
         addComments(episodeId: String!, userId: String!, content: String!): Comment
+        deleteComment(episodeId: String!, commentId: String!): Boolean
+        editComment(episodeId: String!, commentId: String!, content: String!): Boolean
         
         createSource(sourceInput: SourceInput!,  episodeId: String!, type: String!, lang: String): Sources
         addSourceToEpisode(sourceId: String!, episodeId: String!, type: String!, lang: String): Boolean

@@ -325,4 +325,42 @@ export const episodeResolvers = {
       throw error;
     }
   },
+  deleteComment: async ({ episodeId, commentId }: any) => {
+    try {
+      const episode = await Episode.findByIdAndUpdate(episodeId, {
+        $pull: {
+          comments: {
+            _id: commentId,
+          },
+        },
+      });
+      if (!episode) return false;
+      return true;
+    } catch (error) {
+      throw error;
+    }
+  },
+  editComment: async ({ episodeId, commentId, content }: any) => {
+    try {
+      const date = Date.parse(new Date().toLocaleString());
+      const episode = await Episode.findOneAndUpdate(
+        {
+          _id: episodeId,
+          "comments._id": commentId,
+        },
+        {
+          $set: {
+            "comments.$.content": content,
+            "comments.$.updated_at": date,
+          },
+        }
+      );
+      // console.log("test comment");
+      // console.log(episode?.comments);
+      if (!episode) return false;
+      return true;
+    } catch (error) {
+      throw error;
+    }
+  },
 };
