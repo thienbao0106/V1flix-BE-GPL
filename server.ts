@@ -9,6 +9,14 @@ import cors from "cors";
 import "dotenv/config";
 
 const app: any = express();
+const http = require("http").Server(app);
+
+const { Server } = require("socket.io");
+const io = new Server(http, {
+  cors: {
+    origin: `http://localhost:5173`,
+  },
+});
 
 //every route will be checked
 app.use(bodyParser.json());
@@ -29,10 +37,18 @@ mongoose
   )
   .then(() => {
     console.log("connected");
-    app.listen(process.env.PORT, () => {
+    http.listen(process.env.PORT, () => {
       console.log(`⚡️[server]: Server is running`);
     });
   })
   .catch((error: any) => {
     console.log(error);
   });
+
+io.on("connection", (socket: any) => {
+  console.log("a user connected");
+
+  // socket.on("disconnect", () => {
+  //   console.log("user disconnected");
+  // });
+});
