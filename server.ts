@@ -45,10 +45,27 @@ mongoose
     console.log(error);
   });
 
+let listUser: any = [];
 io.on("connection", (socket: any) => {
+  let currentUser = "";
   console.log("a user connected");
 
-  // socket.on("disconnect", () => {
-  //   console.log("user disconnected");
-  // });
+  socket.on("join", (username: string) => {
+    currentUser = username;
+    listUser.push(username);
+    io.emit("listUser", listUser);
+  });
+
+  socket.on("userChat", (username: string, message: string) => {
+    io.emit("sendMessage", {
+      message,
+      username,
+    });
+  });
+
+  socket.on("disconnect", () => {
+    listUser = [...listUser].filter((user) => user !== currentUser);
+    io.emit("listUser", listUser);
+    console.log(`${currentUser} has disconnected`);
+  });
 });
