@@ -63,6 +63,10 @@ io.on("connection", (socket: any) => {
     });
   });
 
+  socket.on("userVideo", (isPlaying: boolean, currentTime: any) => {
+    socket.broadcast.emit("playingVideo", isPlaying, currentTime);
+  });
+
   socket.on("disconnect", () => {
     listUser = [...listUser].filter((user) => user !== currentUser);
     io.emit("listUser", listUser);
