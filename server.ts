@@ -48,28 +48,39 @@ mongoose
 let listUser: any = [];
 io.on("connection", (socket: any) => {
   let currentUser = "";
+  let currentRoom = "";
   console.log("a user connected");
 
-  socket.on("join", (username: string) => {
+  socket.on("join", (username: string, room: any) => {
+    currentRoom = room;
     currentUser = username;
+    socket.join(room);
+    const clients = io.sockets.adapter.rooms.get(room);
+
+    if (clients.size === 1) listUser = [];
     listUser.push(username);
-    io.emit("listUser", listUser);
+
+    io.sockets.in(room).emit("listUser", listUser);
   });
 
   socket.on("userChat", (username: string, message: string) => {
-    io.emit("sendMessage", {
+    console.log("room: " + currentRoom);
+    io.sockets.in(currentRoom).emit("sendMessage", {
       message,
       username,
     });
   });
 
   socket.on("userVideo", (isPlaying: boolean, currentTime: any) => {
-    socket.broadcast.emit("playingVideo", isPlaying, currentTime);
+    socket.broadcast
+      .to(currentRoom)
+      .emit("playingVideo", isPlaying, currentTime);
   });
 
   socket.on("disconnect", () => {
+    socket.leave(currentRoom);
     listUser = [...listUser].filter((user) => user !== currentUser);
-    io.emit("listUser", listUser);
-    console.log(`${currentUser} has disconnected`);
+    io.sockets.in(currentRoom).emit("listUser", listUser);
+    console.log(`${currentUser} has disconnected in room ${currentRoom}`);
   });
 });
