@@ -11,12 +11,14 @@ import "dotenv/config";
 const app: any = express();
 const http = require("http").Server(app);
 
+console.log("is dev: " + app.settings.env);
 const { Server } = require("socket.io");
 const io = new Server(http, {
   cors: {
-    origin: process.env.DEV
-      ? `http://localhost:5173`
-      : process.env.V1FLIX_FE_URL,
+    origin:
+      app.settings.env === "development"
+        ? `http://localhost:5173`
+        : process.env.V1FLIX_FE_URL,
   },
 });
 
@@ -49,27 +51,27 @@ mongoose
 
 let listUser: any = [];
 io.on("connection", (socket: any) => {
-  let currentUser = "";
+  let currentUser: any = {};
   let currentRoom = "";
   console.log("a user connected");
 
-  socket.on("join", (username: string, room: any) => {
+  socket.on("join", (userData: any, room: any) => {
     currentRoom = room;
-    currentUser = username;
+    currentUser = userData;
     socket.join(room);
     const clients = io.sockets.adapter.rooms.get(room);
 
     if (clients.size === 1) listUser = [];
-    listUser.push(username);
+    listUser.push(userData);
 
     io.sockets.in(room).emit("listUser", listUser);
   });
 
-  socket.on("userChat", (username: string, message: string) => {
+  socket.on("userChat", (userData: any, message: string) => {
     console.log("room: " + currentRoom);
     io.sockets.in(currentRoom).emit("sendMessage", {
       message,
-      username,
+      user: userData,
     });
   });
 
@@ -81,7 +83,9 @@ io.on("connection", (socket: any) => {
 
   socket.on("disconnect", () => {
     socket.leave(currentRoom);
-    listUser = [...listUser].filter((user) => user !== currentUser);
+    listUser = [...listUser].filter(
+      (user) => user.username !== currentUser.username
+    );
     io.sockets.in(currentRoom).emit("listUser", listUser);
     console.log(`${currentUser} has disconnected in room ${currentRoom}`);
   });
