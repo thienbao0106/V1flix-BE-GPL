@@ -14,7 +14,9 @@ const http = require("http").Server(app);
 const { Server } = require("socket.io");
 const io = new Server(http, {
   cors: {
-    origin: `http://localhost:5173`,
+    origin: process.env.DEV
+      ? `http://localhost:5173`
+      : process.env.V1FLIX_FE_URL,
   },
 });
 
