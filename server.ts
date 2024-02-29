@@ -15,10 +15,7 @@ console.log("is dev: " + app.settings.env);
 const { Server } = require("socket.io");
 const io = new Server(http, {
   cors: {
-    origin:
-      app.settings.env === "development"
-        ? `http://localhost:5173`
-        : process.env.V1FLIX_FE_URL,
+    origin: "*",
   },
 });
 
