@@ -304,20 +304,28 @@ export const episodeResolvers = {
   addComments: async ({ episodeId, userId, content }: any) => {
     try {
       const date = Date.parse(new Date().toLocaleString());
-      const newComment = {
+      const newComment: any = {
         user: userId,
         content,
         created_at: date,
         updated_at: date,
       };
-      console.log(userId);
-      const episode = await Episode.findByIdAndUpdate(episodeId, {
-        $push: {
-          comments: newComment,
+
+      const episode: any = await Episode.findByIdAndUpdate(
+        episodeId,
+        {
+          $push: {
+            comments: newComment,
+          },
         },
-      });
+        { returnDocument: "after" }
+      );
+      console.log("new comment: ");
+      console.log(episode);
       if (!episode) throw new Error("Can't add comment");
+      const id: any = episode.comments[episode.length - 1]?._id;
       return {
+        _id: id,
         ...newComment,
         user: findUserById(userId),
       };
