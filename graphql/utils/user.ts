@@ -51,7 +51,7 @@ export const sumMeanScore = async (
   const result =
     episodesArr.reduce((total: number, current: number) => total + current) /
     divided;
-
+  console.log("Parse number: " + result.toFixed(2));
   return parseFloat(result.toFixed(2));
 };
 

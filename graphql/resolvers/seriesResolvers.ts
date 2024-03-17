@@ -377,8 +377,10 @@ export const seriesResolvers = {
         const list = modifiedList.filter(
           (item: any) => item.series._id !== seriesId
         );
-        user.stats.mean_score =
+        const result =
           (await sumMeanScore(list, userId, true)) + (score / list.length + 1);
+        user.stats.mean_score = parseFloat(result.toFixed(2));
+
         console.log("mean-score");
         console.log(user.stats.mean_score);
       }
