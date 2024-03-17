@@ -48,10 +48,11 @@ export const sumMeanScore = async (
     })
   );
   const divided = isAdd ? episodesArr.length + 1 : episodesArr.length;
-  return (
+  const result =
     episodesArr.reduce((total: number, current: number) => total + current) /
-    divided
-  );
+    divided;
+
+  return parseFloat(result.toFixed(2));
 };
 
 export const calculateDaysWatched = (userList: any) => {
