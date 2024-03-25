@@ -20,6 +20,15 @@ const seriesType: String = `
         score: Float!
     }
 
+    type Review {
+        _id: ID!
+        user: User!
+        review: String!
+        updated_at: Float!
+        created_at: Float!
+        spoiler_free: Boolean!
+    }
+
     type Series {
         _id: ID!
         title: Title
@@ -41,6 +50,7 @@ const seriesType: String = `
         relation: [Relation]
         rating: [Rating]
         avg_score: Float
+        reviews: [Review]
     }
 `;
 

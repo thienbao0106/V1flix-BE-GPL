@@ -50,6 +50,10 @@ const rootMutationType: String = `
         fillImages(anilistId: Int!, seriesId: String!): Boolean
         deleteSeriesImages(seriesId: String!): Boolean
         addRating(seriesId: String!, userId: String!, score: Int!): Boolean
+        addReview(seriesId: String!, userId: String!, review: String!, spoilerFree: Boolean!): Review
+        deleteReview(seriesId: String!, reviewId: String!): Boolean
+        editReview(seriesId: String!, reviewId: String!, review: String!, spoilerFree: Boolean): Boolean
+        
 
         createImage(imageInput: ImageInput!): Image
         deleteImage(imageId: String!): Boolean

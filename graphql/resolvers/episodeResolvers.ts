@@ -320,8 +320,6 @@ export const episodeResolvers = {
         },
         { returnDocument: "after" }
       );
-      console.log("new comment: ");
-      console.log(episode);
       if (!episode) throw new Error("Can't add comment");
       const id: any = episode.comments[episode.length - 1]?._id;
       return {

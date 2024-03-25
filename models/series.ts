@@ -113,6 +113,23 @@ const seriesSchema = new Schema({
       },
     },
   ],
+  reviews: [
+    {
+      spoiler_free: {
+        type: Boolean,
+        required: true,
+      },
+      user: {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+        required: true,
+      },
+      review: {
+        type: String,
+        required: true,
+      },
+    },
+  ],
 });
 
 export default mongoose.model("Series", seriesSchema);
