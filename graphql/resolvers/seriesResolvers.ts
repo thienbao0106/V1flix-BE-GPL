@@ -401,6 +401,12 @@ export const seriesResolvers = {
         created_at: date,
         updated_at: date,
       };
+      const isExisted: any = await Series.findOne({
+        _id: seriesId,
+        "reviews.user": userId,
+      });
+      console.log(isExisted);
+      if (isExisted) throw new Error("This user has already reviewed");
       const reviews: any = await Series.findByIdAndUpdate(
         seriesId,
         {
