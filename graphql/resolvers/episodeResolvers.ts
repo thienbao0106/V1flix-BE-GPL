@@ -321,7 +321,7 @@ export const episodeResolvers = {
         { returnDocument: "after" }
       );
       if (!episode) throw new Error("Can't add comment");
-      const id: any = episode.comments[episode.length - 1]?._id;
+      const id: any = episode.comments[episode.comments.length - 1]?._id;
       return {
         _id: id,
         ...newComment,
