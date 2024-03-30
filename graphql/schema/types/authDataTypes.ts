@@ -3,6 +3,7 @@ const authDataType: String = `
         userId: ID!
         token: String!
         username: String!
+        avatar: String!
     }
 `;
 
