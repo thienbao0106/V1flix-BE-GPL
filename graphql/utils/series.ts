@@ -64,5 +64,5 @@ export const formatRating = (rating: any): number => {
     (accumulator: any, currentValue: any) => accumulator + currentValue,
     initialValue
   );
-  return totalScore / rating.length;
+  return parseFloat((totalScore / rating.length).toFixed(2));
 };
