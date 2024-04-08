@@ -53,6 +53,7 @@ const rootMutationType: String = `
         addReview(seriesId: String!, userId: String!, review: String!, spoilerFree: Boolean!): Review
         deleteReview(seriesId: String!, reviewId: String!): Boolean
         editReview(seriesId: String!, reviewId: String!, review: String!, spoilerFree: Boolean): Boolean
+        setTrailer(seriesId: String!): Boolean
         
 
         createImage(imageInput: ImageInput!): Image

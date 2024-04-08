@@ -245,10 +245,12 @@ export const seriesResolvers = {
   addTrailer: async ({ idSeries, idTrailer, thumbnail, site }: any) => {
     try {
       const result = await Series.findByIdAndUpdate(idSeries, {
-        trailer: {
-          id: idTrailer,
-          thumbnail,
-          site,
+        $push: {
+          trailer: {
+            idTrailer,
+            thumbnail,
+            site,
+          },
         },
       });
       if (result) return true;
@@ -276,6 +278,7 @@ export const seriesResolvers = {
       } = alSeries.Media;
       const tagsArr = await getTagsId(tags);
       const genresArr = await getGenresId(genres);
+      const trailers = [{ ...trailer, idTrailer: trailer.id }];
       const series = new Series({
         title: {
           main_title: title.romaji.replace(/"/g, ""),
@@ -291,7 +294,7 @@ export const seriesResolvers = {
         created_at: date,
         updated_at: date,
         favors: 0,
-        trailer,
+        trailer: trailers,
         genres: genresArr,
         tags: tagsArr,
       });
@@ -467,6 +470,21 @@ export const seriesResolvers = {
       console.log(reviews.reviews);
       if (!reviews) return false;
       return true;
+    } catch (error) {
+      throw error;
+    }
+  },
+  setTrailer: async ({ seriesId }: any) => {
+    try {
+      const currentTrailer: any = await Series.findById(seriesId);
+      console.log(currentTrailer.trailer);
+      if (!currentTrailer) throw new Error("Can't find this series");
+      const trailers = [...currentTrailer.trailer];
+      const data = await Series.findByIdAndUpdate(seriesId, {
+        trailer: trailers,
+      });
+      if (data) return true;
+      return false;
     } catch (error) {
       throw error;
     }

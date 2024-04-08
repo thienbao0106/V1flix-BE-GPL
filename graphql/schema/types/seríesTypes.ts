@@ -10,7 +10,7 @@ const seriesType: String = `
     }
 
     type Trailer {
-        id: String!
+        idTrailer: String!
         site: String!
         thumbnail: String!
     }
@@ -46,7 +46,7 @@ const seriesType: String = `
         created_at: Float!
         duration: Int!
         favors: Int!
-        trailer: Trailer
+        trailer: [Trailer]
         relation: [Relation]
         rating: [Rating]
         avg_score: Float
