@@ -44,7 +44,7 @@ const rootMutationType: String = `
         addFavoriteSeries(seriesId: String!, userId: String!): Boolean
         deleteFavoriteSeries(seriesId: String!, userId: String!): Boolean
         addSeriesByAnilist(id: Int!): Series
-        addTrailer(idSeries: String!, idTrailer: String!, site: String!, thumbnail: String!): Boolean 
+        addTrailer(idSeries: String!, trailerUrl: String!): Boolean 
         fillGenres(seriesId: String!, anilistId: Int!): Boolean
         addRelation(relationInput: RelationUpdateInput): Boolean
         fillImages(anilistId: Int!, seriesId: String!): Boolean
@@ -53,7 +53,7 @@ const rootMutationType: String = `
         addReview(seriesId: String!, userId: String!, review: String!, spoilerFree: Boolean!): Review
         deleteReview(seriesId: String!, reviewId: String!): Boolean
         editReview(seriesId: String!, reviewId: String!, review: String!, spoilerFree: Boolean): Boolean
-        setTrailer(seriesId: String!): Boolean
+        
         
 
         createImage(imageInput: ImageInput!): Image

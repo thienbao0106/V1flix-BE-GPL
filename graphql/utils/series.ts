@@ -66,3 +66,16 @@ export const formatRating = (rating: any): number => {
   );
   return parseFloat((totalScore / rating.length).toFixed(2));
 };
+
+export const getYoutubeId = (url: string): string => {
+  // Create a URL object with the YouTube URL
+  const parsedUrl = new URL(url);
+
+  // Get the search params object from the URL object
+  const searchParams = parsedUrl.searchParams;
+
+  // Get the value of the 'v' parameter
+  const videoId = searchParams.get("v");
+  if (!videoId) return "";
+  return videoId;
+};

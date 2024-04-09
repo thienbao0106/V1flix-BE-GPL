@@ -5,7 +5,7 @@ import User from "../../models/user";
 import Episode from "../../models/episode";
 import Tags from "../../models/tags";
 import { checkObject, paginateResult } from "../utils/index";
-import { findSeries, transformSeries } from "../utils/series";
+import { findSeries, getYoutubeId, transformSeries } from "../utils/series";
 import { getALImages, getALShow } from "../utils/anilist";
 import { formatString } from "../utils/string";
 import { addSeriesToTag, getTagsId } from "../utils/tags";
@@ -242,14 +242,16 @@ export const seriesResolvers = {
       throw error;
     }
   },
-  addTrailer: async ({ idSeries, idTrailer, thumbnail, site }: any) => {
+  //Only for Youtube trailer
+  addTrailer: async ({ idSeries, trailerUrl }: any) => {
     try {
+      const idTrailer = getYoutubeId(trailerUrl);
       const result = await Series.findByIdAndUpdate(idSeries, {
         $push: {
           trailer: {
             idTrailer,
-            thumbnail,
-            site,
+            thumbnail: `https://i.ytimg.com/vi/${idTrailer}/hqdefault.jpg`,
+            site: "youtube",
           },
         },
       });
@@ -470,21 +472,6 @@ export const seriesResolvers = {
       console.log(reviews.reviews);
       if (!reviews) return false;
       return true;
-    } catch (error) {
-      throw error;
-    }
-  },
-  setTrailer: async ({ seriesId }: any) => {
-    try {
-      const currentTrailer: any = await Series.findById(seriesId);
-      console.log(currentTrailer.trailer);
-      if (!currentTrailer) throw new Error("Can't find this series");
-      const trailers = [...currentTrailer.trailer];
-      const data = await Series.findByIdAndUpdate(seriesId, {
-        trailer: trailers,
-      });
-      if (data) return true;
-      return false;
     } catch (error) {
       throw error;
     }
