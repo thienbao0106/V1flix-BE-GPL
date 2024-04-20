@@ -28,6 +28,7 @@ export const sumTotalEpisodes = (userList: any) => {
     if (series.status === "plans to watch") return 0;
     return series.currentEp;
   });
+  if (episodesArr.length === 0) return 0;
   return episodesArr.reduce(
     (total: number, current: number) => total + current
   );
@@ -47,7 +48,10 @@ export const sumMeanScore = async (
       }).score;
     })
   );
+  if (episodesArr.length === 0) return 0;
+
   const divided = isAdd ? episodesArr.length + 1 : episodesArr.length;
+
   const result =
     episodesArr.reduce((total: number, current: number) => total + current) /
     divided;
@@ -62,6 +66,7 @@ export const calculateDaysWatched = (userList: any) => {
     const { type } = series.series;
     return series.currentEp * SERIES_TYPE[type.toLowerCase()];
   });
+  if (daysArr.length === 0) return 0;
   const totalMinutes: number = daysArr.reduce(
     (total: number, current: number) => total + current
   );
