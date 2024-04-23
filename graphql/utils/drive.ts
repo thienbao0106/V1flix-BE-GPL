@@ -6,10 +6,9 @@ export const fetchOneDriveSource = async (id: string) => {
     kind: "onedrive",
   });
   const accessToken = transferToken(result);
-  console.log(accessToken.value);
+
   const headers: any = {
     method: "GET",
-    signal: AbortSignal.timeout(5000),
     headers: {
       Authorization: "Bearer " + accessToken.value,
     },
@@ -19,7 +18,9 @@ export const fetchOneDriveSource = async (id: string) => {
       `https://graph.microsoft.com/v1.0/me/drive/items/${id}/content`,
       headers
     );
-    if (!result.ok) throw new Error("Error while handling fetching");
+    console.log("Result after query");
+    console.log(result);
+    if (result.status !== 400) throw new Error("Error while handling fetching");
     return result.url;
   } catch (error: any) {
     console.error(error);
