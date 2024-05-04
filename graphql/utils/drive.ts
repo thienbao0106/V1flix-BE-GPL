@@ -20,7 +20,8 @@ export const fetchOneDriveSource = async (id: string) => {
     );
     console.log("Result after query");
     console.log(result);
-    if (result.status !== 400) throw new Error("Error while handling fetching");
+    if (result.status !== 200) throw new Error("Error while handling fetching");
+    console.log("Success");
     return result.url;
   } catch (error: any) {
     console.error(error);
