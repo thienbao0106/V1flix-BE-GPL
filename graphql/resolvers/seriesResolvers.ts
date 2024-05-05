@@ -280,7 +280,7 @@ export const seriesResolvers = {
       } = alSeries.Media;
       const tagsArr = await getTagsId(tags);
       const genresArr = await getGenresId(genres);
-      const trailers = [{ ...trailer, idTrailer: trailer.id }];
+
       const series = new Series({
         title: {
           main_title: title.romaji.replace(/"/g, ""),
@@ -296,16 +296,26 @@ export const seriesResolvers = {
         created_at: date,
         updated_at: date,
         favors: 0,
-        trailer: trailers,
         genres: genresArr,
         tags: tagsArr,
+        trailer: [],
       });
       const result: any = await series.save();
       console.log("Result Id: " + result._id);
+      await Series.findByIdAndUpdate(result._id, {
+        $push: {
+          trailer: {
+            idTrailer: trailer.id,
+            thumbnail: `https://i.ytimg.com/vi/${trailer.id}/hqdefault.jpg`,
+            site: "youtube",
+          },
+        },
+      });
       addSeriesToTag(tagsArr, result._id);
       addSeriesToGenres(genresArr, result._id);
       return transformSeries(result);
     } catch (error) {
+      console.log(error);
       throw error;
     }
   },

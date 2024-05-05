@@ -77,6 +77,9 @@ const seriesSchema = new Schema({
   ],
   trailer: [
     {
+      _id: {
+        type: Schema.Types.ObjectId,
+      },
       idTrailer: {
         type: String,
         required: true,
