@@ -1,5 +1,5 @@
-import Token from "../../models/token";
-import { transferToken } from "../utils/token";
+import Token from "../../../models/token";
+import { transferToken } from "../../utils/token";
 
 export const tokenResolvers = {
   tokens: async () => {

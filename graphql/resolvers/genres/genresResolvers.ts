@@ -1,13 +1,13 @@
-import Genres from "../../models/genres";
-import Series from "../../models/series";
-import { checkObject } from "../utils/index";
-import { findMultipleSeries } from "../utils/series";
+import Genres from "../../../models/genres";
+import Series from "../../../models/series";
+import { checkObject } from "../../utils/index";
+import { findMultipleSeries } from "../../utils/series";
 import {
   addSeriesToGenres,
   getGenresId,
   transformGenres,
-} from "../utils/genres";
-import { getALGenres, getALGenresShow } from "../utils/anilist";
+} from "../../utils/genres";
+import { getALGenres, getALGenresShow } from "../../utils/anilist";
 
 export const genresResolvers = {
   genres: async () => {

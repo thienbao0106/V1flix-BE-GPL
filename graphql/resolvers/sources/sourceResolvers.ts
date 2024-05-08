@@ -1,6 +1,6 @@
-import Episode from "../../models/episode";
-import Source from "../../models/source";
-import { transferSource } from "../utils/source";
+import Episode from "../../../models/episode";
+import Source from "../../../models/source";
+import { transferSource } from "../../utils/source";
 
 export const sourceResolvers = {
   sources: async () => {
@@ -14,6 +14,7 @@ export const sourceResolvers = {
     }
   },
   createSource: async ({ sourceInput, episodeId, type, lang }: any) => {
+    //Type is sources and subtitles
     try {
       const date = Date.parse(new Date().toLocaleString());
       const isExisted = await Source.findOne(sourceInput);

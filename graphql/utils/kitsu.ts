@@ -1,7 +1,7 @@
 import axios from "axios";
 import { uploadEpisodeThumbToCloudinary } from "./image";
 
-export const getDescriptions = async (
+export const getKitsuDescriptions = async (
   kitsuId: string,
   totalEpisodes: number
 ) => {
@@ -22,7 +22,7 @@ export const getDescriptions = async (
   }
 };
 
-export const getThumbnails = async (
+export const getKitsuThumbnails = async (
   kitsuId: string,
   totalEpisodes: number,
   seriesTitle: string
@@ -32,7 +32,30 @@ export const getThumbnails = async (
       `https://kitsu.io/api/edge/anime/${kitsuId}/episodes`
     );
     if (!result) throw Error("Can't get episodes of this series");
-    const listEps = result.data.data.slice(0, totalEpisodes);
+    const kitsuEpisodesArray = result.data.data;
+
+    //In case movie doesn't have thumbnail
+    if (kitsuEpisodesArray.length === 1) {
+      const result = await axios.get(
+        `https://kitsu.io/api/edge/anime/${kitsuId}`
+      );
+      const thumbnailUrl = result.data.data.attributes;
+      const url = await uploadEpisodeThumbToCloudinary(
+        thumbnailUrl.posterImage.small,
+        seriesTitle,
+        1
+      );
+
+      return [
+        {
+          epNum: 1,
+          thumbnail: url,
+        },
+      ];
+    }
+
+    //Otherwise
+    const listEps = kitsuEpisodesArray.slice(0, totalEpisodes);
     return Promise.all(
       listEps.map(async (ep: any) => {
         const url = await uploadEpisodeThumbToCloudinary(

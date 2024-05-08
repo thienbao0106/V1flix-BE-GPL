@@ -18,8 +18,6 @@ export const fetchOneDriveSource = async (id: string) => {
       `https://graph.microsoft.com/v1.0/me/drive/items/${id}/content`,
       headers
     );
-    console.log("Result after query");
-    console.log(result);
     if (result.status !== 200) throw new Error("Error while handling fetching");
     console.log("Success");
     return result.url;

@@ -1,7 +1,7 @@
-import Image from "../../models/image";
-import Series from "../../models/series";
-import { checkObject } from "../utils/index";
-import { transformImage } from "../utils/image";
+import Image from "../../../models/image";
+import Series from "../../../models/series";
+import { checkObject } from "../../utils/index";
+import { transformImage } from "../../utils/image";
 
 import { v2 as cloudinary } from "cloudinary";
 import "dotenv/config";

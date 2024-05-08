@@ -81,10 +81,10 @@ const rootMutationType: String = `
         deleteSubtitle(lang: String!, episodeId: String!): Boolean
         updateSubtitle(subtitleInput: SubtitleInput!, episodeId: String!): Episode
         fillEpisodeFields: Boolean
-        fillDescription(kitsuId: String!, seriesId: String!): Boolean
-        fillThumbnails(kitsuId: String!, seriesId: String!): Boolean
-        fillDescriptionByWiki(url: String!, seriesId: String!, skipElements: Int): Boolean
+        fillDescriptionByKitsu(kitsuId: String!, seriesId: String!): Boolean
+        fillThumbnailsByKitsu(kitsuId: String!, seriesId: String!): Boolean
         fillThumbnailsByCrunchy(url: String!, seriesId: String!, clickCount: Int): Boolean
+        fillDescriptionByWiki(url: String!, seriesId: String!, skipElements: Int): Boolean
         addComments(episodeId: String!, userId: String!, content: String!): Comment
         deleteComment(episodeId: String!, commentId: String!): Boolean
         editComment(episodeId: String!, commentId: String!, content: String!): Boolean
