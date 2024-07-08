@@ -4,7 +4,11 @@ import Series from "../../../models/series";
 import User from "../../../models/user";
 import Tags from "../../../models/tags";
 import { checkObject, paginateResult } from "../../utils/index";
-import { findSeries, transformSeries } from "../../utils/series";
+import {
+  addSeriesImages,
+  findSeries,
+  transformSeries,
+} from "../../utils/series";
 import { getALShow } from "../../utils/anilist";
 import { formatString } from "../../utils/string";
 import { addSeriesToTag, getTagsId } from "../../utils/tags";
@@ -232,7 +236,7 @@ export const seriesResolvers = {
         season: `${formatString(season)} ${seasonYear}`,
         status: formatString(status === "FINISHED" ? "completed" : status),
         view: 0,
-        duration,
+        duration: duration || 0,
         created_at: date,
         updated_at: date,
         favors: 0,
@@ -241,7 +245,13 @@ export const seriesResolvers = {
         trailer: [],
       });
       const result: any = await series.save();
-      console.log("Result Id: " + result._id);
+
+      const imagesIds: any = await addSeriesImages(
+        result.title.main_title,
+        result._id,
+        id
+      );
+
       await Series.findByIdAndUpdate(result._id, {
         $push: {
           trailer: {
@@ -249,6 +259,7 @@ export const seriesResolvers = {
             thumbnail: `https://i.ytimg.com/vi/${trailer.id}/hqdefault.jpg`,
             site: "youtube",
           },
+          images: imagesIds,
         },
       });
       addSeriesToTag(tagsArr, result._id);

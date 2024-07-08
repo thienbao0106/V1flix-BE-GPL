@@ -14,7 +14,7 @@ export const sourceResolvers = {
     }
   },
   createSource: async ({ sourceInput, episodeId, type, lang }: any) => {
-    //Type is sources and subtitles
+    //Type is source and subtitles
     try {
       const date = Date.parse(new Date().toLocaleString());
       const isExisted = await Source.findOne(sourceInput);
@@ -30,7 +30,7 @@ export const sourceResolvers = {
       });
 
       await source.save();
-      const sourceId = source._id;
+      const sourceId = source._id || source.id;
       const epSource: any = await Episode.findById(episodeId);
       let updatedProperty: any = {};
       if (type === "subtitles") {

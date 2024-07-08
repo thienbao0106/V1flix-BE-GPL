@@ -1,4 +1,7 @@
 import Series from "../../models/series";
+import Images from "../../models/image";
+
+import { getALImages } from "./anilist";
 import { findEpisodes } from "./episode";
 import { findGenres } from "./genres";
 import { findImages } from "./image";
@@ -78,4 +81,18 @@ export const getYoutubeId = (url: string): string => {
   const videoId = searchParams.get("v");
   if (!videoId) return "";
   return videoId;
+};
+
+export const addSeriesImages = async (
+  title: any,
+  seriesId: string,
+  anilistId: string
+) => {
+  const fileName = title
+    .toLowerCase()
+    .replaceAll(/[^\w\s]/g, "")
+    .replaceAll(/\s+/g, "_");
+  const seriesImages = await getALImages(anilistId, fileName, seriesId);
+  const result = await Images.insertMany(seriesImages);
+  return result.map((item: any) => item._id);
 };
