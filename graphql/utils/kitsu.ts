@@ -56,18 +56,21 @@ export const getKitsuThumbnails = async (
 
     //Otherwise
     const listEps = kitsuEpisodesArray.slice(0, totalEpisodes);
+
     return Promise.all(
       listEps.map(async (ep: any) => {
-        const url = await uploadEpisodeThumbToCloudinary(
-          ep.attributes.thumbnail.original,
-          seriesTitle,
-          ep.attributes.number
-        );
+        if (ep.attributes.thumbnail) {
+          const url = await uploadEpisodeThumbToCloudinary(
+            ep.attributes.thumbnail.original,
+            seriesTitle,
+            ep.attributes.number
+          );
 
-        return {
-          epNum: ep.attributes.number,
-          thumbnail: url,
-        };
+          return {
+            epNum: ep.attributes.number,
+            thumbnail: url,
+          };
+        }
       })
     );
   } catch (error) {

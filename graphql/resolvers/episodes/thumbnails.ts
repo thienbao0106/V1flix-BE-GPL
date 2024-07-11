@@ -70,6 +70,7 @@ export const thumbnails = {
       console.log("thumbnails------------");
       console.log(thumbnails);
       thumbnails.map(async (thumb: any) => {
+        if (!thumb) return true;
         const ep = await Episode.findOneAndUpdate(
           {
             epNum: thumb.epNum,
