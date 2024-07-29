@@ -75,14 +75,17 @@ const rootMutationType: String = `
         deleteAllGenres: Boolean
 
         createEpisode(episodeInput: EpisodeInput!): Episode
+        createMultipleEpisodes(seriesId: String!, totalEpisode: Int!, anilistId: Int!): [Episode]
         updateEpisode(episodeInput: EpisodeUpdateInput!, episodeId: String!): Episode
         deleteEpisode(episodeId: String!): Boolean
         addSubtitle(subtitleInput: SubtitleInput!, episodeId: String!): Boolean
+        addMultipleSubtitle(seriesId: String!, lang: String!, label: String!): Boolean
         deleteSubtitle(lang: String!, episodeId: String!): Boolean
         updateSubtitle(subtitleInput: SubtitleInput!, episodeId: String!): Episode
         fillEpisodeFields: Boolean
         fillDescriptionByKitsu(kitsuId: String!, seriesId: String!): Boolean
         fillThumbnailsByKitsu(kitsuId: String!, seriesId: String!): Boolean
+        fillThumbnailsByAnilist(anilistId: Int!, seriesId: String! ): Boolean
         fillThumbnailsByCrunchy(url: String!, seriesId: String!, clickCount: Int): Boolean
         fillDescriptionByWiki(url: String!, seriesId: String!, skipElements: Int): Boolean
         addComments(episodeId: String!, userId: String!, content: String!): Comment
@@ -90,8 +93,10 @@ const rootMutationType: String = `
         editComment(episodeId: String!, commentId: String!, content: String!): Boolean
         
         createSource(sourceInput: SourceInput!,  episodeId: String!, type: String!, lang: String): Sources
+        createMultipleSource( seriesId: String!, type: String!, lang: String, kind: String!, sourceList: [String!]!): [Sources]
         addSourceToEpisode(sourceId: String!, episodeId: String!, type: String!, lang: String): Boolean
         deleteSource(sourceId: String!, episodeId: String!, type: String!): Boolean
+        deleteMultipleSource(seriesId: String!, type: String!): Boolean
         editSource(sourceInput: SourceInput!, sourceId: String!): Sources
 
         createToken(tokenInput: TokenInput!): Token

@@ -6,6 +6,7 @@ import { thumbnails } from "./thumbnails";
 import { description } from "./descriptions";
 import { comments } from "./comments";
 import { subtitles } from "./subtitles";
+import { getMultipleEpisodeTitle } from "../../utils/anilist";
 
 export const episodeResolvers = {
   episodes: async ({ pageNumber, limitPerPage, amount }: any) => {
@@ -60,6 +61,37 @@ export const episodeResolvers = {
       throw error;
     }
   },
+  createMultipleEpisodes: async ({
+    seriesId,
+    totalEpisode,
+    anilistId,
+  }: any) => {
+    const date = Date.parse(new Date().toLocaleString());
+    let episodes = [];
+    const series: any = await Series.findById(seriesId);
+    if (!series) throw new Error("Can't find the series");
+    const listTitle = await getMultipleEpisodeTitle(anilistId);
+    for (let i = 1; i <= totalEpisode; i++) {
+      const episode = new Episode({
+        title: listTitle[i - 1] || "Temp title",
+        epNum: i,
+        source: [],
+        view: 0,
+        series: seriesId,
+        created_at: date,
+        updated_at: date,
+        keyframe: [],
+      });
+      episodes.push(episode);
+      await episode.save();
+    }
+    series.episodes = episodes;
+    series.save();
+    return episodes.map((episode) => {
+      return transformEpisode(episode);
+    });
+  },
+
   updateEpisode: async ({ episodeInput, episodeId }: any) => {
     try {
       checkObject(episodeInput, "episode");

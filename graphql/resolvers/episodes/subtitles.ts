@@ -1,4 +1,5 @@
 import Episode from "../../../models/episode";
+import Series from "../../../models/series";
 
 export const subtitles = {
   addSubtitle: async ({ subtitleInput, episodeId }: any) => {
@@ -12,6 +13,19 @@ export const subtitles = {
 
       episode.subtitles.push(subtitleInput);
       episode.save();
+      return true;
+    } catch (error) {
+      throw error;
+    }
+  },
+  addMultipleSubtitle: async ({ seriesId, lang, label }: any) => {
+    try {
+      const series: any = await Series.findById(seriesId);
+      series.episodes.map(async (ep: any) => {
+        const episode: any = await Episode.findById(ep);
+        episode.subtitles.push({ lang, label });
+        episode.save();
+      });
       return true;
     } catch (error) {
       throw error;
